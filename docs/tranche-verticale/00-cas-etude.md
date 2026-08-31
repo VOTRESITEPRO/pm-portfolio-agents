@@ -23,5 +23,4 @@
 - **Neutre** : secteur générique, transposable en ESN.
 - **Défendable** : proche d'un domaine web/e-commerce, donc argumentable en entretien.
 - **Hybride par nature** : contrainte technique ferme (ERP), périmètre UX à découvrir,
-  budget plafonné, échéance datée. Il ne se laisse ranger ni en waterfall pur ni en
-  agile pur — c'est ce qui rend la recommandation méthodologique non triviale.
+  budget plafonné, échéance datée. Il ne se laisse ranger ni en waterfall pur ni en agile pur — c'est ce qui rend la recommandation méthodologique non triviale.

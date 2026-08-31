@@ -22,23 +22,15 @@ Ce document distingue systématiquement trois natures d'affirmation :
 
 # 1. Problème posé
 
-Un chef de projet produit, sur chaque projet, une vingtaine d'artefacts dont la structure
-est largement invariante : charte, analyse des parties prenantes, RACI, WBS, registre des
-risques, budget, plan de communication, dispositif qualité, artefacts de clôture, et — en
-contexte agile — backlog, stories, cadence de sprint.
+Un chef de projet produit, sur chaque projet, une vingtaine d'artefacts dont la structure est largement invariante : charte, analyse des parties prenantes, RACI, WBS, registre des risques, budget, plan de communication, dispositif qualité, artefacts de clôture, et — en contexte agile — backlog, stories, cadence de sprint.
 
 Deux constats orientent la conception.
 
 **Ces artefacts ne sont pas indépendants.** Le RACI dépend des livrables de la charte ; la
-contingence budgétaire dépend des risques cotés ; les risques dépendent du chemin critique.
-Une IA qui génère chaque artefact isolément produit un portfolio qui *paraît* cohérent
-sans l'être. **[BP]** — c'est le principe d'intégration du management de projet, appliqué
-ici comme contrainte d'architecture.
+contingence budgétaire dépend des risques cotés ; les risques dépendent du chemin critique. Une IA qui génère chaque artefact isolément produit un portfolio qui *paraît* cohérent sans l'être. **[BP]** — c'est le principe d'intégration du management de projet, appliqué ici comme contrainte d'architecture.
 
 **La partie automatisable n'est pas la partie qui a de la valeur.** La structure d'une
-charte est automatisable. L'arbitrage de périmètre qu'elle contient ne l'est pas. Un
-système qui ne pose pas cette frontière explicitement produit des documents qui usurpent
-l'autorité d'une décision.
+charte est automatisable. L'arbitrage de périmètre qu'elle contient ne l'est pas. Un système qui ne pose pas cette frontière explicitement produit des documents qui usurpent l'autorité d'une décision.
 
 **Ce que le système vise** : produire la structure exhaustive et vérifier sa cohérence.
 **Ce qu'il ne vise pas** : décider à la place du chef de projet.
@@ -49,9 +41,7 @@ l'autorité d'une décision.
 
 ## 2.1 Méthode
 
-Inspection du contenu réel des dépôts, pas de leur README ni de descriptions de seconde
-main. Trois critères : **licence** (usage commercial possible en ESN ?), **maturité**
-(éprouvé ou exercice ?), **adéquation** (produit-il les artefacts visés ?).
+Inspection du contenu réel des dépôts, pas de leur README ni de descriptions de seconde main. Trois critères : **licence** (usage commercial possible en ESN ?), **maturité** (éprouvé ou exercice ?), **adéquation** (produit-il les artefacts visés ?).
 
 ## 2.2 Dépôts inspectés
 
@@ -72,12 +62,10 @@ registre des risques, ni budget, ni plan de communication, ni artefacts de clôt
 - `sdi2200262` produit Spec / Plan / Rules / Task Prompts / Memory — du **spec-driven pour
   du développement logiciel**.
 - `kchia` produit des user stories, des groupes de fonctionnalités et des tâches
-  d'ingénierie — et se décrit lui-même comme exploratoire, avec ses limites documentées par
-  son auteur.
+  d'ingénierie — et se décrit lui-même comme exploratoire, avec ses limites documentées par son auteur.
 
 **Conséquence** : la réutilisation porte sur la **couche orchestration et gouvernance**.
-La couche de génération d'artefacts est intégralement construite en propre. Répartition
-finale : **5 agents « adapté », 10 « créé », 0 « réutilisé » tel quel.**
+La couche de génération d'artefacts est intégralement construite en propre. Répartition finale : **5 agents « adapté », 10 « créé », 0 « réutilisé » tel quel.**
 
 ## 2.4 Ce qui est repris, et sous quelle forme
 
@@ -91,19 +79,15 @@ finale : **5 agents « adapté », 10 « créé », 0 « réutilisé » tel quel
 | Décomposition objectif → étapes | kchia — MIT | Principe du `planificateur-wbs` |
 
 **Aucun code n'est repris.** Ce sont des patterns d'architecture. **[FAIT]** — les licences
-MIT et MPL-2.0 l'autoriseraient pourtant ; la raison n'est pas juridique mais fonctionnelle,
-aucun de ces codes ne faisant ce que le système doit faire.
+MIT et MPL-2.0 l'autoriseraient pourtant ; la raison n'est pas juridique mais fonctionnelle, aucun de ces codes ne faisant ce que le système doit faire.
 
 ## 2.5 Le point de licence qui compte en mission
 
-**[FAIT]** MPL-2.0 (sdi2200262) autorise l'usage commercial, avec un copyleft de fichier :
-toute modification d'un fichier source reste sous MPL-2.0. **Utilisable en mission ESN
-facturée.**
+**[FAIT]** MPL-2.0 (sdi2200262) autorisé l'usage commercial, avec un copyleft de fichier :
+toute modification d'un fichier source reste sous MPL-2.0. **Utilisable en mission ESN facturée.**
 
 **[FAIT]** PolyForm Noncommercial (AI PM Copilot) **interdit l'usage commercial**. Ce dépôt
-est le mieux structuré des quatre sur le plan de l'orchestration produit — et c'est
-précisément celui qu'on ne peut pas embarquer chez un client. Il a été étudié comme
-concept, jamais copié.
+est le mieux structuré des quatre sur le plan de l'orchestration produit — et c'est précisément celui qu'on ne peut pas embarquer chez un client. Il a été étudié comme concept, jamais copié.
 
 > C'est le type de vérification qui distingue une veille d'une due diligence. Un dépôt à
 > 2,4k étoiles a été retenu pour son modèle et écarté pour sa substance ; un dépôt à
@@ -119,9 +103,7 @@ concept, jamais copié.
 **Décision.** L'utilisateur décrit son projet ; il ne choisit pas quel agent invoquer.
 
 **Motif.** Un catalogue reporte sur l'utilisateur la connaissance de la séquence et des
-dépendances — c'est-à-dire l'essentiel de la compétence de gestion de projet. Un système
-qui exige de savoir qu'il faut le WBS avant les risques n'apporte rien à qui le sait déjà,
-et induit en erreur qui ne le sait pas.
+dépendances — c'est-à-dire l'essentiel de la compétence de gestion de projet. Un système qui exige de savoir qu'il faut le WBS avant les risques n'apporte rien à qui le sait déjà, et induit en erreur qui ne le sait pas.
 
 **Alternative écartée.** Bibliothèque de prompts spécialisés. Plus simple à construire, mais
 ce n'est plus une orchestration : c'est un presse-papier.
@@ -131,8 +113,7 @@ ce n'est plus une orchestration : c'est un presse-papier.
 **Décision.** 15 agents — 2 orchestration, 11 production, 2 contrôle.
 
 **Motif.** La granularité suit le **découpage des compétences du curriculum**, pas une
-intuition d'équilibre. Un agent = un bloc de compétences nommées, cohérent en entrée et en
-sortie.
+intuition d'équilibre. Un agent = un bloc de compétences nommées, cohérent en entrée et en sortie.
 
 | Alternative | Écartée parce que |
 |---|---|
@@ -145,17 +126,13 @@ arbitrage de conception, pas un résultat.
 ## D3 — Le registre des lacunes est un livrable, pas une note interne
 
 **Décision.** `contexte-projet` produit deux sorties : le dossier de contexte **et** le
-registre des lacunes qualifiées (bloquante / dégradante / mineure). Une lacune bloquante
-arrête la chaîne.
+registre des lacunes qualifiées (bloquante / dégradante / mineure). Une lacune bloquante arrête la chaîne.
 
 **Motif.** C'est la mitigation principale du risque d'hallucination, et elle est
-structurelle plutôt que déclarative. Une consigne « n'invente pas » dans un prompt système
-est une intention ; un livrable qui liste ce qui manque est un contrôle.
+structurelle plutôt que déclarative. Une consigne « n'invente pas » dans un prompt système est une intention ; un livrable qui liste ce qui manque est un contrôle.
 
 **Vérifié en pratique.** Sur le cas de test, 4 lacunes bloquantes sur 7 ont arrêté la
-chaîne : échéance non datée, budget non arbitré, périmètre indéterminé, aucun critère de
-succès chiffré. Un système non gouverné aurait produit un portfolio entièrement plausible
-et entièrement faux.
+chaîne : échéance non datée, budget non arbitré, périmètre indéterminé, aucun critère de succès chiffré. Un système non gouverné aurait produit un portfolio entièrement plausible et entièrement faux.
 
 ## D4 — Branchement conditionnel, pas deux chaînes séparées
 
@@ -163,12 +140,10 @@ et entièrement faux.
 branche agile.
 
 **Motif.** Les postes visés couvrent les deux registres, et **la plupart des contextes réels
-sont hybrides**. Deux chaînes séparées obligeraient à choisir un camp au démarrage —
-exactement l'erreur que la recommandation méthodologique doit éviter.
+sont hybrides**. Deux chaînes séparées obligeraient à choisir un camp au démarrage — exactement l'erreur que la recommandation méthodologique doit éviter.
 
 **Effet secondaire assumé.** La chaîne waterfall pure produit quand même une WBS et un
-chemin critique allégés ; la chaîne agile pure aussi. C'est voulu : un projet agile a
-besoin d'un budget et de jalons contractuels dès qu'un prestataire est engagé.
+chemin critique allégés ; la chaîne agile pure aussi. C'est voulu : un projet agile à besoin d'un budget et de jalons contractuels dès qu'un prestataire est engagé.
 
 ## D5 — Deux agents de contrôle, pas un
 
@@ -176,29 +151,23 @@ besoin d'un budget et de jalons contractuels dès qu'un prestataire est engagé.
 (conformité au référentiel), séquentiels.
 
 **Motif.** Ils ne vérifient pas la même chose. Un portfolio peut être parfaitement cohérent
-et ne couvrir que trois compétences sur vingt-deux ; il peut couvrir toutes les compétences
-et se contredire d'un artefact à l'autre. Fusionner les deux produirait une porte de sortie
-qui mélange deux échelles de jugement — et une porte qui mélange ne peut plus être mécanique.
+et ne couvrir que trois compétences sur vingt-deux ; il peut couvrir toutes les compétences et se contredire d'un artefact à l'autre. Fusionner les deux produirait une porte de sortie qui mélange deux échelles de jugement — et une porte qui mélange ne peut plus être mécanique.
 
 **Ordre.** Cohérence d'abord. Auditer la conformité d'un portfolio incohérent n'a pas de sens.
 
 **[BP]** Le second contrôle est ce qu'aucun dépôt du benchmark ne fait : l'audit de
-traçabilité vis-à-vis d'un référentiel de compétences. C'est la brique la plus
-différenciante du système.
+traçabilité vis-à-vis d'un référentiel de compétences. C'est la brique la plus différenciante du système.
 
 ## D6 — Portes qualité mécaniques, pas qualitatives
 
 **Décision.** Chaque porte est une liste de contrôles vérifiables sans jugement : « un seul
-Accountable par livrable », « chaque tâche du chemin critique couverte par un risque »,
-« tout total recalculé à partir de ses composants ».
+Accountable par livrable », « chaque tâche du chemin critique couverte par un risque », « tout total recalculé à partir de ses composants ».
 
 **Motif.** Une porte qualitative (« l'artefact est-il de bonne qualité ? ») demande à un
-modèle de langage d'évaluer sa propre production. **[BP]** C'est le point de complaisance
-connu de ces systèmes : ils valident ce qu'ils viennent d'écrire.
+modèle de langage d'évaluer sa propre production. **[BP]** C'est le point de complaisance connu de ces systèmes : ils valident ce qu'ils viennent d'écrire.
 
 **Validé par le test, et plus fortement que prévu.** Le seul défaut qui inversait une
-conclusion managériale (chemin critique mal additionné) s'est trouvé par **recalcul**, pas
-par relecture. Une relecture attentive ne l'aurait pas vu ; une addition le voit toujours.
+conclusion managériale (chemin critique mal additionné) s'est trouvé par **recalcul**, pas par relecture. Une relecture attentive ne l'aurait pas vu ; une addition le voit toujours.
 
 ## D7 — Boucle de rework bornée, puis escalade
 
@@ -206,8 +175,7 @@ par relecture. Une relecture attentive ne l'aurait pas vu ; une addition le voit
 `max_rework` (2 ou 3 selon l'agent). Au-delà : `escalader` vers l'humain.
 
 **Motif.** Sans plafond, deux agents peuvent se renvoyer indéfiniment un écart qu'aucun
-n'est en mesure de résoudre — typiquement quand l'écart vient d'une lacune du contexte, pas
-d'un défaut de production. Le plafond convertit l'impasse en décision humaine.
+n'est en mesure de résoudre — typiquement quand l'écart vient d'une lacune du contexte, pas d'un défaut de production. Le plafond convertit l'impasse en décision humaine.
 
 ## D8 — La reprise humaine est spécifiée, pas invoquée
 
@@ -219,11 +187,11 @@ liste précise, et surtout **le motif de chaque entrée** :
 
 | Décision | Motif du non-délégable |
 |---|---|
-| Choix de méthodologie | Engage la contractualisation et le mode de collaboration |
+| Choix de méthodologie | Engagé la contractualisation et le mode de collaboration |
 | Ordonnancement du backlog | Prérogative du Product Owner — **[FAIT]** Scrum Guide 2020 ; la valeur n'est pas calculable |
-| Validation des chiffres budgétaires | Risque de crédibilité le plus élevé du portfolio |
-| Engagement de sprint | **[FAIT]** Une équipe s'engage elle-même — Scrum Guide |
-| Engagement vis-à-vis des parties prenantes | La parole donnée engage une personne |
+| Validation des chiffrés budgétaires | Risque de crédibilité le plus élevé du portfolio |
+| Engagement de sprint | **[FAIT]** Une équipe s'engagé elle-même — Scrum Guide |
+| Engagement vis-à-vis des parties prenantes | La parole donnée engagé une personne |
 | Évaluation des personnes | Hors périmètre, quelle que soit la qualité des données |
 | Cotation finale de l'impact des risques | Dépend de la tolérance au risque de l'organisation |
 
@@ -236,18 +204,14 @@ Guide les impose. Les autres sont des arbitrages de conception assumés.
 · donnée factuelle générée (interdite).
 
 **Motif — cette décision est née d'une contradiction découverte au test.** La porte de
-l'agent `risques` exige un déclencheur observable, donc un seuil ; la règle initiale
-interdisait toute valeur non sourcée ; et aucun seuil de gestion n'existe jamais dans un
-contexte d'entrée. Résultat : **6 déclencheurs sur 14 reposaient sur des seuils inventés,
-et le registre a franchi sa porte sans alerte.**
+l'agent `risques` exige un déclencheur observable, donc un seuil ; la règle initiale interdisait toute valeur non sourcée ; et aucun seuil de gestion n'existe jamais dans un contexte d'entrée. Résultat : **6 déclencheurs sur 14 reposaient sur des seuils inventés, et le registre à franchi sa porte sans alerte.**
 
 La distinction qui résout la contradiction :
 
 > Un seuil de gestion est une **proposition de pilotage** qu'un comité arbitre.
 > Une donnée factuelle générée est un **mensonge sur le réel**.
 
-Les confondre conduit soit à interdire les déclencheurs — registre inexploitable — soit à
-laisser passer des chiffres inventés — registre trompeur.
+Les confondre conduit soit à interdire les déclencheurs — registre inexploitable — soit à laisser passer des chiffrés inventés — registre trompeur.
 
 ## D10 — Deux agents pour l'agile, un pour le budget et les achats
 
@@ -255,9 +219,7 @@ laisser passer des chiffres inventés — registre trompeur.
 `planificateur-wbs`.
 
 **Motif.** Le double registre est un impératif du projet, et l'agile en est la moitié : un
-agent unique l'affaiblirait. L'approvisionnement (appel d'offres, sélection fournisseurs,
-contractualisation, éthique) est **[FAIT]** une compétence nommée distincte du curriculum
-C3 — la fusionner dans la planification la ferait disparaître.
+agent unique l'affaiblirait. L'approvisionnement (appel d'offres, sélection fournisseurs, contractualisation, éthique) est **[FAIT]** une compétence nommée distincte du curriculum C3 — la fusionner dans la planification la ferait disparaître.
 
 ---
 
@@ -307,23 +269,18 @@ C3 — la fusionner dans la planification la ferait disparaître.
 # 5. Ce que la validation a produit
 
 **Méthode.** Tranche verticale de 7 agents sur 15, exécutée manuellement selon les
-spécifications, sur un cas neutre (refonte d'un portail client B2B). Dossier
-`portfolio-demo/`.
+spécifications, sur un cas neutre (refonte d'un portail client B2B). Dossier `portfolio-demo/`.
 
 **Résultat : 6 défauts de conception, dont 5 introuvables en relisant la cartographie.**
 
-Le plus significatif : `planificateur-wbs` a validé sa propre porte de sortie avec un chemin
-critique mal additionné — 67 semaines annoncées, 71 réelles. La conclusion managériale en
-était inversée : marge annoncée de +2 semaines sur l'échéance, marge réelle de **−2
-semaines**. L'échéance était dépassée avant le démarrage.
+Le plus significatif : `planificateur-wbs` a validé sa propre porte de sortie avec un chemin critique mal additionné — 67 semaines annoncées, 71 réelles. La conclusion managériale en était inversée : marge annoncée de +2 semaines sur l'échéance, marge réelle de **−2 semaines**. L'échéance était dépassée avant le démarrage.
 
 **Ce que ce défaut enseigne, et qui vaut au-delà de ce projet :**
 
 > Une porte de sortie vérifie un **format**, pas une **vérité**.
 > Le second niveau de contrôle ne sert pas à relire : il sert à **recalculer**.
 
-C'est l'argument qui justifie l'architecture à deux niveaux — et il est plus fort que celui
-qui avait présidé à sa conception.
+C'est l'argument qui justifie l'architecture à deux niveaux — et il est plus fort que celui qui avait présidé à sa conception.
 
 ---
 
@@ -332,10 +289,9 @@ qui avait présidé à sa conception.
 **[FAIT]** — état au 31/08/2026 :
 
 - La chaîne n'a **jamais été exécutée automatiquement**. La tranche verticale a été jouée
-  manuellement selon les spécifications. Aucune mesure de la qualité réelle des sorties d'un
-  agent réellement instancié.
-- **8 agents sur 15 restent non testés** : budget-achats, communications, qualite-suivi,
-  equipe-cloture, backlog-stories, sprint, auditeur-curriculum, orchestrateur-pm.
+  manuellement selon les spécifications. Aucune mesure de la qualité réelle des sorties d'un agent réellement instancié.
+- **8 agents sur 15 restent non testés** : budget-achats, communications, qualité-suivi,
+  équipe-cloture, backlog-stories, sprint, auditeur-curriculum, orchestrateur-pm.
 - Les corrections **C1 à C6 sont spécifiées mais n'ont pas été re-testées** par une nouvelle
   tranche.
 - Les libellés exacts des compétences du curriculum n'ont pas été recoupés module par module
@@ -343,8 +299,7 @@ qui avait présidé à sa conception.
 - Les portes qualité sont spécifiées ; leur implémentation reste à écrire.
 
 **[HYP]** L'exécution réelle révélera d'autres défauts, probablement du même ordre que ceux
-trouvés : des contradictions entre règles, et des portes qui valident la forme d'un champ
-plutôt que son sens.
+trouvés : des contradictions entre règles, et des portes qui valident la forme d'un champ plutôt que son sens.
 
 ---
 

@@ -1,7 +1,6 @@
 # Portfolio démonstratif — tranche verticale
 
-Démonstration de bout en bout de la chaîne d'agents décrite dans
-`../cartographie-agents-pm.yaml`, sur un cas d'étude neutre.
+Démonstration de bout en bout de la chaîne d'agents décrite dans `../cartographie-agents-pm.yaml`, sur un cas d'étude neutre.
 
 **7 agents sur 15**, toutes les couches représentées (orchestration, production, contrôle).
 
@@ -21,16 +20,12 @@ Démonstration de bout en bout de la chaîne d'agents décrite dans
 
 ## Si vous ne lisez que deux fichiers
 
-`07-rapport-coherence.md` et `99-lecons-conception.md`. Le reste est la matière ; ces deux-là
-sont la démonstration.
+`07-rapport-coherence.md` et `99-lecons-conception.md`. Le reste est la matière ; ces deux-là sont la démonstration.
 
 ## Points de reprise humaine rencontrés
 
-4 lacunes bloquantes arbitrées au cadrage · validation obligatoire de la méthodologie ·
-validation du périmètre et du coût-bénéfice · validation des estimations de durée et choix
-du levier de réduction du chemin critique · revue des cotations de risque en comité.
+4 lacunes bloquantes arbitrées au cadrage · validation obligatoire de la méthodologie · validation du périmètre et du coût-bénéfice · validation des estimations de durée et choix du levier de réduction du chemin critique · revue des cotations de risque en comité.
 
 ## Statut
 
-Conception documentée, exécutée manuellement selon les spécifications du YAML. Aucun agent
-n'est branché ni exécuté automatiquement.
+Conception documentée, exécutée manuellement selon les spécifications du YAML. Aucun agent n'est branché ni exécuté automatiquement.

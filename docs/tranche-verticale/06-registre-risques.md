@@ -8,8 +8,7 @@ probabilité/impact, plans d'atténuation
 
 ## 1. Registre des risques
 
-Cotation : P = probabilité (1 faible → 5 élevée), I = impact (1 → 5), **C = criticité (P×I)**
-Réponse : É = éviter · R = réduire · T = transférer · A = accepter
+Cotation : P = probabilité (1 faible → 5 élevée), I = impact (1 → 5), **C = criticité (P×I)** Réponse : É = éviter · R = réduire · T = transférer · A = accepter
 
 | # | Risque | Catégorie | Lot critique couvert | P | I | C | Rép. | Propriétaire | Déclencheur observable |
 |---|---|---|---|---|---|---|---|---|---|
@@ -45,9 +44,7 @@ Réponse : É = éviter · R = réduire · T = transférer · A = accepter
 ```
 
 **Risque majeur : R-13** (criticité 20). L'échéance est ferme, non reportable, et le chemin
-critique n'offre que 2 semaines de marge en hypothèse haute (voir 05-wbs-plan-projet.md).
-Ce n'est pas un risque parmi d'autres : c'est celui qui conditionne les trois leviers
-d'arbitrage identifiés par le planificateur.
+critique n'offre que 2 semaines de marge en hypothèse haute (voir 05-wbs-plan-projet.md). Ce n'est pas un risque parmi d'autres : c'est celui qui conditionne les trois leviers d'arbitrage identifiés par le planificateur.
 
 ## 3. Plans d'atténuation — risques de criticité ≥ 15
 
@@ -85,20 +82,14 @@ d'arbitrage identifiés par le planificateur.
 | Chaque risque porte un déclencheur observable | OK — 14/14 |
 | Chaque lacune bloquante convertie en risque | OK — L5 → R-07 |
 
-**Verdict : AVANCER**
+**Verdict : Avancer**
 
 ## 6. Reprise humaine
 
-La cotation d'impact dépend de la tolérance au risque de l'organisation, non déductible du
-contexte. Les cotations à 5 (R-02, R-03, R-04, R-07, R-09, R-13) engagent des décisions de
-poursuite : elles doivent être revues en comité de pilotage.
+La cotation d'impact dépend de la tolérance au risque de l'organisation, non déductible du contexte. Les cotations à 5 (R-02, R-03, R-04, R-07, R-09, R-13) engagent des décisions de poursuite : elles doivent être revues en comité de pilotage.
 
 ---
 
 ### Ce que cette étape démontre
 
-Chaque risque est **ancré** : soit sur un lot nommé du chemin critique, soit sur une lacune
-du registre d'information, soit sur un point de vigilance remonté par un agent amont.
-Aucun risque générique du type « résistance au changement » ou « manque de communication ».
-C'est la porte de sortie qui l'impose — et c'est ce qui distingue un registre exploitable
-d'une liste de précautions oratoires.
+Chaque risque est **ancré** : soit sur un lot nommé du chemin critique, soit sur une lacune du registre d'information, soit sur un point de vigilance remonté par un agent amont. Aucun risque générique du type « résistance au changement » ou « manque de communication ». C'est la porte de sortie qui l'impose — et c'est ce qui distingue un registre exploitable d'une liste de précautions oratoires.

@@ -37,7 +37,7 @@ aucune lacune bloquante non résolue.
 
 ## 3. Verdict de la porte de sortie
 
-**ESCALADER** — 4 lacunes bloquantes (L1, L2, L3, L7).
+**Escalader** — 4 lacunes bloquantes (L1, L2, L3, L7).
 La chaîne s'arrête. L'agent ne produit aucune valeur de substitution.
 
 > C'est le comportement attendu, pas un échec. Un système qui aurait « estimé » un budget
@@ -60,12 +60,10 @@ Réponses obtenues (simulées pour la démonstration) :
 
 ## 5. Verdict après reprise humaine
 
-**AVANCER** — 0 lacune bloquante résiduelle. L5 tracée en risque, L6 en partie prenante.
+**Avancer** — 0 lacune bloquante résiduelle. L5 tracée en risque, L6 en partie prenante.
 
 ---
 
 ### Ce que cette étape démontre
 
-Le registre des lacunes est un **livrable**, pas une note de travail. En entretien, c'est
-l'artefact qui prouve que le système est gouverné : il sait ce qu'il ne sait pas, et il
-refuse d'avancer sans arbitrage humain sur les quatre points qui engagent l'organisation.
+Le registre des lacunes est un **livrable**, pas une note de travail. En entretien, c'est l'artefact qui prouve que le système est gouverné : il sait ce qu'il ne sait pas, et il refuse d'avancer sans arbitrage humain sur les quatre points qui engagent l'organisation.

@@ -56,8 +56,7 @@ atteint au T0. Le risque majeur du registre est en réalité un problème avér�
 
 ### E3 — Seuils chiffrés non sourcés dans le registre des risques *(agent : `risques`)*
 
-Six déclencheurs reposent sur des seuils qui ne tracent ni vers le contexte, ni vers un
-arbitrage, et ne portent pas la mention [À SOURCER] :
+Six déclencheurs reposent sur des seuils qui ne tracent ni vers le contexte, ni vers un arbitrage, et ne portent pas la mention [À SOURCER] :
 
 | Risque | Seuil non sourcé |
 |---|---|
@@ -68,22 +67,15 @@ arbitrage, et ne portent pas la mention [À SOURCER] :
 | R-10 | « > 2 s en recette » *(hérite de E7)* |
 | R-12 | « délai moyen d'approbation > 5 j. ouvrés » |
 
-Cas le plus problématique : **R-07**. L'objectif O1 vise −40 % d'appels. Un seuil de
-déclenchement fixé à 45 % de part auto-résolvable est arbitraire — le seuil mathématiquement
-signifiant est 40 %, en deçà duquel l'objectif devient inatteignable par construction.
+Cas le plus problématique : **R-07**. L'objectif O1 vise −40 % d'appels. Un seuil de déclenchement fixé à 45 % de part auto-résolvable est arbitraire — le seuil mathématiquement signifiant est 40 %, en deçà duquel l'objectif devient inatteignable par construction.
 
 ### E4 — Propriétaire de risque non pourvu *(agents : `risques` et `charte-objectifs`)*
 
-Quatre risques (R-01, R-04, R-06, R-12) ont pour propriétaire le « chef de projet ». Or la
-charte indique **« chef de projet : à nommer »**. Un quart du registre est donc sans
-propriétaire réel, alors que la porte de sortie de `risques` a validé « propriétaire nommé :
-14/14 ». La porte a vérifié la présence d'un libellé, pas l'existence de la personne.
+Quatre risques (R-01, R-04, R-06, R-12) ont pour propriétaire le « chef de projet ». Or la charte indique **« chef de projet : à nommer »**. Un quart du registre est donc sans propriétaire réel, alors que la porte de sortie de `risques` a validé « propriétaire nommé : 14/14 ». La porte a vérifié la présence d'un libellé, pas l'existence de la personne.
 
 ### E7 — Exigence de performance non sourcée *(agent : `charte-objectifs`)*
 
-Le critère de succès de D1 fixe un temps de chargement « < 2 s ». Le contexte mentionne
-seulement que le portail est « jugé lent ». Le seuil de 2 secondes est une valeur générée.
-Il se propage ensuite dans R-10 et dans les critères d'acceptation à venir.
+Le critère de succès de D1 fixe un temps de chargement « < 2 s ». Le contexte mentionne seulement que le portail est « jugé lent ». Le seuil de 2 secondes est une valeur générée. Il se propage ensuite dans R-10 et dans les critères d'acceptation à venir.
 
 ---
 
@@ -100,15 +92,11 @@ Les sous-totaux supposent un parallélisme que la séquence du chemin critique i
 
 ### E5 — Lots sans livrable rattaché *(règle 1)*
 
-Les lots 1.1, 1.5, 1.6 et 5.1 ne tracent vers aucun livrable D1-D8. `planificateur-wbs` les
-a déclarés « lots de conduite de projet », ce qui est méthodologiquement correct — mais la
-règle 1 ne prévoit pas cette catégorie. **L'écart est dans la règle, pas dans l'artefact.**
+Les lots 1.1, 1.5, 1.6 et 5.1 ne tracent vers aucun livrable D1-D8. `planificateur-wbs` les à déclarés « lots de conduite de projet », ce qui est méthodologiquement correct — mais la règle 1 ne prévoit pas cette catégorie. **L'écart est dans la règle, pas dans l'artefact.**
 
 ### E6 — Parties prenantes hors RACI *(règle 4)*
 
-PP4, PP8 et PP11 sont absentes de la matrice, avec une justification explicite. La règle 4
-exige une présence, sans prévoir de dérogation motivée. **L'écart est à nouveau dans la
-règle.**
+PP4, PP8 et PP11 sont absentes de la matrice, avec une justification explicite. La règle 4 exige une présence, sans prévoir de dérogation motivée. **L'écart est à nouveau dans la règle.**
 
 ---
 
@@ -122,19 +110,12 @@ règle.**
 | `risques` | E3 (bloquant), E4 |
 | `charte-objectifs` | E7 (bloquant), E4 |
 
-Écarts E5 et E6 : **non renvoyés aux agents**. Ils relèvent d'une correction des règles de
-cohérence elles-mêmes — escaladés à la conception (voir `99-lecons-conception.md`).
+Écarts E5 et E6 : **non renvoyés aux agents**. Ils relèvent d'une correction des règles de cohérence elles-mêmes — escaladés à la conception (voir `99-lecons-conception.md`).
 
 ---
 
 ### Ce que cette étape démontre
 
-Le vérificateur a fait ce qu'aucune porte de sortie individuelle n'avait fait : additionner.
-Chaque agent avait validé sa propre porte — `planificateur-wbs` avait même correctement
-signalé un écart d'échéance — mais aucun n'avait recalculé le total, et la conclusion
-managériale annoncée (« marge de 2 semaines ») était inversée (marge négative).
+Le vérificateur a fait ce qu'aucune porte de sortie individuelle n'avait fait : additionner. Chaque agent avait validé sa propre porte — `planificateur-wbs` avait même correctement signalé un écart d'échéance — mais aucun n'avait recalculé le total, et la conclusion managériale annoncée (« marge de 2 semaines ») était inversée (marge négative).
 
-C'est l'argument central de l'architecture à deux niveaux : **une porte de sortie vérifie la
-conformité d'un artefact à son propre format ; elle ne vérifie pas sa vérité.** Il faut un
-contrôle qui traverse les artefacts, et il faut qu'il soit mécanique — E1 se trouve en
-refaisant une addition, pas en relisant attentivement.
+C'est l'argument central de l'architecture à deux niveaux : **une porte de sortie vérifie la conformité d'un artefact à son propre format ; elle ne vérifie pas sa vérité.** Il faut un contrôle qui traverse les artefacts, et il faut qu'il soit mécanique — E1 se trouve en refaisant une addition, pas en relisant attentivement.

@@ -21,11 +21,7 @@ périmètre et scope creep, analyse coût-bénéfice
 
 ### Justification business
 
-Le portail actuel (2016) ne permet pas aux clients professionnels de résoudre seuls leurs
-demandes courantes. Le service client absorbe ~60 appels/jour, dont une part significative
-relève de consultations que le portail devrait servir. L'absence d'usage mobile exploitable
-écarte une partie des utilisateurs terrain. La refonte vise à transférer au portail la
-charge de service auto-résolvable et à rendre l'outil utilisable en mobilité.
+Le portail actuel (2016) ne permet pas aux clients professionnels de résoudre seuls leurs demandes courantes. Le service client absorbe ~60 appels/jour, dont une part significative relève de consultations que le portail devrait servir. L'absence d'usage mobile exploitable écarte une partie des utilisateurs terrain. La refonte vise à transférer au portail la charge de service auto-résolvable et à rendre l'outil utilisable en mobilité.
 
 ### Analyse coût-bénéfice (premier niveau)
 
@@ -34,7 +30,7 @@ charge de service auto-résolvable et à rendre l'outil utilisable en mobilité.
 | Coût projet | 400 k€ | plafond voté |
 | Volume d'appels actuel | 60/jour | contexte |
 | Cible de réduction | −40 %, soit 24 appels/jour évités | arbitrage commanditaire |
-| Coût unitaire d'un appel | **[À SOURCER]** | *non fourni — l'agent ne l'estime pas* |
+| Coût unitaire d'un appel | **[À SOURCER]** | *non fourni — l'agent ne l'estimé pas* |
 | Gain annuel chiffré | **Non calculable en l'état** | dépend du coût unitaire |
 | Bénéfices non monétisés | Usage mobile, satisfaction client, capacité du service client redéployée | contexte |
 
@@ -98,7 +94,7 @@ charge de service auto-résolvable et à rendre l'outil utilisable en mobilité.
 | KR1 | Les 3 parcours de consultation sont en production et alimentés par l'ERP | T3 2027 |
 | KR2 | Le parcours de commande sur catalogue est en production | T4 2027 |
 | KR3 | 100 % des parcours livrés sont utilisables sur mobile (critère d'acceptation bloquant) | T4 2027 |
-| KR4 | Le volume d'appels mesuré a baissé d'au moins 20 % dès le premier mois post-mise en service | T1 2028 |
+| KR4 | Le volume d'appels mesuré à baissé d'au moins 20 % dès le premier mois post-mise en service | T1 2028 |
 
 ---
 
@@ -128,7 +124,7 @@ charge de service auto-résolvable et à rendre l'outil utilisable en mobilité.
 
 ---
 
-## 5. LIVRABLES ET CRITÈRES DE SUCCÈS
+## 5. Livrables ET CRITÈRES DE SUCCÈS
 
 | # | Livrable | Critère de succès mesurable |
 |---|---|---|
@@ -174,16 +170,12 @@ non modifiable ; 1,5 ETP interne ; DPO externe à associer.
 départ n'est pas atteignable au sens SMART — elle est invérifiable.
 
 *Correction appliquée* : la mesure de la base mobile actuelle devient une **tâche
-préalable du plan de projet** (lot 1.4 de la WBS), et O2 est reformulé en cible
-conditionnelle explicite, la valeur définitive étant arbitrée après mesure initiale.
+préalable du plan de projet** (lot 1.4 de la WBS), et O2 est reformulé en cible conditionnelle explicite, la valeur définitive étant arbitrée après mesure initiale.
 
-**Verdict après correction : AVANCER** → reprise humaine sur périmètre et coût-bénéfice.
+**Verdict après correction : Avancer** → reprise humaine sur périmètre et coût-bénéfice.
 
 ---
 
 ### Ce que cette étape démontre
 
-Trois refus de fabriquer : le coût unitaire d'un appel, le ROI, la base d'usage mobile.
-Un générateur non gouverné aurait produit les trois — et une charte impeccable en apparence.
-La boucle de rework, elle, s'est déclenchée sur un défaut réel : un objectif « SMART » dont
-le M ne tenait pas.
+Trois refus de fabriquer : le coût unitaire d'un appel, le ROI, la base d'usage mobile. Un générateur non gouverné aurait produit les trois — et une charte impeccable en apparence. La boucle de rework, elle, s'est déclenchée sur un défaut réel : un objectif « SMART » dont le M ne tenait pas.

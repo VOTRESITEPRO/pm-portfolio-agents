@@ -79,16 +79,14 @@ matrice RACI, rôles et responsabilités
 - **PP8 (clients)** : destinataires finaux, non responsables. Représentés par PP9.
 - **PP11 (DAF)** : hors chaîne de production des livrables ; intervient sur le suivi budgétaire, tracé au plan de communication.
 
-**Verdict : AVANCER**
+**Verdict : Avancer**
 
 ## 4. Reprise humaine
 
-La cartographie politique réelle n'est pas déductible d'un texte. Trois points appellent
-explicitement une validation humaine :
+La cartographie politique réelle n'est pas déductible d'un texte. Trois points appellent explicitement une validation humaine :
 
 1. **PP2 en A sur D4** : la direction commerciale approuve le parcours de commande. Est-ce
-   le rapport de force réel, ou le responsable IT approuve-t-il tout ? L'agent a fait un
-   choix fonctionnel ; il peut être faux politiquement.
+   le rapport de force réel, ou le responsable IT approuve-t-il tout ? L'agent a fait un choix fonctionnel ; il peut être faux politiquement.
 2. **PP5 en A sur 6 livrables sur 8** : forte concentration. Soutenable si le responsable IT
    est réellement le référent technique unique ; risque de goulot sinon.
 3. **Existence et disponibilité de PP9** : un panel de clients pilotes se constitue, il ne
@@ -98,7 +96,4 @@ explicitement une validation humaine :
 
 ### Ce que cette étape démontre
 
-Le RACI est mécaniquement vérifiable (un seul A, au moins un R, couverture du registre) —
-c'est ce qui rend la porte qualité exécutable plutôt que déclarative. Mais la démonstration
-utile en entretien est la section 4 : l'agent produit une matrice cohérente **et signale
-lui-même les trois points où sa cohérence pourrait être politiquement fausse.**
+Le RACI est mécaniquement vérifiable (un seul A, au moins un R, couverture du registre) — c'est ce qui rend la porte qualité exécutable plutôt que déclarative. Mais la démonstration utile en entretien est la section 4 : l'agent produit une matrice cohérente **et signale lui-même les trois points où sa cohérence pourrait être politiquement fausse.**

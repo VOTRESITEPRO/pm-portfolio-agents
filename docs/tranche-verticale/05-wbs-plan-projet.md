@@ -43,9 +43,7 @@ jalons, chemin critique
 | 5.1 | Support renforcé (hypercare) | — | 6 sem. |
 | 5.2 | Mesure de O1 et O2 | D8 | 12 sem. |
 
-\* **Fourchettes non empiriques.** Aucune donnée de vélocité ni d'historique projet n'a été
-fournie. Ces durées sont un **support d'atelier d'estimation**, jamais un engagement. Elles
-doivent être recalibrées avec l'équipe et le prestataire retenu.
+\* **Fourchettes non empiriques.** Aucune donnée de vélocité ni d'historique projet n'a été fournie. Ces durées sont un **support d'atelier d'estimation**, jamais un engagement. Elles doivent être recalibrées avec l'équipe et le prestataire retenu.
 
 ## 2. Couverture des livrables de la charte
 
@@ -60,7 +58,7 @@ doivent être recalibrées avec l'équipe et le prestataire retenu.
 | D7 Reprise des comptes | 4.1, 4.2, 4.3 | Couvert |
 | D8 Dispositif de mesure | 1.2, 1.4, 5.2 | Couvert |
 
-**8/8 livrables couverts. Aucune tâche orpheline** (tout lot trace vers au moins un livrable,
+**8/8 livrables couverts. Aucune tâche orpheline** (tout lot tracé vers au moins un livrable,
 hors 1.1, 1.5, 1.6, 5.1 qui sont des lots de conduite de projet identifiés comme tels).
 
 ## 3. Jalons
@@ -102,8 +100,7 @@ de confort : le jalon J6 est adossé au pic commercial de janvier, donc non repo
 1. **Paralléliser 1.3 avec 1.5** (étude ERP pendant l'appel d'offres) : gain estimé 4-5 sem.
    Contrepartie : l'appel d'offres part sur une hypothèse technique non consolidée.
 2. **Réduire le périmètre de la v1** en décalant D4 (commande catalogue, lot 3.6, le plus
-   lourd du chemin critique) après la mise en service. Gain : 8-11 sem. Contrepartie :
-   KR2 non atteint au T4 2027.
+   lourd du chemin critique) après la mise en service. Gain : 8-11 sem. Contrepartie : KR2 non atteint au T4 2027.
 3. **Renforcer le prestataire** sur 3.3-3.6. Contrepartie : pression sur le plafond de 400 k€.
 
 ## 5. Porte de sortie
@@ -115,20 +112,14 @@ de confort : le jalon J6 est adossé au pic commercial de janvier, donc non repo
 | Chemin critique identifié | OK — 11 lots |
 | Cohérence avec l'échéance du contexte, **ou écart signalé explicitement** | **ÉCART SIGNALÉ** — marge de 2 semaines en hypothèse haute |
 
-**Verdict : AVANCER avec écart signalé** → reprise humaine obligatoire.
+**Verdict : Avancer avec écart signalé** → reprise humaine obligatoire.
 
 ## 6. Reprise humaine — VALIDATION OBLIGATOIRE
 
-Les estimations de durée n'ont aucune base empirique sur cette équipe et ce prestataire.
-Elles servent de point de départ d'atelier d'estimation. **Le choix du levier de réduction
-du chemin critique appartient au chef de projet et au sponsor.**
+Les estimations de durée n'ont aucune base empirique sur cette équipe et ce prestataire. Elles servent de point de départ d'atelier d'estimation. **Le choix du levier de réduction du chemin critique appartient au chef de projet et au sponsor.**
 
 ---
 
 ### Ce que cette étape démontre
 
-L'agent n'a pas produit un planning qui « rentre » dans l'échéance. Il a produit un chemin
-critique, l'a confronté à la fenêtre réelle, et a signalé que l'échéance ne tenait pas en
-hypothèse haute — en proposant trois leviers chiffrés sans en choisir aucun. C'est
-exactement la ligne de partage revendiquée : l'IA calcule et alerte, le chef de projet
-arbitre.
+L'agent n'a pas produit un planning qui « rentre » dans l'échéance. Il a produit un chemin critique, l'a confronté à la fenêtre réelle, et a signalé que l'échéance ne tenait pas en hypothèse haute — en proposant trois leviers chiffrés sans en choisir aucun. C'est exactement la ligne de partage revendiquée : l'IA calcule et alerte, le chef de projet arbitre.
