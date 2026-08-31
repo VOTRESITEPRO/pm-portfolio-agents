@@ -1,0 +1,31 @@
+artefact: parties-prenantes
+agent: pm-parties-prenantes
+
+registre:
+  - {id: PP1,  nom: "Direction generale",        role: "Sponsor, arbitrage budgetaire", pouvoir: eleve,  interet: moyen, statut: confirme}
+  - {id: PP2,  nom: "Direction commerciale",     role: "Demandeur du devis en ligne",   pouvoir: eleve,  interet: eleve, statut: confirme}
+  - {id: PP3,  nom: "Responsable service client",role: "Beneficiaire de O1",            pouvoir: moyen,  interet: eleve, statut: confirme}
+  - {id: PP4,  nom: "Conseillers service client",role: "Source de la donnee d'appels",  pouvoir: faible, interet: eleve, statut: confirme}
+  - {id: PP5,  nom: "Responsable IT",            role: "Garant de l'integration ERP",   pouvoir: eleve,  interet: eleve, statut: confirme}
+  - {id: PP6,  nom: "Equipe IT",                 role: "Realisation et recette internes", pouvoir: moyen, interet: eleve, statut: confirme}
+  - {id: PP7,  nom: "Prestataire externe",       role: "Realisation",                   pouvoir: moyen,  interet: moyen, statut: a_contractualiser}
+  - {id: PP8,  nom: "Clients professionnels",    role: "Utilisateurs finaux",           pouvoir: faible, interet: eleve, statut: confirme}
+  - {id: PP9,  nom: "Clients pilotes",           role: "Validation iterative",          pouvoir: faible, interet: eleve, statut: a_constituer}
+  - {id: PP10, nom: "DPO externe",               role: "Conformite RGPD",               pouvoir: moyen,  interet: faible, statut: confirme}
+  - {id: PP11, nom: "Direction administrative et financiere", role: "Suivi budgetaire", pouvoir: eleve, interet: faible, statut: a_confirmer}
+  - {id: PP12, nom: "Chef de projet",            role: "Pilotage",                      pouvoir: moyen,  interet: eleve, statut: a_nommer}
+
+raci:
+  - {livrable: D1, a: PP5, r: [PP6, PP7], c: [PP2, PP3, PP9], i: [PP1, PP10]}
+  - {livrable: D2, a: PP5, r: [PP6, PP7], c: [PP2, PP3, PP9], i: [PP1, PP10]}
+  - {livrable: D3, a: PP5, r: [PP6, PP7], c: [PP3, PP9, PP10], i: [PP1, PP2]}
+  - {livrable: D4, a: PP2, r: [PP6, PP7], c: [PP3, PP5, PP9], i: [PP1, PP10]}
+  - {livrable: D5, a: PP5, r: [PP7],      c: [PP6, PP9], i: [PP1, PP2]}
+  - {livrable: D6, a: PP5, r: [PP6],      c: [PP7, PP10], i: [PP1]}
+  - {livrable: D7, a: PP5, r: [PP6],      c: [PP3, PP7, PP10], i: [PP1]}
+  - {livrable: D8, a: PP1, r: [PP3, PP6], c: [PP2, PP5, PP7], i: [PP10]}
+
+derogations:
+  - {regle: R4, element: PP4,  motif: "Consultes comme source de donnee, non responsables d'un livrable. Rattaches a PP3."}
+  - {regle: R4, element: PP8,  motif: "Destinataires finaux, non responsables. Representes par PP9."}
+  - {regle: R4, element: PP11, motif: "Hors chaine de production des livrables ; intervient au suivi budgetaire, trace au plan de communication."}

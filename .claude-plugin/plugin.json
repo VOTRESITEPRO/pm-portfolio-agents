@@ -1,0 +1,21 @@
+{
+  "name": "pm-portfolio-agents",
+  "displayName": "PM Portfolio Agents",
+  "version": "0.1.0",
+  "description": "Genere le portfolio d'artefacts de gestion de projet (charte, parties prenantes, RACI, WBS, risques, budget, communication, backlog, sprint) a partir d'une description de projet, sous portes qualite verifiees par code deterministe.",
+  "author": {
+    "name": "Yannick Letraublon"
+  },
+  "keywords": ["project-management", "product-owner", "agile", "waterfall", "artefacts", "quality-gates"],
+  "agents": [
+    "./agents/pm-contexte-projet.md",
+    "./agents/pm-methodologue.md",
+    "./agents/pm-charte-objectifs.md",
+    "./agents/pm-parties-prenantes.md",
+    "./agents/pm-planificateur-wbs.md",
+    "./agents/pm-risques.md",
+    "./agents/pm-verificateur-coherence.md"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

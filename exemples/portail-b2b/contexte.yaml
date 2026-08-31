@@ -1,0 +1,64 @@
+artefact: contexte
+version: 1
+agent: pm-contexte-projet
+
+projet:
+  nom: "Refonte du portail client B2B"
+  commanditaire: "Direction generale"
+  secteur: "Distribution de materiel industriel"
+  description: >
+    Portail client de 2016 : consultation des devis, commandes et factures, commande
+    sur catalogue. Juge lent et inutilisable sur mobile.
+
+reperes:
+  effectif: {valeur: 180, unite: "salaries", statut: source}
+  clients: {valeur: 2400, unite: "clients professionnels", statut: source}
+  appels_jour: {valeur: 60, unite: "appels/jour", statut: source}
+  cout_unitaire_appel: {valeur: null, unite: "EUR", statut: a_sourcer}
+
+contraintes:
+  budget_plafond: {valeur: 400000, unite: "EUR", statut: source}
+  echeance: "2027-12-31"
+  erp_source_de_verite: true
+  etp_interne: {valeur: 1.5, unite: "ETP", statut: source}
+
+fenetre:
+  debut: 2026-09-01
+  fin: 2027-12-31
+
+lacunes:
+  - id: L1
+    libelle: "Exercice fiscal non defini, echeance non datee"
+    gravite: bloquante
+    statut: arbitree
+    arbitrage: "Annee civile. Echeance ferme au 31/12/2027, avant le pic commercial de janvier."
+  - id: L2
+    libelle: "Budget evoque en comite, non vote. Plafond ou cible ?"
+    gravite: bloquante
+    statut: arbitree
+    arbitrage: "400 k EUR = plafond vote, non extensible."
+  - id: L3
+    libelle: "Espace de devis en ligne : dans le perimetre ou non ?"
+    gravite: bloquante
+    statut: arbitree
+    arbitrage: "Hors perimetre v1, inscrit en evolution post-mise en service."
+  - id: L4
+    libelle: "Part des 4 personnes IT reellement allouee"
+    gravite: degradante
+    statut: arbitree
+    arbitrage: "1,5 ETP alloue sur la duree."
+  - id: L5
+    libelle: "Typologie et volumetrie detaillees des 60 appels/jour"
+    gravite: degradante
+    statut: convertie_en_risque
+    converti_en: R-07
+  - id: L6
+    libelle: "Cadre RGPD, DPO identifie ?"
+    gravite: mineure
+    statut: arbitree
+    arbitrage: "DPO externe mandate, a associer au cadrage."
+  - id: L7
+    libelle: "Aucun critere de succes chiffre"
+    gravite: bloquante
+    statut: arbitree
+    arbitrage: "Reduction de 40 % des appels auto-resolvables, cible 36 appels/jour."

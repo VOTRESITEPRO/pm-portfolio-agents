@@ -1,0 +1,361 @@
+# Document de raisonnement
+
+**Projet** : orchestration d'agents IA pour la génération d'un portfolio d'artefacts de
+gestion de projet, aligné sur le Google Project Management Certificate (Cours 1-6).
+**Version** : 1.0 — 31/08/2026
+**Objet** : justifier les décisions de conception, pas décrire le système. La description
+est dans `cartographie-agents-pm.yaml` ; la démonstration est dans `portfolio-demo/`.
+
+---
+
+## Convention de lecture
+
+Ce document distingue systématiquement trois natures d'affirmation :
+
+| Marque | Nature |
+|---|---|
+| **[FAIT]** | Vérifié sur la source primaire, à la date indiquée |
+| **[HYP]** | Hypothèse de travail, non vérifiée, explicitement assumée |
+| **[BP]** | Bonne pratique de la discipline, appliquée par choix et non par contrainte |
+
+---
+
+# 1. Problème posé
+
+Un chef de projet produit, sur chaque projet, une vingtaine d'artefacts dont la structure
+est largement invariante : charte, analyse des parties prenantes, RACI, WBS, registre des
+risques, budget, plan de communication, dispositif qualité, artefacts de clôture, et — en
+contexte agile — backlog, stories, cadence de sprint.
+
+Deux constats orientent la conception.
+
+**Ces artefacts ne sont pas indépendants.** Le RACI dépend des livrables de la charte ; la
+contingence budgétaire dépend des risques cotés ; les risques dépendent du chemin critique.
+Une IA qui génère chaque artefact isolément produit un portfolio qui *paraît* cohérent
+sans l'être. **[BP]** — c'est le principe d'intégration du management de projet, appliqué
+ici comme contrainte d'architecture.
+
+**La partie automatisable n'est pas la partie qui a de la valeur.** La structure d'une
+charte est automatisable. L'arbitrage de périmètre qu'elle contient ne l'est pas. Un
+système qui ne pose pas cette frontière explicitement produit des documents qui usurpent
+l'autorité d'une décision.
+
+**Ce que le système vise** : produire la structure exhaustive et vérifier sa cohérence.
+**Ce qu'il ne vise pas** : décider à la place du chef de projet.
+
+---
+
+# 2. Buy vs build
+
+## 2.1 Méthode
+
+Inspection du contenu réel des dépôts, pas de leur README ni de descriptions de seconde
+main. Trois critères : **licence** (usage commercial possible en ESN ?), **maturité**
+(éprouvé ou exercice ?), **adéquation** (produit-il les artefacts visés ?).
+
+## 2.2 Dépôts inspectés
+
+**[FAIT — vérifié le 31/08/2026]**
+
+| Dépôt | Licence | Maturité | Produit des artefacts PM Cert ? |
+|---|---|---|---|
+| sdi2200262/agentic-project-management | **MPL-2.0** | 2,4k stars, 479 commits, v1.0.0 | **Non** |
+| kchia/project-management-agentic-workflow | MIT | 1 star, 4 commits | **Non** |
+| alirezarezvani/claude-skills | MIT | Actif, large | Non (substance PO) |
+| slgoodrich/agents (AI PM Copilot) | **PolyForm Noncommercial** | Petit, structuré | Non |
+
+## 2.3 Le constat qui structure tout
+
+**Aucun dépôt inspecté ne génère d'artefact du référentiel PM.** Ni charte, ni RACI, ni
+registre des risques, ni budget, ni plan de communication, ni artefacts de clôture.
+
+- `sdi2200262` produit Spec / Plan / Rules / Task Prompts / Memory — du **spec-driven pour
+  du développement logiciel**.
+- `kchia` produit des user stories, des groupes de fonctionnalités et des tâches
+  d'ingénierie — et se décrit lui-même comme exploratoire, avec ses limites documentées par
+  son auteur.
+
+**Conséquence** : la réutilisation porte sur la **couche orchestration et gouvernance**.
+La couche de génération d'artefacts est intégralement construite en propre. Répartition
+finale : **5 agents « adapté », 10 « créé », 0 « réutilisé » tel quel.**
+
+## 2.4 Ce qui est repris, et sous quelle forme
+
+| Ce qui est repris | Origine | Forme de la reprise |
+|---|---|---|
+| Orchestration Planner / Manager / Workers | sdi2200262 — MPL-2.0 | Principe transposé au séquençage d'artefacts |
+| Mémoire partagée persistante | sdi2200262 — MPL-2.0 | Devient le « contexte partagé », source unique de vérité |
+| Validation humaine entre chaque étape | sdi2200262 — MPL-2.0 | Durcie : certaines décisions ne sont pas *validées* par l'humain, elles lui **appartiennent** |
+| Boucle de rework bornée par un plafond | kchia — MIT | Devient `max_rework` + verdict `escalader` |
+| Routage selon la nature de la demande | kchia — MIT | Devient le branchement conditionnel agile |
+| Décomposition objectif → étapes | kchia — MIT | Principe du `planificateur-wbs` |
+
+**Aucun code n'est repris.** Ce sont des patterns d'architecture. **[FAIT]** — les licences
+MIT et MPL-2.0 l'autoriseraient pourtant ; la raison n'est pas juridique mais fonctionnelle,
+aucun de ces codes ne faisant ce que le système doit faire.
+
+## 2.5 Le point de licence qui compte en mission
+
+**[FAIT]** MPL-2.0 (sdi2200262) autorise l'usage commercial, avec un copyleft de fichier :
+toute modification d'un fichier source reste sous MPL-2.0. **Utilisable en mission ESN
+facturée.**
+
+**[FAIT]** PolyForm Noncommercial (AI PM Copilot) **interdit l'usage commercial**. Ce dépôt
+est le mieux structuré des quatre sur le plan de l'orchestration produit — et c'est
+précisément celui qu'on ne peut pas embarquer chez un client. Il a été étudié comme
+concept, jamais copié.
+
+> C'est le type de vérification qui distingue une veille d'une due diligence. Un dépôt à
+> 2,4k étoiles a été retenu pour son modèle et écarté pour sa substance ; un dépôt à
+> 1 étoile a été conservé pour trois patterns précis ; le mieux conçu a été écarté pour sa
+> licence.
+
+---
+
+# 3. Décisions de conception
+
+## D1 — Un orchestrateur unique, pas un catalogue d'agents
+
+**Décision.** L'utilisateur décrit son projet ; il ne choisit pas quel agent invoquer.
+
+**Motif.** Un catalogue reporte sur l'utilisateur la connaissance de la séquence et des
+dépendances — c'est-à-dire l'essentiel de la compétence de gestion de projet. Un système
+qui exige de savoir qu'il faut le WBS avant les risques n'apporte rien à qui le sait déjà,
+et induit en erreur qui ne le sait pas.
+
+**Alternative écartée.** Bibliothèque de prompts spécialisés. Plus simple à construire, mais
+ce n'est plus une orchestration : c'est un presse-papier.
+
+## D2 — Quinze agents : arbitrage de granularité
+
+**Décision.** 15 agents — 2 orchestration, 11 production, 2 contrôle.
+
+**Motif.** La granularité suit le **découpage des compétences du curriculum**, pas une
+intuition d'équilibre. Un agent = un bloc de compétences nommées, cohérent en entrée et en
+sortie.
+
+| Alternative | Écartée parce que |
+|---|---|
+| ~5 agents (un par phase) | L'agent « planification » cumulerait WBS, risques, budget et communication : quatre logiques d'entrée-sortie incompatibles, et une porte de sortie qui ne peut plus être mécanique |
+| ~30 agents (un par artefact) | Multiplication des hand-offs sans gain de contrôle ; le coût de coordination dépasse le bénéfice de spécialisation |
+
+**[HYP]** L'optimum est probablement entre 12 et 18. Aucune mesure ne l'établit — c'est un
+arbitrage de conception, pas un résultat.
+
+## D3 — Le registre des lacunes est un livrable, pas une note interne
+
+**Décision.** `contexte-projet` produit deux sorties : le dossier de contexte **et** le
+registre des lacunes qualifiées (bloquante / dégradante / mineure). Une lacune bloquante
+arrête la chaîne.
+
+**Motif.** C'est la mitigation principale du risque d'hallucination, et elle est
+structurelle plutôt que déclarative. Une consigne « n'invente pas » dans un prompt système
+est une intention ; un livrable qui liste ce qui manque est un contrôle.
+
+**Vérifié en pratique.** Sur le cas de test, 4 lacunes bloquantes sur 7 ont arrêté la
+chaîne : échéance non datée, budget non arbitré, périmètre indéterminé, aucun critère de
+succès chiffré. Un système non gouverné aurait produit un portfolio entièrement plausible
+et entièrement faux.
+
+## D4 — Branchement conditionnel, pas deux chaînes séparées
+
+**Décision.** Une seule chaîne. `methodologue` produit un drapeau qui active ou non la
+branche agile.
+
+**Motif.** Les postes visés couvrent les deux registres, et **la plupart des contextes réels
+sont hybrides**. Deux chaînes séparées obligeraient à choisir un camp au démarrage —
+exactement l'erreur que la recommandation méthodologique doit éviter.
+
+**Effet secondaire assumé.** La chaîne waterfall pure produit quand même une WBS et un
+chemin critique allégés ; la chaîne agile pure aussi. C'est voulu : un projet agile a
+besoin d'un budget et de jalons contractuels dès qu'un prestataire est engagé.
+
+## D5 — Deux agents de contrôle, pas un
+
+**Décision.** `verificateur-coherence` (cohérence interne) et `auditeur-curriculum`
+(conformité au référentiel), séquentiels.
+
+**Motif.** Ils ne vérifient pas la même chose. Un portfolio peut être parfaitement cohérent
+et ne couvrir que trois compétences sur vingt-deux ; il peut couvrir toutes les compétences
+et se contredire d'un artefact à l'autre. Fusionner les deux produirait une porte de sortie
+qui mélange deux échelles de jugement — et une porte qui mélange ne peut plus être mécanique.
+
+**Ordre.** Cohérence d'abord. Auditer la conformité d'un portfolio incohérent n'a pas de sens.
+
+**[BP]** Le second contrôle est ce qu'aucun dépôt du benchmark ne fait : l'audit de
+traçabilité vis-à-vis d'un référentiel de compétences. C'est la brique la plus
+différenciante du système.
+
+## D6 — Portes qualité mécaniques, pas qualitatives
+
+**Décision.** Chaque porte est une liste de contrôles vérifiables sans jugement : « un seul
+Accountable par livrable », « chaque tâche du chemin critique couverte par un risque »,
+« tout total recalculé à partir de ses composants ».
+
+**Motif.** Une porte qualitative (« l'artefact est-il de bonne qualité ? ») demande à un
+modèle de langage d'évaluer sa propre production. **[BP]** C'est le point de complaisance
+connu de ces systèmes : ils valident ce qu'ils viennent d'écrire.
+
+**Validé par le test, et plus fortement que prévu.** Le seul défaut qui inversait une
+conclusion managériale (chemin critique mal additionné) s'est trouvé par **recalcul**, pas
+par relecture. Une relecture attentive ne l'aurait pas vu ; une addition le voit toujours.
+
+## D7 — Boucle de rework bornée, puis escalade
+
+**Décision.** Verdict `retravailler` → retour à l'agent auteur, dans la limite de
+`max_rework` (2 ou 3 selon l'agent). Au-delà : `escalader` vers l'humain.
+
+**Motif.** Sans plafond, deux agents peuvent se renvoyer indéfiniment un écart qu'aucun
+n'est en mesure de résoudre — typiquement quand l'écart vient d'une lacune du contexte, pas
+d'un défaut de production. Le plafond convertit l'impasse en décision humaine.
+
+## D8 — La reprise humaine est spécifiée, pas invoquée
+
+**Décision.** Chaque agent déclare ce qu'il ne décide jamais. Sept décisions sont listées
+comme non délégables au niveau du système.
+
+**Motif.** « L'humain garde le contrôle » est une formule. Ce qui a de la valeur, c'est la
+liste précise, et surtout **le motif de chaque entrée** :
+
+| Décision | Motif du non-délégable |
+|---|---|
+| Choix de méthodologie | Engage la contractualisation et le mode de collaboration |
+| Ordonnancement du backlog | Prérogative du Product Owner — **[FAIT]** Scrum Guide 2020 ; la valeur n'est pas calculable |
+| Validation des chiffres budgétaires | Risque de crédibilité le plus élevé du portfolio |
+| Engagement de sprint | **[FAIT]** Une équipe s'engage elle-même — Scrum Guide |
+| Engagement vis-à-vis des parties prenantes | La parole donnée engage une personne |
+| Évaluation des personnes | Hors périmètre, quelle que soit la qualité des données |
+| Cotation finale de l'impact des risques | Dépend de la tolérance au risque de l'organisation |
+
+**[BP]** Deux de ces entrées sont des règles de référentiel, pas des préférences : le Scrum
+Guide les impose. Les autres sont des arbitrages de conception assumés.
+
+## D9 — Trois catégories de valeur, pas deux
+
+**Décision.** Donnée sourcée (autorisée) · seuil de gestion proposé (autorisé **si marqué**)
+· donnée factuelle générée (interdite).
+
+**Motif — cette décision est née d'une contradiction découverte au test.** La porte de
+l'agent `risques` exige un déclencheur observable, donc un seuil ; la règle initiale
+interdisait toute valeur non sourcée ; et aucun seuil de gestion n'existe jamais dans un
+contexte d'entrée. Résultat : **6 déclencheurs sur 14 reposaient sur des seuils inventés,
+et le registre a franchi sa porte sans alerte.**
+
+La distinction qui résout la contradiction :
+
+> Un seuil de gestion est une **proposition de pilotage** qu'un comité arbitre.
+> Une donnée factuelle générée est un **mensonge sur le réel**.
+
+Les confondre conduit soit à interdire les déclencheurs — registre inexploitable — soit à
+laisser passer des chiffres inventés — registre trompeur.
+
+## D10 — Deux agents pour l'agile, un pour le budget et les achats
+
+**Décision.** `backlog-stories` et `sprint` séparés ; `budget-achats` séparé de
+`planificateur-wbs`.
+
+**Motif.** Le double registre est un impératif du projet, et l'agile en est la moitié : un
+agent unique l'affaiblirait. L'approvisionnement (appel d'offres, sélection fournisseurs,
+contractualisation, éthique) est **[FAIT]** une compétence nommée distincte du curriculum
+C3 — la fusionner dans la planification la ferait disparaître.
+
+---
+
+# 4. Risques du système et mitigations
+
+## 4.1 Risques de production
+
+| # | Risque | Mitigation | Statut |
+|---|---|---|---|
+| S-01 | **Hallucination de données factuelles** (coûts unitaires, volumétries, durées empiriques) | Catégories de valeur (D9) + registre des lacunes livrable (D3) + règle R9 bloquante | Testé — 3 refus de fabriquer observés sur le cas |
+| S-02 | **Plausibilité structurelle** : un portfolio cohérent et creux | Ancrage obligatoire de chaque élément sur le contexte ou un artefact amont ; le vérificateur rejette le générique | Testé — registre des risques 14/14 ancrés |
+| S-03 | **Fausse précision des estimations** (durées au jour près sans base) | Sorties en fourchettes + mention explicite du caractère non empirique + reprise humaine obligatoire | Testé |
+| S-04 | **Biais pro-agile** du `methodologue` (les corpus en sont saturés) | Grille de critères imposée + obligation de documenter l'alternative écartée | Testé — 4 critères sur 8 poussaient au séquentiel, recommandation hybride obtenue |
+| S-05 | **Erreur arithmétique invisible** | Cohérence arithmétique obligatoire (C3) : tout total recalculé, tout écart bloquant | **Découvert au test**, corrigé en v1.1, non re-testé |
+
+## 4.2 Risques de contrôle
+
+| # | Risque | Mitigation | Statut |
+|---|---|---|---|
+| S-06 | **Complaisance du vérificateur** : valider ce qui vient d'être produit | Règles mécaniques, jamais d'appréciation globale (D6) | Testé |
+| S-07 | **Faux positifs** décrédibilisant le contrôle et poussant à désactiver la règle | Mécanisme de dérogation motivée (C6) : visible, listée au rapport, contestable | **Découvert au test** — 2 écarts sur 6 étaient des défauts de règle, pas d'artefact |
+| S-08 | **Porte validant un champ vide de sens** (rôle « à nommer » accepté comme propriétaire) | Règle R10 : tout rôle propriétaire doit être **pourvu** au registre des parties prenantes | **Découvert au test**, corrigé en v1.1 |
+| S-09 | **Confusion « non applicable » / « en échec »** sur chaîne partielle | `condition_applicabilite` par règle + 4 états de sortie (C2) | **Découvert au test**, corrigé en v1.1 |
+
+## 4.3 Risques d'usage
+
+| # | Risque | Mitigation |
+|---|---|---|
+| S-10 | **Substitution du jugement** : le portfolio est pris pour une décision | Liste des 7 décisions non délégables (D8), inscrite dans chaque artefact concerné |
+| S-11 | **Dérive de licence** : réutilisation d'un composant non commercial en mission | Traçabilité licence par agent dans le YAML ; MPL-2.0 et MIT seuls retenus |
+| S-12 | **Malentendu sur le statut** : croire que la chaîne s'exécute | Statut « PRÉSENTABLE — conception documentée » affiché en tête du YAML et du portfolio |
+| S-13 | **Recette humaine escamotée** : un portfolio bien formé donne l'illusion d'être validé | Le rapport de cohérence et les points de reprise humaine sont des livrables du portfolio, pas des annexes |
+
+## 4.4 Où l'IA aide, où elle est risquée
+
+**[BP]** — la frontière est la même dans les deux sens, et c'est ce qui la rend défendable.
+
+| L'IA apporte le plus | L'IA est risquée |
+|---|---|
+| Exhaustivité structurelle : aucune rubrique oubliée | Toute valeur chiffrée absente du contexte d'entrée |
+| Cohérence croisée, vérifiable mécaniquement | Estimation de durée ou de vélocité sans historique |
+| Traçabilité à un référentiel | Cartographie politique d'une organisation |
+| Première version comme support d'atelier | Appréciation qualitative déguisée en calcul |
+
+---
+
+# 5. Ce que la validation a produit
+
+**Méthode.** Tranche verticale de 7 agents sur 15, exécutée manuellement selon les
+spécifications, sur un cas neutre (refonte d'un portail client B2B). Dossier
+`portfolio-demo/`.
+
+**Résultat : 6 défauts de conception, dont 5 introuvables en relisant la cartographie.**
+
+Le plus significatif : `planificateur-wbs` a validé sa propre porte de sortie avec un chemin
+critique mal additionné — 67 semaines annoncées, 71 réelles. La conclusion managériale en
+était inversée : marge annoncée de +2 semaines sur l'échéance, marge réelle de **−2
+semaines**. L'échéance était dépassée avant le démarrage.
+
+**Ce que ce défaut enseigne, et qui vaut au-delà de ce projet :**
+
+> Une porte de sortie vérifie un **format**, pas une **vérité**.
+> Le second niveau de contrôle ne sert pas à relire : il sert à **recalculer**.
+
+C'est l'argument qui justifie l'architecture à deux niveaux — et il est plus fort que celui
+qui avait présidé à sa conception.
+
+---
+
+# 6. Limites assumées
+
+**[FAIT]** — état au 31/08/2026 :
+
+- La chaîne n'a **jamais été exécutée automatiquement**. La tranche verticale a été jouée
+  manuellement selon les spécifications. Aucune mesure de la qualité réelle des sorties d'un
+  agent réellement instancié.
+- **8 agents sur 15 restent non testés** : budget-achats, communications, qualite-suivi,
+  equipe-cloture, backlog-stories, sprint, auditeur-curriculum, orchestrateur-pm.
+- Les corrections **C1 à C6 sont spécifiées mais n'ont pas été re-testées** par une nouvelle
+  tranche.
+- Les libellés exacts des compétences du curriculum n'ont pas été recoupés module par module
+  avec les dépôts pédagogiques de référence.
+- Les portes qualité sont spécifiées ; leur implémentation reste à écrire.
+
+**[HYP]** L'exécution réelle révélera d'autres défauts, probablement du même ordre que ceux
+trouvés : des contradictions entre règles, et des portes qui valident la forme d'un champ
+plutôt que son sens.
+
+---
+
+# 7. Transférabilité
+
+La méthode ne dépend ni d'un secteur, ni d'un employeur, ni d'un outil :
+
+- Le **référentiel** est interchangeable — Google PM Cert ici, PMBOK, PRINCE2 ou un
+  référentiel interne d'ESN ailleurs. Seule la matrice de traçabilité change.
+- Le **cas d'étude** est fictif et générique.
+- Les **patterns de gouvernance** — portes mécaniques, contrôle par recalcul, catégories de
+  valeur, dérogation motivée, reprise humaine spécifiée — sont indépendants du domaine.
+
+Ce qui se transfère n'est pas le système : c'est la façon de le gouverner.

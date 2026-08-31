@@ -1,0 +1,12 @@
+# Caches Python
+__pycache__/
+*.pyc
+
+# Chemin du plugin depose par le hook — specifique a la machine
+.plugin-path
+
+# Archives et binaires : rien de tel ne doit entrer dans le depot
+*.zip
+
+# Dossier de suppression differee
+exemples/_to_delete/

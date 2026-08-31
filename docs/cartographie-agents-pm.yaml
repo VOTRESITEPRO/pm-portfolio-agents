@@ -1,0 +1,1273 @@
+# =============================================================================
+# CARTOGRAPHIE DE L'EQUIPE D'AGENTS — GENERATION DU PORTFOLIO D'ARTEFACTS PM
+# Livrable 1 du projet "PO-BA IA"
+# =============================================================================
+# Objet   : orchestration d'agents IA qui transforme une description de projet
+#           en portfolio complet d'artefacts de gestion de projet, aligne sur
+#           le Google Project Management Certificate (Cours 1 a 6).
+# Statut  : PRESENTABLE — conception documentee, destinee a etre commentee en
+#           entretien. Aucun agent n'est execute a ce stade.
+# =============================================================================
+
+meta:
+  version: "1.1"
+  historique:
+    - version: "1.0"
+      date: "2026-08-31"
+      note: "conception initiale, 15 agents"
+    - version: "1.1"
+      date: "2026-08-31"
+      note: >
+        Corrections C1 a C6 issues de la tranche verticale de test
+        (portfolio-demo/99-lecons-conception.md). Aucune modification du nombre
+        ni du perimetre des agents : uniquement les portes qualite, les regles
+        de coherence et les categories de valeur.
+  date: "2026-08-31"
+  remplace: "cartographieagents.md (orientation PO/BA fonctionnel — perimetre anterieur)"
+  perimetre_actif: "PM classique + agile, aligne Google PM Cert C1-C6"
+  perimetre_exclu_temporairement: "BA fonctionnel / ERP / gestion d'affaires"
+  cas_etude: "projet neutre — jamais un codebase ou un contexte employeur reel"
+
+# -----------------------------------------------------------------------------
+# REFERENTIELS
+# -----------------------------------------------------------------------------
+referentiels:
+  google_pm_cert:
+    intitule: "Google Project Management: Professional Certificate (Coursera)"
+    structure: "7 cours"
+    couverts: [C1, C2, C3, C4, C5, C6]
+    exclu:
+      cours: C7
+      intitule: "Accelerez votre recherche d'emploi grace a l'IA"
+      motif: "hors sujet — orientation carriere, pas de production d'artefact PM"
+    reserve_fiabilite: >
+      Les intitules de competences repris dans ce fichier suivent la structure
+      publique du curriculum. Les libelles exacts, module par module, restent a
+      recouper avec les depots pedagogiques de reference (rennieramlochan,
+      lk-learner) avant usage en entretien.
+  scrum_guide:
+    version: "2020"
+    usage: "socle des agents de la branche agile (C5)"
+
+# -----------------------------------------------------------------------------
+# BENCHMARK — BUY VS BUILD (verifie le 2026-08-31)
+# -----------------------------------------------------------------------------
+benchmark:
+  depots:
+    - depot: "sdi2200262/agentic-project-management"
+      licence: "MPL-2.0"
+      usage_commercial: true
+      contrainte_licence: "copyleft de fichier — toute modification d'un fichier source doit rester sous MPL-2.0"
+      maturite: "2,4k stars, 479 commits, v1.0.0 — mature"
+      agents: [Planner, Manager, Workers]
+      artefacts_produits: [Spec, Plan, Rules, "Task Prompts", Memory]
+      produit_des_artefacts_pm_cert: false
+      ce_qui_est_repris: >
+        Modele d'orchestration Planner/Manager/Workers, gestion de contexte
+        persistante (Memory / logs de taches cumulatifs), et surtout le principe
+        de validation humaine obligatoire entre chaque etape.
+      verifie: true
+
+    - depot: "kchia/project-management-agentic-workflow"
+      licence: "MIT"
+      usage_commercial: true
+      maturite: "1 star, 4 commits — exercice pedagogique, non eprouve"
+      agents: [DirectPromptAgent, AugmentedPromptAgent, KnowledgeAugmentedPromptAgent,
+               RAGKnowledgePromptAgent, EvaluationAgent, RoutingAgent, ActionPlanningAgent]
+      artefacts_produits: ["user stories", "feature groups", "engineering tasks"]
+      produit_des_artefacts_pm_cert: false
+      ce_qui_est_repris: >
+        Trois patterns d'architecture, pas de code : routage par similarite
+        (RoutingAgent), boucle de rework bornee avec seuil d'iterations
+        (EvaluationAgent, max 10), decomposition objectif -> etapes sequentielles
+        (ActionPlanningAgent).
+      limites_reconnues_par_l_auteur: ["dependance sequentielle", "communication inter-agents limitee", "criteres d'evaluation rigides"]
+      verifie: true
+
+  conclusion: >
+    Aucun des deux depots ne genere d'artefact du Google PM Cert (ni charte, ni
+    RACI, ni registre des risques, ni budget, ni plan de communication). La
+    reutilisation porte donc sur la couche orchestration et gouvernance
+    uniquement. Les dix agents producteurs d'artefacts sont crees en propre :
+    c'est la couche de differenciation du projet.
+
+# -----------------------------------------------------------------------------
+# CONTEXTE PARTAGE — source unique de verite consommee par tous les agents
+# -----------------------------------------------------------------------------
+contexte_partage:
+  produit_par: contexte-projet
+  format: JSON
+  champs:
+    - identite: [nom_projet, commanditaire, secteur, description]
+    - enjeux: [probleme, valeur_attendue, criteres_de_succes]
+    - contraintes: [budget_cadre, echeance, reglementaire, technique, ressources]
+    - parties_prenantes: [nom, role, pouvoir, interet, canal_prefere]
+    - equipe: [effectif, competences, localisation, disponibilite]
+    - historique: [projets_similaires, lecons_connues]
+  regle: >
+    Aucun agent producteur n'invente une donnee absente du contexte partage. Une
+    donnee manquante est declaree comme lacune explicite dans l'artefact, jamais
+    comblee par plausibilite.
+
+# -----------------------------------------------------------------------------
+# CATEGORIES DE VALEUR (correction C4)
+# -----------------------------------------------------------------------------
+# Origine : la tranche verticale a revele une contradiction interne. La porte de
+# sortie de `risques` exige un declencheur observable — donc un seuil — alors que
+# la regle de coherence R9 interdit toute valeur non sourcee. Resultat : 6 des 14
+# declencheurs reposaient sur des seuils generes, sans qu'aucune porte ne le voie.
+# Trois categories, et non deux, resolvent la contradiction.
+# -----------------------------------------------------------------------------
+
+categories_de_valeur:
+
+  distinction_clef: >
+    Un seuil de gestion est une proposition de pilotage ; une donnee factuelle
+    generee est un mensonge sur le reel. Les confondre conduit soit a interdire
+    les declencheurs (registre inexploitable), soit a laisser passer des chiffres
+    inventes (registre trompeur).
+
+  categories:
+
+  - categorie: donnee_sourcee
+    statut: autorisee
+    definition: "valeur tracable vers le contexte partage ou vers un arbitrage humain documente"
+    marquage: aucun
+    exemple: "60 appels/jour (contexte) ; 400 k€ plafond (arbitrage L2)"
+
+  - categorie: seuil_de_gestion_propose
+    statut: autorisee_si_marquee
+    definition: >
+      Valeur de pilotage proposee par un agent pour rendre un critere observable
+      (seuil d'alerte, declencheur de risque, cadence de controle). Ce n'est pas
+      une affirmation sur le reel : c'est une proposition qu'un comite arbitre.
+    marquage: "[SEUIL PROPOSE — A ARBITRER]"
+    exemple: "consommation budgetaire > 70 % au jalon J4"
+    regle: >
+      Tout seuil propose doit etre arbitre par l'humain avant usage en pilotage.
+      Non arbitre, il reste une proposition — jamais un engagement.
+
+  - categorie: donnee_factuelle_generee
+    statut: INTERDITE
+    definition: >
+      Valeur presentee comme un fait sur le reel alors qu'elle est produite par le
+      modele : cout unitaire, volumetrie, duree empirique, taux constate, prix.
+    marquage: "sans objet — la valeur ne doit pas etre produite"
+    conduite_a_tenir: "marquer [A SOURCER] et poursuivre sans la valeur"
+    exemple_de_ce_qui_est_interdit: "cout unitaire d'un appel : 12 €"
+
+# =============================================================================
+# AGENTS
+# =============================================================================
+# couche   : orchestration | production | controle
+# registre : agile | waterfall | hybrid
+# source   : reutilise (repris tel quel) | adapte (pattern repris, reecrit) | cree
+# =============================================================================
+
+agents:
+
+# --- COUCHE 0 : ORCHESTRATION -----------------------------------------------
+
+  - id: orchestrateur-pm
+    nom: "Orchestrateur PM"
+    couche: orchestration
+    phase: transverse
+    registre: hybrid
+    source:
+      type: adapte
+      origine: "sdi2200262/agentic-project-management (Manager) — MPL-2.0"
+      justification: >
+        Le role Manager (assignation, revue, maintien de l'etat) est transpose
+        au sequencage d'artefacts PM. Reecrit : le depot original pilote des
+        taches de developpement, pas une chaine documentaire.
+      verifie: true
+    competence:
+      google_pm_cert: "C1 — role et responsabilites du chef de projet ; C6 — integration de bout en bout"
+    role: >
+      Point d'entree unique. Recoit la demande, declenche le cadrage du contexte,
+      determine la sequence d'agents applicable selon la methodologie retenue,
+      gere les dependances et les branchements, arbitre les verdicts des portes
+      qualite, escalade a l'humain les decisions non delegables.
+    entrees:
+      - "description brute du projet (utilisateur)"
+      - "verdicts des portes qualite (tous agents)"
+    sorties:
+      - artefact: "plan d'execution de la chaine d'agents"
+        format: md
+      - artefact: "journal de decisions et d'escalades"
+        format: md
+    depends_on: []
+    handoff_vers: [contexte-projet]
+    porte_qualite:
+      dor: "description de projet non vide ; perimetre identifiable"
+      dod: "sequence d'agents etablie, dependances resolues, points de reprise humaine positionnes"
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 2
+    reprise_humaine: "validation de la sequence avant lancement de la chaine"
+    risque_ia: >
+      Lancer une chaine complete sur un contexte trop pauvre et produire un
+      portfolio plausible mais creux. Mitigation : porte d'entree bloquante sur
+      la completude du contexte (voir contexte-projet).
+
+  - id: contexte-projet
+    nom: "Cadrage du contexte"
+    couche: orchestration
+    phase: transverse
+    registre: hybrid
+    source:
+      type: adapte
+      origine: "sdi2200262 (Planner + Memory) — MPL-2.0 ; kchia (ActionPlanningAgent) — MIT"
+      justification: >
+        Principe de decouverte structuree prealable et de memoire partagee
+        persistante. Reecrit pour produire un dossier de contexte PM et non une
+        specification technique.
+      verifie: true
+    competence:
+      google_pm_cert: "C2 — definition du projet, livrables et criteres de succes"
+    role: >
+      Interroge et normalise la description d'entree en un dossier de contexte
+      structure. Identifie explicitement les lacunes d'information et les
+      qualifie (bloquante / degradante / mineure). Sert de source unique de
+      verite a tous les agents producteurs.
+    entrees:
+      - "description brute du projet"
+    sorties:
+      - artefact: "dossier de contexte projet"
+        format: json
+      - artefact: "registre des lacunes d'information"
+        format: md
+    depends_on: [orchestrateur-pm]
+    handoff_vers: [methodologue]
+    porte_qualite:
+      dor: "description de projet fournie"
+      dod: >
+        Tous les champs du contexte partage sont soit renseignes, soit declares
+        comme lacune qualifiee. Aucune lacune bloquante non resolue.
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 3
+    reprise_humaine: "comblement des lacunes bloquantes — l'agent ne les invente jamais"
+    risque_ia: >
+      Combler une lacune par une valeur plausible (budget type, delai standard)
+      qui contamine ensuite tout le portfolio. Mitigation : le registre des
+      lacunes est un livrable a part entiere, pas une note interne.
+
+# --- COUCHE 1 : PRODUCTION — PHASE FONDEMENTS (C1) --------------------------
+
+  - id: methodologue
+    nom: "Recommandation de methodologie"
+    couche: production
+    phase: fondements
+    registre: hybrid
+    source:
+      type: cree
+      justification: "Aucun depot du benchmark ne traite le choix de methodologie."
+      verifie: true
+    competence:
+      google_pm_cert: "C1 — methodologies de gestion de projet (waterfall, agile, lean, six sigma), structures organisationnelles et culture"
+    role: >
+      Analyse le contexte (stabilite des exigences, tolerance au changement,
+      maturite de l'equipe, contraintes reglementaires, cadence de livraison) et
+      recommande une methodologie : waterfall, agile, hybride ou composite.
+      Justifie par criteres, expose l'alternative ecartee et son motif.
+      DECISION STRUCTURANTE : sa sortie active ou non la branche agile.
+    entrees:
+      - "dossier de contexte projet (contexte-projet)"
+    sorties:
+      - artefact: "note de recommandation methodologique"
+        format: md
+      - artefact: "drapeau d'activation de la branche agile"
+        format: json
+    depends_on: [contexte-projet]
+    handoff_vers: [charte-objectifs, parties-prenantes]
+    porte_qualite:
+      dor: "dossier de contexte valide, sans lacune bloquante"
+      dod: >
+        Recommandation unique et argumentee sur au moins 5 criteres explicites ;
+        alternative ecartee documentee ; drapeau agile positionne.
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 2
+    reprise_humaine: >
+      VALIDATION OBLIGATOIRE. Le choix de methodologie engage l'organisation et
+      la contractualisation. L'IA propose, le chef de projet tranche.
+    risque_ia: >
+      Biais pro-agile systematique (surrepresente dans les corpus). Mitigation :
+      grille de criteres imposee, obligation de documenter l'alternative.
+
+# --- COUCHE 1 : PRODUCTION — PHASE INITIATION (C2) --------------------------
+
+  - id: charte-objectifs
+    nom: "Charte de projet et objectifs"
+    couche: production
+    phase: initiation
+    registre: waterfall
+    source:
+      type: cree
+      verifie: true
+    competence:
+      google_pm_cert: "C2 — buts SMART, OKR, perimetre et scope creep, analyse cout-benefice, documentation d'initiation (project charter)"
+    role: >
+      Produit la charte de projet : justification business, objectifs SMART,
+      OKR, perimetre inclus et exclu, livrables, criteres de succes mesurables,
+      hypotheses et contraintes, analyse cout-benefice de premier niveau.
+    entrees:
+      - "dossier de contexte projet"
+      - "note de recommandation methodologique"
+    sorties:
+      - artefact: "charte de projet"
+        format: [md, docx]
+      - artefact: "objectifs SMART et OKR"
+        format: [md, xlsx]
+      - artefact: "enonce de perimetre (scope statement)"
+        format: md
+    depends_on: [methodologue]
+    handoff_vers: [planificateur-wbs, backlog-stories, verificateur-coherence]
+    porte_qualite:
+      dor: "methodologie validee par l'humain"
+      dod: >
+        Chaque objectif satisfait les 5 criteres SMART, verifiables un par un ;
+        perimetre exclu explicitement renseigne (pas seulement l'inclus) ;
+        chaque livrable porte un critere de succes mesurable.
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 2
+    reprise_humaine: "validation du perimetre et de l'analyse cout-benefice — engagement contractuel"
+    risque_ia: >
+      Objectifs "SMART" en apparence mais dont le M repose sur une metrique
+      inventee. Mitigation : toute metrique doit tracer vers le contexte partage
+      ou etre listee comme lacune.
+
+  - id: parties-prenantes
+    nom: "Analyse des parties prenantes et RACI"
+    couche: production
+    phase: initiation
+    registre: waterfall
+    source:
+      type: cree
+      verifie: true
+    competence:
+      google_pm_cert: "C2 — analyse des parties prenantes, grille pouvoir/interet, matrice RACI, roles et responsabilites"
+    role: >
+      Cartographie les parties prenantes, les positionne sur une grille
+      pouvoir/interet, definit la strategie d'engagement par quadrant, et produit
+      la matrice RACI sur les livrables identifies dans la charte.
+    entrees:
+      - "dossier de contexte projet"
+      - "charte de projet (livrables)"
+    sorties:
+      - artefact: "registre des parties prenantes"
+        format: [md, xlsx]
+      - artefact: "grille pouvoir/interet"
+        format: md
+      - artefact: "matrice RACI"
+        format: [md, xlsx]
+    depends_on: [charte-objectifs]
+    handoff_vers: [communications, equipe-cloture, verificateur-coherence]
+    porte_qualite:
+      dor: "charte validee ; livrables identifies"
+      dod: >
+        Un seul A (Accountable) par livrable dans la matrice RACI ; au moins un R
+        par livrable ; toute partie prenante du registre apparait dans la matrice
+        ou son absence est justifiee.
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 2
+    reprise_humaine: >
+      Validation des rapports de force reels et de la strategie d'engagement.
+      La politique interne d'une organisation n'est pas deductible d'un contexte
+      ecrit.
+    risque_ia: >
+      Inventer des parties prenantes generiques (DSI, direction financiere)
+      absentes du contexte. Mitigation : chaque entree du registre trace vers le
+      contexte partage ou est marquee "a confirmer".
+
+# --- COUCHE 1 : PRODUCTION — PHASE PLANIFICATION (C3) -----------------------
+
+  - id: planificateur-wbs
+    nom: "Planification et decoupage"
+    couche: production
+    phase: planification
+    registre: waterfall
+    source:
+      type: adapte
+      origine: "kchia (ActionPlanningAgent) — MIT"
+      justification: >
+        Pattern de decomposition objectif -> etapes sequentielles repris comme
+        principe. Le depot ne produit ni WBS ni chemin critique ni jalons : toute
+        la substance PM est ecrite en propre.
+      verifie: true
+    competence:
+      google_pm_cert: "C3 — plan de projet, work breakdown structure, estimation de duree, jalons, chemin critique"
+    role: >
+      Decompose les livrables de la charte en WBS a trois niveaux, estime les
+      durees, identifie les dependances, positionne les jalons, calcule le chemin
+      critique et produit le plan de projet consolide.
+    entrees:
+      - "charte de projet (livrables, perimetre)"
+      - "dossier de contexte (echeance, ressources)"
+    sorties:
+      - artefact: "work breakdown structure"
+        format: [md, xlsx]
+      - artefact: "plan de projet (taches, durees, dependances)"
+        format: [md, xlsx]
+      - artefact: "jalons et chemin critique"
+        format: md
+    depends_on: [charte-objectifs]
+    handoff_vers: [risques, budget-achats, qualite-suivi, verificateur-coherence]
+    porte_qualite:
+      dor: "charte validee ; perimetre fige"
+      dod: >
+        Chaque livrable de la charte est couvert par au moins un lot de la WBS ;
+        tout lot ne tracant vers aucun livrable est declare en derogation motivee
+        (lot de conduite de projet) ; chemin critique identifie et coherent avec
+        l'echeance du contexte, ou ecart signale explicitement.
+      coherence_arithmetique:   # correction C3
+        obligatoire: true
+        controles:
+          - "duree du chemin critique == somme des durees de ses lots, recalculee"
+          - "sous-total de chaque lot de niveau 1 >= duree de son chemin interne"
+          - "marge = fenetre calendaire reelle - duree du chemin critique, recalculee"
+        regle: >
+          Tout ecart entre un total annonce et son recalcul est BLOQUANT, quelle
+          que soit son ampleur. Origine : un ecart de 4 semaines sur le chemin
+          critique inversait la conclusion managériale (marge +2 -> -2 semaines).
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 3
+    reprise_humaine: >
+      Validation des estimations de duree. Une estimation IA n'a aucune base
+      empirique sur l'equipe reelle : elle sert de point de depart d'atelier,
+      jamais d'engagement.
+    risque_ia: >
+      Estimations de duree fabriquees avec une fausse precision (jours ouvres a
+      l'unite pres). Mitigation : sortie en fourchettes, avec mention explicite
+      du caractere non empirique.
+
+  - id: risques
+    nom: "Gestion des risques"
+    couche: production
+    phase: planification
+    registre: hybrid
+    source:
+      type: cree
+      verifie: true
+    competence:
+      google_pm_cert: "C3 — identification des risques, registre des risques, matrice probabilite/impact, plans d'attenuation"
+    role: >
+      Identifie les risques par categorie (temps, budget, perimetre, ressources,
+      externe, technique, conformite), les cote en probabilite et impact, produit
+      le registre des risques avec proprietaire, strategie de reponse
+      (eviter / reduire / transferer / accepter) et declencheur de plan de secours.
+    entrees:
+      - "plan de projet et chemin critique"
+      - "dossier de contexte (contraintes)"
+      - "registre des lacunes d'information"
+    sorties:
+      - artefact: "registre des risques"
+        format: [md, xlsx]
+      - artefact: "matrice probabilite/impact"
+        format: md
+      - artefact: "plans d'attenuation et declencheurs"
+        format: md
+    depends_on: [planificateur-wbs]
+    handoff_vers: [budget-achats, qualite-suivi, verificateur-coherence]
+    porte_qualite:
+      dor: "plan de projet produit ; chemin critique identifie"
+      dod: >
+        Chaque tache du chemin critique est couverte par au moins un risque
+        analyse ; chaque risque porte une strategie de reponse et un declencheur
+        observable ; chaque lacune bloquante du registre d'information est
+        convertie en risque.
+      controles_renforces:
+        - controle: "proprietaire POURVU, pas seulement renseigne"   # correction C5
+          regle: >
+            Le role proprietaire doit exister au registre des parties prenantes
+            avec un statut pourvu. Un role "a nommer" est refuse, sauf derogation
+            motivee tracant le pourvoi comme tache du plan ou comme risque.
+          origine: >
+            La porte validait "proprietaire nomme : 14/14" alors que 4 risques
+            avaient pour proprietaire un chef de projet non encore nomme.
+        - controle: "tout seuil de declencheur est categorise"        # correction C4
+          regle: >
+            Un declencheur observable exige un seuil, et aucun seuil de gestion
+            n'existe dans le contexte d'entree. Tout seuil produit par l'agent est
+            donc marque [SEUIL PROPOSE — A ARBITRER] (categorie
+            seuil_de_gestion_propose). Un seuil non marque est un ecart bloquant.
+          origine: >
+            Contradiction entre la porte de cet agent, qui exige un declencheur
+            observable, et la regle R9, qui interdisait toute valeur non sourcee.
+            6 declencheurs sur 14 reposaient sur des seuils generes non signales.
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 2
+    reprise_humaine: "cotation finale de l'impact — depend de la tolerance au risque de l'organisation"
+    risque_ia: >
+      Registre generique applicable a n'importe quel projet. Mitigation : porte
+      de sortie exigeant l'ancrage de chaque risque sur un element nomme du plan
+      ou du contexte.
+
+  - id: budget-achats
+    nom: "Budget et approvisionnement"
+    couche: production
+    phase: planification
+    registre: waterfall
+    source:
+      type: cree
+      verifie: true
+    competence:
+      google_pm_cert: "C3 — estimation budgetaire bottom-up, reserve de contingence, cout total de possession, approvisionnement (RFP, fournisseurs, contrats, ethique)"
+    role: >
+      Construit le budget par estimation ascendante sur la WBS, calcule la reserve
+      de contingence a partir du registre des risques, etablit le plan de
+      decaissement et identifie les besoins d'approvisionnement (appel d'offres,
+      criteres de selection fournisseurs, points de vigilance contractuels et
+      ethiques).
+    entrees:
+      - "work breakdown structure"
+      - "registre des risques (pour la contingence)"
+      - "dossier de contexte (budget cadre)"
+    sorties:
+      - artefact: "budget detaille et plan de decaissement"
+        format: [md, xlsx]
+      - artefact: "plan d'approvisionnement et trame d'appel d'offres"
+        format: [md, docx]
+    depends_on: [planificateur-wbs, risques]
+    handoff_vers: [qualite-suivi, verificateur-coherence]
+    porte_qualite:
+      dor: "WBS et registre des risques disponibles"
+      dod: >
+        Chaque poste de cout trace vers un lot de la WBS ; la reserve de
+        contingence est justifiee par des risques cotes, pas par un pourcentage
+        arbitraire ; l'ecart au budget cadre du contexte est chiffre et commente.
+      coherence_arithmetique:   # correction C3
+        obligatoire: true
+        controles:
+          - "budget total == somme des postes, recalculee"
+          - "sous-total de chaque rubrique == somme de ses lignes, recalculee"
+          - "reserve de contingence == somme des expositions des risques retenus"
+          - "ecart au budget cadre == budget total - budget cadre, recalcule"
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 2
+    reprise_humaine: >
+      VALIDATION OBLIGATOIRE. Aucun chiffre budgetaire genere par IA ne doit
+      circuler sans verification humaine — c'est le risque de credibilite le plus
+      eleve du portfolio.
+    risque_ia: >
+      Couts unitaires hallucines avec apparence de precision (TJM, licences,
+      infrastructure). Mitigation : tout cout unitaire est soit issu du contexte,
+      soit marque "[A SOURCER]" — jamais estime par le modele.
+
+  - id: communications
+    nom: "Plan de communication"
+    couche: production
+    phase: planification
+    registre: hybrid
+    source:
+      type: cree
+      verifie: true
+    competence:
+      google_pm_cert: "C3 — plan de communication, documentation partagee ; C4 — communication avec les parties prenantes, escalade"
+    role: >
+      Etablit le plan de communication a partir de la grille pouvoir/interet :
+      qui recoit quoi, sous quel format, a quelle frequence, par quel canal, avec
+      quel niveau de detail. Definit la chaine d'escalade et le plan de
+      communication de crise.
+    entrees:
+      - "registre des parties prenantes et grille pouvoir/interet"
+      - "jalons du plan de projet"
+      - "registre des risques (pour la communication de crise)"
+    sorties:
+      - artefact: "plan de communication"
+        format: [md, xlsx]
+      - artefact: "chaine d'escalade"
+        format: md
+      - artefact: "trames de comptes rendus par audience"
+        format: [md, docx]
+    depends_on: [parties-prenantes, planificateur-wbs]
+    handoff_vers: [qualite-suivi, verificateur-coherence]
+    porte_qualite:
+      dor: "grille pouvoir/interet produite ; jalons positionnes"
+      dod: >
+        Chaque partie prenante du registre apparait dans au moins une ligne du
+        plan ; chaque jalon declenche au moins une communication ; la chaine
+        d'escalade nomme des roles, pas des fonctions vagues.
+      verdict: [avancer, retravailler]
+      max_rework: 2
+    reprise_humaine: "validation des canaux et des frequences — depend de la culture reelle de l'organisation"
+    risque_ia: >
+      Plan de communication surdimensionne (rituels que personne ne tiendra).
+      Mitigation : porte de sortie exigeant la justification de chaque cadence
+      par le quadrant pouvoir/interet.
+
+# --- COUCHE 1 : PRODUCTION — PHASE EXECUTION (C4) ---------------------------
+
+  - id: qualite-suivi
+    nom: "Qualite, metriques et suivi"
+    couche: production
+    phase: execution
+    registre: hybrid
+    source:
+      type: cree
+      verifie: true
+    competence:
+      google_pm_cert: "C4 — standards de qualite, planification/assurance/controle qualite, amelioration continue (DMAIC, PDCA), collecte et analyse de donnees, metriques et KPI, tableaux de bord, outils de suivi"
+    role: >
+      Definit les standards de qualite par livrable, le dispositif d'assurance et
+      de controle qualite, les KPI de pilotage, la structure du tableau de bord et
+      la trame de compte rendu d'avancement. Positionne les boucles d'amelioration
+      continue.
+    entrees:
+      - "charte (criteres de succes)"
+      - "plan de projet et jalons"
+      - "budget (pour le suivi de consommation)"
+      - "registre des risques (indicateurs d'alerte)"
+    sorties:
+      - artefact: "plan de management de la qualite"
+        format: [md, docx]
+      - artefact: "referentiel de KPI et tableau de bord"
+        format: [md, xlsx]
+      - artefact: "trame de compte rendu d'avancement"
+        format: [md, docx]
+    depends_on: [planificateur-wbs, budget-achats, communications]
+    handoff_vers: [equipe-cloture, verificateur-coherence]
+    porte_qualite:
+      dor: "plan, budget et plan de communication disponibles"
+      dod: >
+        Chaque critere de succes de la charte est couvert par au moins un KPI ;
+        chaque KPI porte une source de donnee, une frequence et un seuil d'alerte ;
+        aucun KPI sans moyen de mesure identifie.
+      verdict: [avancer, retravailler]
+      max_rework: 2
+    reprise_humaine: "arbitrage des seuils d'alerte et du niveau d'exigence qualite"
+    risque_ia: >
+      Empilement de KPI non mesurables dans le contexte reel. Mitigation : la
+      porte de sortie rejette tout KPI sans source de donnee nommee.
+
+  - id: equipe-cloture
+    nom: "Gestion d'equipe et cloture"
+    couche: production
+    phase: execution
+    registre: hybrid
+    source:
+      type: cree
+      verifie: true
+    competence:
+      google_pm_cert: "C4 — developpement d'equipe, motivation, feedback, influence sans autorite, gestion des conflits, reunions efficaces, cloture (rapport d'impact, retrospective, lecons apprises, rapport de cloture)"
+    role: >
+      Produit le dispositif de fonctionnement d'equipe (rituels, regles de
+      collaboration, gestion des conflits) et l'ensemble des artefacts de cloture :
+      criteres de cloture, rapport d'impact, trame de retrospective, registre des
+      lecons apprises, rapport de cloture.
+    entrees:
+      - "matrice RACI"
+      - "dossier de contexte (equipe)"
+      - "referentiel de KPI (pour le rapport d'impact)"
+      - "charte (criteres de succes a evaluer)"
+    sorties:
+      - artefact: "cadre de fonctionnement d'equipe"
+        format: md
+      - artefact: "criteres et checklist de cloture"
+        format: [md, xlsx]
+      - artefact: "trames rapport d'impact / retrospective / lecons apprises"
+        format: [md, docx]
+    depends_on: [parties-prenantes, qualite-suivi]
+    handoff_vers: [verificateur-coherence]
+    porte_qualite:
+      dor: "RACI et referentiel de KPI disponibles"
+      dod: >
+        Chaque critere de succes de la charte figure dans la checklist de cloture ;
+        le rapport d'impact se structure sur les KPI definis, pas sur des
+        categories generiques.
+      verdict: [avancer, retravailler]
+      max_rework: 2
+    reprise_humaine: >
+      Tout ce qui touche a l'evaluation des personnes. L'IA produit des trames de
+      fonctionnement, jamais d'appreciation individuelle.
+    risque_ia: >
+      Conseils de management generiques et interchangeables. Mitigation : ancrage
+      obligatoire sur la composition d'equipe du contexte partage.
+
+# --- COUCHE 1 : PRODUCTION — BRANCHE AGILE (C5) -----------------------------
+# Conditionnelle : activee uniquement si methodologue positionne le drapeau
+# agile (methodologie agile, hybride ou composite).
+
+  - id: backlog-stories
+    nom: "Backlog produit et user stories"
+    couche: production
+    phase: agile
+    registre: agile
+    condition_activation: "drapeau_agile == true"
+    source:
+      type: adapte
+      origine: "kchia (equipe Product Manager / Development Engineer) — MIT"
+      justification: >
+        Le depot produit des user stories au format canonique et des taches avec
+        criteres d'acceptation, effort et dependances. Structure de sortie reprise
+        et durcie (INVEST, Given/When/Then, DoR) ; le reste est ecrit en propre.
+      verifie: true
+    competence:
+      google_pm_cert: "C5 — backlog produit et affinage, user stories, criteres d'acceptation, estimation relative (story points)"
+      scrum_guide: "Product Backlog, Product Goal, affinage du backlog, role du Product Owner"
+    role: >
+      Transforme les livrables de la charte en backlog produit ordonne : epics,
+      user stories au format INVEST, criteres d'acceptation Given/When/Then,
+      estimation relative en points, et Definition of Ready.
+    entrees:
+      - "charte de projet (livrables, objectifs)"
+      - "dossier de contexte (utilisateurs, valeur attendue)"
+      - "drapeau d'activation agile"
+    sorties:
+      - artefact: "backlog produit ordonne (epics + user stories)"
+        format: [md, xlsx]
+      - artefact: "criteres d'acceptation Given/When/Then"
+        format: md
+      - artefact: "Definition of Ready"
+        format: md
+    depends_on: [charte-objectifs, methodologue]
+    handoff_vers: [sprint, verificateur-coherence]
+    porte_qualite:
+      dor: "charte validee ; drapeau agile actif"
+      dod: >
+        Chaque story satisfait les 6 criteres INVEST, verifies un par un ; chaque
+        story porte au moins un critere d'acceptation en Given/When/Then ; chaque
+        livrable de la charte est couvert par au moins une story ; aucune story
+        sans valeur utilisateur explicite.
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 3
+    reprise_humaine: >
+      Ordonnancement final du backlog. La priorisation par la valeur est la
+      decision propre du Product Owner — c'est la limite la plus nette du systeme.
+    risque_ia: >
+      Stories techniques deguisees en stories utilisateur ("en tant
+      qu'utilisateur, je veux une API..."). Mitigation : porte de sortie testant
+      la presence d'un beneficiaire reel et d'un benefice observable.
+
+  - id: sprint
+    nom: "Cadence de sprint"
+    couche: production
+    phase: agile
+    registre: agile
+    condition_activation: "drapeau_agile == true"
+    source:
+      type: cree
+      justification: "Aucun depot du benchmark ne produit d'artefacts de sprint Scrum."
+      verifie: true
+    competence:
+      google_pm_cert: "C5 — planification de sprint, backlog de sprint, definition of done, burndown, retrospective, evenements Scrum"
+      scrum_guide: "Sprint, Sprint Planning, Sprint Backlog, Definition of Done, Daily Scrum, Sprint Review, Sprint Retrospective"
+    role: >
+      Etablit la cadence : duree de sprint justifiee, capacite d'equipe,
+      composition du premier sprint backlog avec objectif de sprint, Definition of
+      Done, dispositif de suivi (burndown) et trames des cinq evenements Scrum.
+    entrees:
+      - "backlog produit ordonne"
+      - "dossier de contexte (equipe, disponibilite)"
+      - "Definition of Ready"
+    sorties:
+      - artefact: "cadence et capacite d'equipe"
+        format: md
+      - artefact: "sprint backlog initial et objectif de sprint"
+        format: [md, xlsx]
+      - artefact: "Definition of Done"
+        format: md
+      - artefact: "trames des evenements Scrum et burndown"
+        format: [md, xlsx]
+    depends_on: [backlog-stories]
+    handoff_vers: [qualite-suivi, verificateur-coherence]
+    porte_qualite:
+      dor: "backlog produit ordonne ; DoR etablie ; capacite d'equipe connue ou declaree en lacune"
+      dod: >
+        Toute story du sprint backlog satisfait la DoR ; la charge engagee ne
+        depasse pas la capacite calculee ; l'objectif de sprint est unique et
+        formule en termes de valeur, pas de liste de taches ; la DoD est
+        verifiable sans jugement subjectif.
+      coherence_arithmetique:   # correction C3
+        obligatoire: true
+        controles:
+          - "charge engagee == somme des points des stories du sprint backlog, recalculee"
+          - "capacite == effectif disponible x duree de sprint, recalculee"
+          - "charge engagee <= capacite, verifie sur les valeurs recalculees"
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 2
+    reprise_humaine: >
+      Engagement de sprint. Une equipe s'engage elle-meme sur un sprint — c'est le
+      Scrum Guide, pas une preference. L'IA propose une composition, l'equipe
+      decide.
+    risque_ia: >
+      Velocite inventee sans historique. Mitigation : en l'absence de donnee
+      historique dans le contexte, la capacite est declaree comme hypothese a
+      calibrer sur les premiers sprints, jamais presentee comme un calcul.
+
+# --- COUCHE 2 : CONTROLE TRANSVERSE -----------------------------------------
+
+  - id: verificateur-coherence
+    nom: "Verification de coherence inter-artefacts"
+    couche: controle
+    phase: transverse
+    registre: hybrid
+    source:
+      type: adapte
+      origine: "kchia (EvaluationAgent, boucle de rework bornee) — MIT"
+      justification: >
+        Pattern de boucle d'evaluation iterative avec plafond d'iterations repris.
+        Les regles de coherence PM sont ecrites en propre — le depot original
+        evalue la conformite a un prompt, pas la coherence d'un portfolio.
+      verifie: true
+    competence:
+      google_pm_cert: "C6 — integration et coherence d'ensemble du portfolio ; C3 — coherence du plan de projet"
+    role: >
+      Controle la coherence croisee du portfolio, independamment des agents
+      producteurs. Ne reecrit pas les artefacts : emet un verdict et renvoie a
+      l'agent auteur.
+    # --- Correction C2 : chaque regle porte sa condition d'applicabilite.
+    # Sans elle, une regle non evaluable faute d'agent hors perimetre produisait
+    # le meme resultat qu'une regle en echec faute d'artefact manquant.
+    etats_de_sortie: [conforme, ecart, non_applicable, derogation_accordee]
+    regle_des_etats: >
+      `non_applicable` doit toujours etre justifie par une condition_applicabilite
+      non satisfaite, JAMAIS par une absence constatee d'artefact. Un artefact
+      attendu et manquant est un `ecart`, pas une non-applicabilite.
+
+    regles_de_coherence:
+      - id: R1
+        regle: "perimetre de la charte == somme des lots de la WBS"
+        condition_applicabilite: [charte-objectifs, planificateur-wbs]
+        derogation_admise: true
+        motif_de_derogation_recevable: >
+          Lot de conduite de projet (cadrage, appel d'offres, contractualisation,
+          support post-mise en service) ne tracant vers aucun livrable. L'agent le
+          declare comme tel ; le verificateur l'enregistre au lieu de le rejeter.
+
+      - id: R2
+        regle: "somme des postes budgetaires == budget total annonce"
+        condition_applicabilite: [budget-achats]
+        derogation_admise: false
+
+      - id: R3
+        regle: "reserve de contingence justifiee par des risques cotes"
+        condition_applicabilite: [budget-achats, risques]
+        derogation_admise: false
+
+      - id: R4
+        regle: "toute partie prenante du registre presente dans le RACI et le plan de communication"
+        condition_applicabilite: [parties-prenantes, communications]
+        derogation_admise: true
+        motif_de_derogation_recevable: >
+          Partie prenante non responsable d'un livrable (destinataire final,
+          source de donnee, fonction de suivi), rattachee explicitement a une
+          partie prenante presente dans la matrice.
+
+      - id: R5
+        regle: "un seul Accountable par livrable dans le RACI"
+        condition_applicabilite: [parties-prenantes]
+        derogation_admise: false
+
+      - id: R6
+        regle: "chaque critere de succes de la charte couvert par un KPI et present en checklist de cloture"
+        condition_applicabilite: [charte-objectifs, qualite-suivi, equipe-cloture]
+        derogation_admise: false
+
+      - id: R7
+        regle: "chaque tache du chemin critique couverte par un risque analyse"
+        condition_applicabilite: [planificateur-wbs, risques]
+        derogation_admise: false
+
+      - id: R8
+        regle: "chaque livrable de la charte couvert par au moins une story"
+        condition_applicabilite: [charte-objectifs, backlog-stories]
+        condition_supplementaire: "drapeau_agile == true"
+        derogation_admise: false
+        note: >
+          Si drapeau_agile == false, la regle est `non_applicable` par condition.
+          Si drapeau_agile == true et que backlog-stories n'a rien rendu, c'est un
+          `ecart` bloquant — pas une non-applicabilite.
+
+      - id: R9
+        regle: >
+          Toute valeur chiffree appartient a l'une des trois categories_de_valeur.
+          Une donnee factuelle generee est un ecart bloquant. Un seuil de gestion
+          non marque [SEUIL PROPOSE — A ARBITRER] est un ecart bloquant.
+        condition_applicabilite: "tous les agents producteurs"
+        derogation_admise: false
+        origine: "correction C4 — remplace l'ancienne regle binaire source / non source"
+
+      # --- Correction C5 : nouvelle regle croisee.
+      # Origine : la porte de `risques` avait valide "proprietaire nomme : 14/14"
+      # alors que 4 proprietaires etaient "le chef de projet", role que la charte
+      # declarait a nommer. La porte verifiait une chaine de caracteres.
+      - id: R10
+        regle: >
+          Tout role cite comme proprietaire, responsable ou approbateur dans un
+          artefact est POURVU au registre des parties prenantes (statut != "a nommer",
+          "a confirmer", "a constituer", "a contractualiser").
+        condition_applicabilite: [parties-prenantes]
+        portee: [risques, parties-prenantes, charte-objectifs, qualite-suivi, equipe-cloture]
+        derogation_admise: true
+        motif_de_derogation_recevable: >
+          Role non encore pourvu mais dont le pourvoi est lui-meme trace comme
+          tache du plan ou comme risque. La derogation rend le trou visible au
+          lieu de le masquer derriere un libelle.
+
+      # --- Correction C3 : coherence arithmetique, appliquee en second niveau.
+      # Origine : le chemin critique annonce 50-67 semaines valait en realite
+      # 52-71. La conclusion managériale en etait inversee (marge +2 -> -2 sem.).
+      - id: R11
+        regle: >
+          Tout total, sous-total ou cumul annonce dans un artefact est recalcule a
+          partir de ses composants. Tout ecart est un ecart bloquant, quelle que
+          soit son ampleur.
+        condition_applicabilite: [planificateur-wbs]
+        portee: [planificateur-wbs, budget-achats, sprint]
+        derogation_admise: false
+        note: >
+          Regle mecanique, donc fiable. C'est la seule categorie d'erreur que la
+          relecture ne detecte pas et que le recalcul detecte toujours.
+
+    # --- Correction C6 : mecanisme de derogation motivee.
+    # Origine : 2 ecarts sur 6 de la tranche verticale etaient des faux positifs,
+    # les artefacts etant methodologiquement corrects et les regles trop strictes.
+    # Sans traitement, les faux positifs decredibilisent le controle et poussent a
+    # desactiver la regle.
+    derogations:
+      principe: >
+        Un agent producteur peut declarer une exception explicite et motivee a une
+        regle admettant la derogation. Le verificateur l'ENREGISTRE au lieu de la
+        rejeter, et la fait figurer au rapport de coherence.
+      forme_attendue:
+        regle_visee: "id de la regle"
+        element_concerne: "lot, partie prenante, valeur"
+        motif: "justification methodologique explicite"
+      regles_de_gouvernance:
+        - "une derogation est visible et contestable, jamais silencieuse"
+        - "une derogation sur une regle a derogation_admise: false est refusee et devient un ecart"
+        - "le rapport de coherence liste les derogations accordees dans une section dediee"
+        - "un taux de derogation eleve sur une regle signale une regle mal ecrite, pas des artefacts mauvais"
+    entrees:
+      - "tous les artefacts produits"
+    sorties:
+      - artefact: "rapport de coherence (ecarts, gravite, agent responsable)"
+        format: md
+    depends_on: [charte-objectifs, parties-prenantes, planificateur-wbs, risques,
+                 budget-achats, communications, qualite-suivi, equipe-cloture,
+                 backlog-stories, sprint]
+    handoff_vers: [auditeur-curriculum, orchestrateur-pm]
+    porte_qualite:
+      dor: "tous les agents producteurs applicables ont rendu leur verdict avancer"
+      dod: "aucun ecart de gravite bloquante non resolu ; ecarts mineurs documentes"
+      verdict: [avancer, retravailler, escalader]
+      max_rework: 3
+    reprise_humaine: "arbitrage des ecarts que deux agents refusent de resoudre apres epuisement des boucles"
+    risque_ia: >
+      Complaisance : valider un portfolio coherent en apparence mais faux au fond.
+      Mitigation : regles de coherence explicites et mecaniques, pas d'appreciation
+      globale.
+
+  - id: auditeur-curriculum
+    nom: "Audit de conformite au referentiel"
+    couche: controle
+    phase: transverse
+    registre: hybrid
+    source:
+      type: cree
+      justification: >
+        Aucun depot du benchmark ne fait d'audit de tracabilite vis-a-vis d'un
+        referentiel de competences. C'est la brique la plus differenciante du
+        systeme.
+      verifie: true
+    competence:
+      google_pm_cert: "C6 — Capstone : application integree ; transverse C1-C5"
+    role: >
+      Verifie que le portfolio couvre effectivement les competences du curriculum
+      C1-C6, que chaque artefact est tracable a une competence nommee, et produit
+      la matrice de tracabilite competence -> agent -> artefact. Signale les
+      competences non couvertes.
+    entrees:
+      - "tous les artefacts produits"
+      - "rapport de coherence"
+    sorties:
+      - artefact: "matrice de tracabilite competence / agent / artefact"
+        format: [md, xlsx]
+      - artefact: "rapport de couverture (competences non couvertes, motifs)"
+        format: md
+    depends_on: [verificateur-coherence]
+    handoff_vers: [orchestrateur-pm]
+    porte_qualite:
+      dor: "rapport de coherence sans ecart bloquant"
+      dod: >
+        Chaque cours C1-C6 dispose d'au moins un artefact tracable ; toute
+        competence non couverte est listee avec son motif (hors perimetre,
+        non applicable a la methodologie retenue, lacune de contexte).
+      verdict: [avancer, retravailler]
+      max_rework: 2
+    reprise_humaine: "validation finale du portfolio avant presentation"
+    risque_ia: >
+      Auto-attribution de couverture ("cet artefact couvre la competence X") sans
+      verification du contenu reel. Mitigation : la matrice cite l'element precis
+      de l'artefact, pas seulement son titre.
+
+# =============================================================================
+# FLUX D'ORCHESTRATION
+# =============================================================================
+
+flux:
+  # --- Correction C1 : definition d'une tranche d'execution.
+  # Origine : la tranche verticale de test avait ete definie par un CHOIX de
+  # 6 agents. `risques` s'est revele non demarrable, sa porte d'entree exigeant un
+  # chemin critique produit par `planificateur-wbs`, absent du choix.
+  regle_de_tranche: >
+    Toute execution partielle de la chaine se definit comme la FERMETURE
+    TRANSITIVE des dependances des agents vises, jamais comme une selection
+    d'agents. Selectionner un agent, c'est selectionner tout son arbre amont.
+  controle: >
+    Avant lancement, l'orchestrateur verifie que pour chaque agent retenu, tous
+    les agents de son `depends_on` sont presents dans la tranche. Sinon la tranche
+    est rejetee avec la liste des agents manquants.
+
+  principe: >
+    Chaine sequentielle a branchement conditionnel, avec double controle final.
+    Chaque hand-off passe une porte qualite ; un verdict "retravailler" renvoie a
+    l'agent auteur dans la limite de max_rework, apres quoi le cas est escalade a
+    l'humain.
+
+  sequence:
+    - etape: 0
+      agents: [orchestrateur-pm, contexte-projet]
+      sortie: "dossier de contexte + registre des lacunes"
+      point_de_reprise_humaine: "comblement des lacunes bloquantes"
+
+    - etape: 1
+      agents: [methodologue]
+      sortie: "recommandation methodologique + drapeau agile"
+      point_de_reprise_humaine: "VALIDATION OBLIGATOIRE — decision engageante"
+
+    - etape: 2
+      agents: [charte-objectifs]
+      puis: [parties-prenantes]
+      note: "sequentiel : le RACI a besoin des livrables de la charte"
+      point_de_reprise_humaine: "validation du perimetre et de l'analyse cout-benefice"
+
+    - etape: 3
+      agents: [planificateur-wbs]
+      puis_parallele: [risques, communications]
+      puis: [budget-achats]
+      note: >
+        budget-achats depend de risques (contingence) ET de planificateur-wbs
+        (estimation ascendante) — il ne peut pas etre parallelise avec eux.
+      point_de_reprise_humaine: "VALIDATION OBLIGATOIRE du budget et des estimations de duree"
+
+    - etape: 4
+      agents: [qualite-suivi]
+      puis: [equipe-cloture]
+
+    - etape: 5
+      condition: "drapeau_agile == true"
+      agents: [backlog-stories]
+      puis: [sprint]
+      note: "branche ignoree si methodologie waterfall pure"
+      point_de_reprise_humaine: "ordonnancement du backlog et engagement de sprint"
+
+    - etape: 6
+      agents: [verificateur-coherence]
+      puis: [auditeur-curriculum]
+      note: "sequentiel : on ne verifie la conformite referentiel qu'apres coherence interne"
+      point_de_reprise_humaine: "validation finale du portfolio"
+
+  branchements:
+    waterfall_pur: "etapes 0,1,2,3,4,6 — branche agile ignoree"
+    agile_pur: "etapes 0,1,2,3(allege),5,6 — WBS et chemin critique produits en version reduite"
+    hybride: "toutes les etapes"
+
+  boucle_de_rework:
+    origine: "kchia/EvaluationAgent (plafond d'iterations) — pattern MIT"
+    regle: >
+      Un verdict "retravailler" retourne a l'agent auteur avec les ecarts
+      constates. Au-dela de max_rework, verdict "escalader" : l'orchestrateur
+      remonte a l'humain plutot que de boucler.
+
+# =============================================================================
+# REPRISE HUMAINE — ce que le systeme ne decide jamais
+# =============================================================================
+
+reprise_humaine:
+  principe: >
+    Repris de sdi2200262 (validation utilisateur obligatoire entre chaque etape)
+    et durci : certaines decisions ne sont pas seulement validees par l'humain,
+    elles lui appartiennent.
+
+  jamais_delegue:
+    - decision: "choix de methodologie"
+      motif: "engage l'organisation, la contractualisation et le mode de collaboration"
+    - decision: "arbitrage de valeur et ordonnancement du backlog"
+      motif: "prerogative du Product Owner (Scrum Guide) — la valeur n'est pas calculable"
+    - decision: "validation des chiffres budgetaires"
+      motif: "risque de credibilite le plus eleve ; aucun cout unitaire genere n'est fiable"
+    - decision: "engagement de sprint"
+      motif: "une equipe s'engage elle-meme (Scrum Guide)"
+    - decision: "engagement vis-a-vis des parties prenantes"
+      motif: "la parole donnee engage une personne, pas un systeme"
+    - decision: "evaluation des personnes"
+      motif: "hors perimetre de l'IA, quelle que soit la qualite des donnees"
+    - decision: "cotation finale de l'impact des risques"
+      motif: "depend de la tolerance au risque de l'organisation, non deductible"
+
+  ou_l_ia_apporte_le_plus:
+    - "exhaustivite structurelle (aucune rubrique oubliee)"
+    - "coherence croisee entre artefacts, verifiable mecaniquement"
+    - "tracabilite au referentiel"
+    - "premiere version d'un artefact, comme support d'atelier"
+
+  ou_l_ia_est_risquee:
+    - "toute valeur chiffree non presente dans le contexte d'entree"
+    - "estimation de duree et de velocite sans historique"
+    - "cartographie politique d'une organisation"
+    - "appreciation qualitative deguisee en calcul"
+
+# =============================================================================
+# MATRICE DE TRACABILITE — competence Google PM Cert -> agent -> artefact
+# =============================================================================
+
+matrice_tracabilite:
+
+  C1_fondements:
+    intitule: "Fondements de la gestion de projet"
+    competences:
+      - competence: "methodologies (waterfall, agile, lean, six sigma)"
+        agent: methodologue
+        artefact: "note de recommandation methodologique"
+      - competence: "role et responsabilites du chef de projet"
+        agent: orchestrateur-pm
+        artefact: "plan d'execution et journal de decisions"
+
+  C2_initiation:
+    intitule: "Lancement de projet : demarrer un projet reussi"
+    competences:
+      - competence: "documentation d'initiation (project charter)"
+        agent: charte-objectifs
+        artefact: "charte de projet"
+      - competence: "buts SMART et OKR"
+        agent: charte-objectifs
+        artefact: "objectifs SMART et OKR"
+      - competence: "perimetre et scope creep"
+        agent: charte-objectifs
+        artefact: "enonce de perimetre"
+      - competence: "analyse des parties prenantes, grille pouvoir/interet"
+        agent: parties-prenantes
+        artefact: "registre des parties prenantes + grille pouvoir/interet"
+      - competence: "matrice RACI"
+        agent: parties-prenantes
+        artefact: "matrice RACI"
+
+  C3_planification:
+    intitule: "Planification de projet : la mise en place du projet"
+    competences:
+      - competence: "work breakdown structure, estimation, jalons, chemin critique"
+        agent: planificateur-wbs
+        artefact: "WBS + plan de projet + jalons et chemin critique"
+      - competence: "gestion des risques, registre, matrice probabilite/impact"
+        agent: risques
+        artefact: "registre des risques + matrice + plans d'attenuation"
+      - competence: "budget, estimation ascendante, reserve de contingence"
+        agent: budget-achats
+        artefact: "budget detaille et plan de decaissement"
+      - competence: "approvisionnement (RFP, fournisseurs, contrats, ethique)"
+        agent: budget-achats
+        artefact: "plan d'approvisionnement et trame d'appel d'offres"
+      - competence: "plan de communication et documentation partagee"
+        agent: communications
+        artefact: "plan de communication + chaine d'escalade"
+
+  C4_execution:
+    intitule: "Execution du projet"
+    competences:
+      - competence: "management de la qualite, amelioration continue"
+        agent: qualite-suivi
+        artefact: "plan de management de la qualite"
+      - competence: "donnees, metriques, KPI, tableaux de bord"
+        agent: qualite-suivi
+        artefact: "referentiel de KPI et tableau de bord"
+      - competence: "communication d'avancement et escalade"
+        agent: qualite-suivi
+        artefact: "trame de compte rendu d'avancement"
+      - competence: "developpement d'equipe, motivation, gestion des conflits"
+        agent: equipe-cloture
+        artefact: "cadre de fonctionnement d'equipe"
+      - competence: "cloture : rapport d'impact, retrospective, lecons apprises"
+        agent: equipe-cloture
+        artefact: "criteres de cloture + trames rapport d'impact / retrospective"
+
+  C5_agile:
+    intitule: "Gestion de projet agile"
+    condition: "drapeau_agile == true"
+    competences:
+      - competence: "backlog produit, affinage, user stories, criteres d'acceptation"
+        agent: backlog-stories
+        artefact: "backlog produit ordonne + criteres Given/When/Then + DoR"
+      - competence: "estimation relative (story points)"
+        agent: backlog-stories
+        artefact: "backlog produit ordonne (colonne estimation)"
+      - competence: "sprint planning, sprint backlog, definition of done, burndown"
+        agent: sprint
+        artefact: "sprint backlog initial + DoD + trames evenements Scrum"
+
+  C6_capstone:
+    intitule: "Capstone : application de la gestion de projet dans le monde reel"
+    competences:
+      - competence: "integration et coherence d'ensemble"
+        agent: verificateur-coherence
+        artefact: "rapport de coherence"
+      - competence: "application integree du referentiel"
+        agent: auditeur-curriculum
+        artefact: "matrice de tracabilite + rapport de couverture"
+
+  C7:
+    statut: "EXCLU — hors sujet (orientation carriere, aucune production d'artefact PM)"
+
+# =============================================================================
+# SYNTHESE
+# =============================================================================
+
+synthese:
+  nombre_d_agents: 15
+  repartition:
+    orchestration: 2
+    production: 11
+    controle: 2
+  repartition_par_source:
+    adapte: 5     # orchestrateur-pm, contexte-projet, planificateur-wbs, backlog-stories, verificateur-coherence
+    cree: 10
+    reutilise: 0
+  commentaire_source: >
+    Aucun agent n'est reutilise tel quel : les deux depots du benchmark ne
+    produisent aucun artefact du referentiel PM. Ce qui est repris, ce sont des
+    patterns d'architecture (orchestration, memoire partagee, boucle de rework
+    bornee, decomposition) — pas de la substance metier. La couche de generation
+    d'artefacts alignee curriculum est integralement construite en propre.
+
+  ce_que_la_conception_demontre:
+    - "separation des responsabilites et gouvernance par portes qualite explicites"
+    - "DoR/DoD transposees en contrats de decision executables"
+    - "raisonnement buy-vs-build avec due diligence licence et maturite verifiee"
+    - "double registre assume : waterfall et agile dans une meme chaine, avec branchement conditionnel"
+    - "honnetete methodologique : ce que l'IA ne decide pas est documente au meme niveau que ce qu'elle produit"
+
+  validation:
+    methode: "tranche verticale — 7 agents sur 15 executes manuellement sur un cas neutre"
+    dossier: "portfolio-demo/"
+    cas_etude: "refonte d'un portail client B2B (fictif, secteur generique)"
+    agents_couverts: [contexte-projet, methodologue, charte-objectifs, parties-prenantes,
+                      planificateur-wbs, risques, verificateur-coherence]
+    resultat: >
+      6 defauts de conception identifies, dont 5 introuvables en relisant la
+      cartographie. Corrections C1 a C6 portees dans la version 1.1.
+    defaut_le_plus_significatif: >
+      Un agent a valide sa propre porte de sortie avec un chemin critique mal
+      additionne (67 semaines annoncees, 71 reelles), ce qui inversait la
+      conclusion managériale sur la tenue de l'echeance (marge +2 -> -2 semaines).
+      Aucune porte individuelle ne pouvait le voir : une porte verifie qu'un
+      chemin critique EXISTE, pas qu'il est correctement additionne.
+    enseignement_central: >
+      Une porte de sortie verifie un format, pas une verite. Le second niveau de
+      controle ne sert pas a relire, il sert a RECALCULER. C'est ce qui justifie
+      l'architecture a deux niveaux, par un argument plus fort que prevu.
+
+  limites_assumees:
+    - "chaine jamais executee automatiquement : la tranche verticale a ete jouee manuellement selon les specifications"
+    - "8 agents sur 15 restent non testes (budget-achats, communications, qualite-suivi, equipe-cloture, backlog-stories, sprint, auditeur-curriculum, orchestrateur-pm)"
+    - "libelles exacts des competences du curriculum a recouper avec les depots pedagogiques"
+    - "les portes qualite sont specifiees, leur implementation reste a ecrire (livrable 2)"
+    - "les corrections C1 a C6 sont specifiees mais n'ont pas ete re-testees par une nouvelle tranche"
