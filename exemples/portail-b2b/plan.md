@@ -2,7 +2,7 @@
 
 # Plan de projet, jalons et chemin critique
 
-> Fourchettes non empiriques. Aucune donnee de velocite ni d'historique projet. Support d'atelier d'estimation, jamais un engagement.
+> Fourchettes non empiriques. Aucune donnée de velocite ni d'historique projet. Support d'atelier d'estimation, jamais un engagement.
 
 
 ## Work breakdown structure
@@ -10,18 +10,18 @@
 | Lot | Intitulé | Livrables | Durée |
 |---|---|---|---|
 | 1 | Cadrage et contractualisation | *conduite* | 10-14 sem. |
-| &nbsp;&nbsp;&nbsp;&nbsp;1.1 | Cadrage detaille et validation du perimetre | *conduite* | 3-4 sem. |
-| &nbsp;&nbsp;&nbsp;&nbsp;1.2 | Analyse de la volumetrie et typologie des appels | D8 | 3-4 sem. |
-| &nbsp;&nbsp;&nbsp;&nbsp;1.3 | Etude d'exposition des donnees ERP | D6 | 4-5 sem. |
+| &nbsp;&nbsp;&nbsp;&nbsp;1.1 | Cadrage détaillé et validation du périmètre | *conduite* | 3-4 sem. |
+| &nbsp;&nbsp;&nbsp;&nbsp;1.2 | Analyse de la volumétrie et typologie des appels | D8 | 3-4 sem. |
+| &nbsp;&nbsp;&nbsp;&nbsp;1.3 | Étude d'exposition des données ERP | D6 | 4-5 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;1.4 | Mesure de la base de depart | D8 | 2-3 sem. |
-| &nbsp;&nbsp;&nbsp;&nbsp;1.5 | Appel d'offres et selection du prestataire | *conduite* | 6-8 sem. |
+| &nbsp;&nbsp;&nbsp;&nbsp;1.5 | Appel d'offres et sélection du prestataire | *conduite* | 6-8 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;1.6 | Contractualisation | *conduite* | 3-5 sem. |
 | 2 | Conception | *conduite* | 8-11 sem. |
-| &nbsp;&nbsp;&nbsp;&nbsp;2.1 | Identification des parcours auto-resolvables | D1, D2, D3, D4 | 3-4 sem. |
+| &nbsp;&nbsp;&nbsp;&nbsp;2.1 | Identification des parcours auto-résolvables | D1, D2, D3, D4 | 3-4 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;2.2 | Architecture d'information et parcours cibles | D1, D2, D3, D4 | 4-5 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;2.3 | Design system responsive | D5 | 4-6 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;2.4 | Architecture technique et interface ERP | D6 | 4-5 sem. |
-| 3 | Realisation iterative | *conduite* | 26-34 sem. |
+| 3 | Réalisation itérative | *conduite* | 26-34 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;3.1 | Socle technique, authentification, performance | D5 | 6-8 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;3.2 | Interface ERP en lecture | D6 | 6-8 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;3.3 | Parcours consultation des devis | D1 | 4-5 sem. |
@@ -50,12 +50,12 @@ Durée : **50 semaines à 67 semaines**
 
 | # | Jalon | Cible | Nature |
 |---|---|---|---|
-| J1 | Perimetre valide et base de mesure etablie | 2026-12-31 | interne |
-| J2 | Prestataire contractualise | 2027-03-31 | **contractuel** |
-| J3 | Conception validee, architecture ERP arretee | 2027-06-30 | **contractuel** |
+| J1 | Périmètre valide et base de mesure établie | 2026-12-31 | interne |
+| J2 | Prestataire contractualisé | 2027-03-31 | **contractuel** |
+| J3 | Conception validee, architecture ERP arrêtée | 2027-06-30 | **contractuel** |
 | J4 | Parcours de consultation en production | 2027-09-30 | **contractuel** |
 | J5 | Parcours de commande en production | 2027-12-31 | **contractuel** |
-| J6 | Mise en service complete | 2027-12-31 | **contractuel** |
+| J6 | Mise en service complète | 2027-12-31 | **contractuel** |
 | J7 | Mesure des objectifs O1 et O2 | 2028-03-31 | interne |
 
 ## Dérogations déclarées

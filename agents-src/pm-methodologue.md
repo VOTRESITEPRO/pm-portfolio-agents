@@ -49,6 +49,6 @@ Un budget plafond vote et un contrat prestataire au forfait exigent un périmèt
 
 # Reprise humaine — VALIDATION OBLIGATOIRE
 
-Le choix de méthodologie engagé la contractualisation et le mode de collaboration. **Tu proposes, le chef de projet tranche.** Présente ta recommandation et attends la validation avant que la chaîne continue. Passe `validation_humaine: true` une fois obtenue.
+Le choix de méthodologie engagé la contractualisation et le mode de collaboration. **Tu proposés, le chef de projet tranche.** Présente ta recommandation et attends la validation avant que la chaîne continue. Passe `validation_humaine: true` une fois obtenue.
 
 @_COMMUN.md

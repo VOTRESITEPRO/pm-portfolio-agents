@@ -10,7 +10,7 @@
 
 ### O1
 
-> Reduire de 40 % le volume d'appels entrants auto-resolvables, de 60 a 36 appels/jour en moyenne mensuelle, mesure au 31/03/2028.
+> Réduire de 40 % le volume d'appels entrants auto-résolvables, de 60 à 36 appels/jour en moyenne mensuelle, mesure au 31/03/2028.
 
 Cible : 36 appels/jour
 
@@ -24,14 +24,14 @@ Cible : 36 appels/jour
 
 ### O2
 
-> Atteindre 30 % de sessions mobile/tablette au 31/03/2028, la base de depart etant mesuree au lot 1.4.
+> Atteindre 30 % de sessions mobile/tablette au 31/03/2028, la base de depart etant mesurée au lot 1.4.
 
 Cible : 30 % *(seuil proposé, **à arbitrer**)*
 
 | Critère | Vérification |
 |---|---|
 | S | part de sessions mobile |
-| M | analytics, base mesuree au lot 1.4 |
+| M | analytics, base mesurée au lot 1.4 |
 | A | conditionnel a la base |
 | R | a confirmer |
 | T | 31/03/2028 |
@@ -75,19 +75,19 @@ Cible : 30 % *(seuil proposé, **à arbitrer**)*
 | # | Livrable | Critère de succès |
 |---|---|---|
 | D1 | Parcours de consultation des devis | consultation sans appel ; chargement sous le seuil de performance retenu |
-| D2 | Parcours de consultation des commandes | statut a jour depuis l'ERP |
-| D3 | Parcours de consultation des factures | telechargement PDF operationnel |
-| D4 | Parcours de commande sur catalogue | commande arrivee complete dans l'ERP sans ressaisie |
-| D5 | Socle responsive | tous les parcours passent les criteres d'acceptation mobile |
-| D6 | Interface ERP | aucune divergence sur un echantillon de controle |
+| D2 | Parcours de consultation des commandes | statut à jour depuis l'ERP |
+| D3 | Parcours de consultation des factures | telechargement PDF opérationnel |
+| D4 | Parcours de commande sur catalogue | commande arrivee complète dans l'ERP sans ressaisie |
+| D5 | Socle responsive | tous les parcours passent les critères d'acceptation mobile |
+| D6 | Interface ERP | aucune divergence sur un échantillon de contrôle |
 | D7 | Reprise des comptes clients | 100 % des comptes actifs migres et fonctionnels |
-| D8 | Dispositif de mesure | O1 et O2 mesurables des la mise en service |
+| D8 | Dispositif de mesure | O1 et O2 mesurables dès la mise en service |
 
 ## Hypothèses
 
 | # | Hypothèse | Risque associé |
 |---|---|---|
-| H1 | Une part significative des appels est auto-resolvable | R-07 |
-| H2 | L'ERP expose les donnees necessaires en lecture | R-02 |
-| H3 | Un prestataire peut etre contractualise dans les delais | R-04 |
-| H4 | 1,5 ETP interne suffit a l'encadrement et a la recette | R-05 |
+| H1 | Une part significative des appels est auto-résolvable | R-07 |
+| H2 | L'ERP expose les données nécessaires en lecture | R-02 |
+| H3 | Un prestataire peut être contractualisé dans les délais | R-04 |
+| H4 | 1,5 ETP interne suffit à l'encadrement et à la recette | R-05 |

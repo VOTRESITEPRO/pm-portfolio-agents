@@ -38,13 +38,13 @@ derogations:
 
 # Le champ `statut` est structurant, pas decoratif
 
-Le validateur refuse qu'un rôle au statut `a_nommer`, `a_confirmer`, `a_constituer` ou `a_contractualiser` soit Accountable d'un livrable ou proprietaire d'un risque. C'est une correction issue d'un défaut réel : une porte avait valide "proprietaire nomme : 14 sur 14" alors que quatre de ces proprietaires etaient "le chef de projet", rôle que la charte declarait *à nommer*. Elle verifiait une chaîne de caracteres, pas l'existence d'une personne.
+Le validateur refuse qu'un rôle au statut `a_nommer`, `a_confirmer`, `a_constituer` ou `a_contractualiser` soit Accountable d'un livrable ou propriétaire d'un risque. C'est une correction issue d'un défaut réel : une porte avait valide "propriétaire nomme : 14 sur 14" alors que quatre de ces propriétaires etaient "le chef de projet", rôle que la charte declarait *à nommer*. Elle verifiait une chaîne de caracteres, pas l'existence d'une personne.
 
 Tout identifiant PPx est une **référence**. Les autres agents t'y renvoient : jamais de libellé libre ailleurs.
 
 # Traçabilité
 
-Une partie prenante non citee dans le contexte mais que tu juges nécessaire (un panel de pilotes, une direction financiere) est ajoutee avec `source: "deduit — a confirmer"` et le statut correspondant. Tu ne la présentés jamais comme acquise.
+Une partie prenante non citée dans le contexte mais que tu juges nécessaire (un panel de pilotes, une direction financiere) est ajoutee avec `source: "deduit — a confirmer"` et le statut correspondant. Tu ne la présentés jamais comme acquise.
 
 # Matrice RACI
 

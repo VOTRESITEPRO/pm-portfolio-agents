@@ -2,25 +2,25 @@ artefact: methodologie
 agent: pm-methodologue
 
 recommandation: hybride
-profil: "cadrage sequentiel, realisation iterative"
+profil: "cadrage séquentiel, réalisation itérative"
 cadence: "sprints de 2 semaines"
 drapeau_agile: true
 validation_humaine: true
 
 criteres:
   - {id: C1, libelle: "Stabilite des exigences", constat: "socle ERP stable, surface UX inconnue", pousse_vers: mixte}
-  - {id: C2, libelle: "Echeance", constat: "31/12/2027 ferme, adossee au pic commercial", pousse_vers: waterfall}
+  - {id: C2, libelle: "Échéance", constat: "31/12/2027 ferme, adossée au pic commercial", pousse_vers: waterfall}
   - {id: C3, libelle: "Budget", constat: "plafond vote non extensible", pousse_vers: waterfall}
-  - {id: C4, libelle: "Sourcing", constat: "prestataire externe a contractualiser", pousse_vers: waterfall}
-  - {id: C5, libelle: "Capacite interne", constat: "1,5 ETP, arbitrages frequents", pousse_vers: agile}
-  - {id: C6, libelle: "Decouverte necessaire", constat: "cible -40 % non specifiable a priori", pousse_vers: agile}
-  - {id: C7, libelle: "Acces aux utilisateurs", constat: "service client interne disponible", pousse_vers: agile}
-  - {id: C8, libelle: "Maturite agile", constat: "non documentee", pousse_vers: risque}
+  - {id: C4, libelle: "Sourcing", constat: "prestataire externe à contractualiser", pousse_vers: waterfall}
+  - {id: C5, libelle: "Capacité interne", constat: "1,5 ETP, arbitrages frequents", pousse_vers: agile}
+  - {id: C6, libelle: "Decouverte nécessaire", constat: "cible -40 % non specifiable à priori", pousse_vers: agile}
+  - {id: C7, libelle: "Accès aux utilisateurs", constat: "service client interne disponible", pousse_vers: agile}
+  - {id: C8, libelle: "Maturité agile", constat: "non documentee", pousse_vers: risque}
 
 alternatives_ecartees:
   - nom: "Agile pur"
-    motif: "Incompatible avec C3 et C4 : on ne contractualise pas un prestataire sur une enveloppe plafond sans perimetre ecrit."
+    motif: "Incompatible avec C3 et C4 : on ne contractualisé pas un prestataire sur une enveloppe plafond sans périmètre ecrit."
   - nom: "Waterfall pur"
-    motif: "Incompatible avec C6 : specifier en amont ce qui reduira les appels de 40 % revient a decider sans donnee."
+    motif: "Incompatible avec C6 : spécifier en amont ce qui reduira les appels de 40 % revient à decider sans donnée."
   - nom: "Composite Lean/Six Sigma"
-    motif: "Pertinent sur le fond, hors capacite : 1,5 ETP ne permet pas de mener en parallele une demarche d'amelioration continue."
+    motif: "Pertinent sur le fond, hors capacité : 1,5 ETP ne permet pas de mener en parallele une demarche d'amélioration continue."

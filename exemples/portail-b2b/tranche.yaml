@@ -1,8 +1,8 @@
-# Tranche d'execution declaree (correction C1).
-# Le validateur en calcule la FERMETURE TRANSITIVE : declarer "risques" implique
-# plan, charte, methodologie et contexte. Les regles portant sur un artefact hors
+# Tranche d'exécution déclarée (correction C1).
+# Le validateur en calcule la Fermeture TRANSITIVE : déclarer "risques" implique
+# plan, charte, méthodologie et contexte. Les règles portant sur un artefact hors
 # tranche sont non applicables ; un artefact DANS la tranche mais absent du disque
-# est un ecart.
+# est un écart.
 artefacts:
   - risques
   - parties-prenantes

@@ -6,18 +6,18 @@
 
 | # | Nom | Rôle | Pouvoir | Intérêt | Statut |
 |---|---|---|---|---|---|
-| PP1 | Direction generale | Sponsor, arbitrage budgetaire | eleve | moyen | confirme |
-| PP2 | Direction commerciale | Demandeur du devis en ligne | eleve | eleve | confirme |
-| PP3 | Responsable service client | Beneficiaire de O1 | moyen | eleve | confirme |
-| PP4 | Conseillers service client | Source de la donnee d'appels | faible | eleve | confirme |
-| PP5 | Responsable IT | Garant de l'integration ERP | eleve | eleve | confirme |
-| PP6 | Equipe IT | Realisation et recette internes | moyen | eleve | confirme |
-| PP7 | Prestataire externe | Realisation | moyen | moyen | **a_contractualiser** |
-| PP8 | Clients professionnels | Utilisateurs finaux | faible | eleve | confirme |
-| PP9 | Clients pilotes | Validation iterative | faible | eleve | **a_constituer** |
-| PP10 | DPO externe | Conformite RGPD | moyen | faible | confirme |
-| PP11 | Direction administrative et financiere | Suivi budgetaire | eleve | faible | **a_confirmer** |
-| PP12 | Chef de projet | Pilotage | moyen | eleve | **a_nommer** |
+| PP1 | Direction générale | Sponsor, arbitrage budgétaire | eleve | moyen | confirmé |
+| PP2 | Direction commerciale | Demandeur du devis en ligne | eleve | eleve | confirmé |
+| PP3 | Responsable service client | Bénéficiaire de O1 | moyen | eleve | confirmé |
+| PP4 | Conseillers service client | Source de la donnée d'appels | faible | eleve | confirmé |
+| PP5 | Responsable IT | Garant de l'intégration ERP | eleve | eleve | confirmé |
+| PP6 | Équipe IT | Réalisation et recette internes | moyen | eleve | confirmé |
+| PP7 | Prestataire externe | Réalisation | moyen | moyen | **à contractualiser** |
+| PP8 | Clients professionnels | Utilisateurs finaux | faible | eleve | confirmé |
+| PP9 | Clients pilotes | Validation itérative | faible | eleve | **à constituer** |
+| PP10 | DPO externe | Conformite RGPD | moyen | faible | confirmé |
+| PP11 | Direction administrative et financiere | Suivi budgétaire | eleve | faible | **à confirmer** |
+| PP12 | Chef de projet | Pilotage | moyen | eleve | **à nommer** |
 
 ## Matrice RACI
 
@@ -38,6 +38,6 @@ Visibles et contestables — une dérogation n'est jamais silencieuse.
 
 | Règle | Élément | Motif |
 |---|---|---|
-| R4 | PP4 | Consultes comme source de donnee, non responsables d'un livrable. Rattaches a PP3. |
+| R4 | PP4 | Consultes comme source de donnée, non responsables d'un livrable. Rattaches à PP3. |
 | R4 | PP8 | Destinataires finaux, non responsables. Representes par PP9. |
-| R4 | PP11 | Hors chaine de production des livrables ; intervient au suivi budgetaire, trace au plan de communication. |
+| R4 | PP11 | Hors chaine de production des livrables ; intervient au suivi budgétaire, trace au plan de communication. |

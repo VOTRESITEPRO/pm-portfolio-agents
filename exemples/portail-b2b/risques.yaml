@@ -3,23 +3,23 @@ agent: pm-risques
 
 registre:
   - id: R-01
-    libelle: "Le devis en ligne, exclu de la v1, est reintroduit en cours de projet"
+    libelle: "Le devis en ligne, exclu de la v1, est réintroduit en cours de projet"
     categorie: perimetre
     lots_couverts: []
     p: 4
     i: 4
     reponse: eviter
     proprietaire: PP12
-    declencheur: {libelle: "Demande d'evolution mentionnant le devis en comite de pilotage"}
+    declencheur: {libelle: "Demande d'évolution mentionnant le devis en comite de pilotage"}
   - id: R-02
-    libelle: "L'ERP n'expose pas les donnees necessaires en lecture"
+    libelle: "L'ERP n'expose pas les données nécessaires en lecture"
     categorie: technique
     lots_couverts: ["1.3", "2.4", "3.2"]
     p: 3
     i: 5
     reponse: reduire
     proprietaire: PP5
-    declencheur: {libelle: "Rapport d'etude 1.3 concluant a l'absence d'interface exploitable"}
+    declencheur: {libelle: "Rapport d'étude 1.3 concluant à l'absence d'interface exploitable"}
   - id: R-03
     libelle: "Le plafond de 400 k EUR est atteint avant la mise en service"
     categorie: budget
@@ -30,14 +30,14 @@ registre:
     proprietaire: PP1
     declencheur: {libelle: "Consommation au jalon J4", seuil: {valeur: 70, unite: "%", statut: seuil_propose, arbitre: false}}
   - id: R-04
-    libelle: "L'appel d'offres et la contractualisation depassent le delai prevu"
+    libelle: "L'appel d'offres et la contractualisation dépassent le délai prévu"
     categorie: delai
     lots_couverts: ["1.5", "1.6"]
     p: 3
     i: 5
     reponse: reduire
     proprietaire: PP12
-    declencheur: {libelle: "Absence de candidat retenu a J2 moins 4 semaines"}
+    declencheur: {libelle: "Absence de candidat retenu à J2 moins 4 semaines"}
   - id: R-05
     libelle: "1,5 ETP interne insuffisant pour l'encadrement et la recette"
     categorie: ressources
@@ -48,7 +48,7 @@ registre:
     proprietaire: PP5
     declencheur: {libelle: "Retard de validation sur deux sprints consecutifs", seuil: {valeur: 5, unite: "jours ouvres", statut: seuil_propose, arbitre: false}}
   - id: R-06
-    libelle: "L'organisation n'a pas la maturite agile supposee par la cadence de sprints"
+    libelle: "L'organisation n'a pas la maturité agile supposee par la cadence de sprints"
     categorie: organisation
     lots_couverts: []
     p: 3
@@ -57,23 +57,23 @@ registre:
     proprietaire: PP12
     declencheur: {libelle: "Deux revues de sprint sans participation metier"}
   - id: R-07
-    libelle: "La part reellement auto-resolvable des appels est trop faible pour atteindre -40 %"
+    libelle: "La part réellement auto-résolvable des appels est trop faible pour atteindre -40 %"
     categorie: metier
     lots_couverts: []
     p: 3
     i: 5
     reponse: reduire
     proprietaire: PP3
-    declencheur: {libelle: "Resultat du lot 1.2 : part auto-resolvable sous le seuil", seuil: {valeur: 40, unite: "%", statut: seuil_propose, arbitre: false}}
+    declencheur: {libelle: "Résultat du lot 1.2 : part auto-résolvable sous le seuil", seuil: {valeur: 40, unite: "%", statut: seuil_propose, arbitre: false}}
   - id: R-08
-    libelle: "La qualite des donnees des comptes empeche une reprise propre"
+    libelle: "La qualité des données des comptes empeche une reprise propre"
     categorie: donnees
     lots_couverts: ["4.1"]
     p: 3
     i: 4
     reponse: reduire
     proprietaire: PP5
-    declencheur: {libelle: "Taux d'anomalies sur un echantillon de controle", seuil: {valeur: 5, unite: "%", statut: seuil_propose, arbitre: false}}
+    declencheur: {libelle: "Taux d'anomalies sur un échantillon de contrôle", seuil: {valeur: 5, unite: "%", statut: seuil_propose, arbitre: false}}
   - id: R-09
     libelle: "La validation RGPD intervient trop tard et bloque la mise en service"
     categorie: conformite
@@ -91,27 +91,27 @@ registre:
     i: 4
     reponse: reduire
     proprietaire: PP7
-    declencheur: {libelle: "Mesure en recette de sprint au-dela du seuil de performance", seuil: {valeur: 2, unite: "s", statut: seuil_propose, arbitre: false}}
+    declencheur: {libelle: "Mesure en recette de sprint au-delà du seuil de performance", seuil: {valeur: 2, unite: "s", statut: seuil_propose, arbitre: false}}
   - id: R-11
-    libelle: "Le panel de clients pilotes ne se constitue pas ou se demobilise"
+    libelle: "Le panel de clients pilotes ne se constitue pas ou se démobilise"
     categorie: externe
     lots_couverts: []
     p: 4
     i: 3
     reponse: reduire
     proprietaire: PP2
-    declencheur: {libelle: "Moins de 5 pilotes actifs apres deux sprints"}
+    declencheur: {libelle: "Moins de 5 pilotes actifs après deux sprints"}
   - id: R-12
-    libelle: "La concentration des approbations sur le responsable IT cree un goulot"
+    libelle: "La concentration des approbations sur le responsable IT créé un goulot"
     categorie: organisation
     lots_couverts: []
     p: 3
     i: 4
     reponse: reduire
     proprietaire: PP12
-    declencheur: {libelle: "Delai moyen d'approbation", seuil: {valeur: 5, unite: "jours ouvres", statut: seuil_propose, arbitre: false}}
+    declencheur: {libelle: "Délai moyen d'approbation", seuil: {valeur: 5, unite: "jours ouvres", statut: seuil_propose, arbitre: false}}
   - id: R-13
-    libelle: "L'echeance du 31/12/2027, adossee au pic commercial, n'a aucune fenetre de report"
+    libelle: "L'échéance du 31/12/2027, adossée au pic commercial, n'a aucune fenêtre de report"
     categorie: delai
     lots_couverts: ["4.4"]
     p: 4
@@ -120,11 +120,11 @@ registre:
     proprietaire: PP1
     declencheur: {libelle: "Marge du chemin critique au jalon J4", seuil: {valeur: 4, unite: "semaines", statut: seuil_propose, arbitre: false}}
   - id: R-14
-    libelle: "La complexite fonctionnelle du catalogue et des regles de commande B2B est sous-estimee"
+    libelle: "La complexite fonctionnelle du catalogue et des règles de commande B2B est sous-estimée"
     categorie: technique
     lots_couverts: ["3.3", "3.6"]
     p: 4
     i: 4
     reponse: reduire
     proprietaire: PP7
-    declencheur: {libelle: "Depassement de l'estimation sur le lot 3.3", seuil: {valeur: 30, unite: "%", statut: seuil_propose, arbitre: false}}
+    declencheur: {libelle: "Dépassement de l'estimation sur le lot 3.3", seuil: {valeur: 30, unite: "%", statut: seuil_propose, arbitre: false}}

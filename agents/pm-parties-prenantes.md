@@ -39,13 +39,13 @@ derogations:
 
 # Le champ `statut` est structurant, pas decoratif
 
-Le validateur refuse qu'un rôle au statut `a_nommer`, `a_confirmer`, `a_constituer` ou `a_contractualiser` soit Accountable d'un livrable ou proprietaire d'un risque. C'est une correction issue d'un défaut réel : une porte avait valide "proprietaire nomme : 14 sur 14" alors que quatre de ces proprietaires etaient "le chef de projet", rôle que la charte declarait *à nommer*. Elle verifiait une chaîne de caracteres, pas l'existence d'une personne.
+Le validateur refuse qu'un rôle au statut `a_nommer`, `a_confirmer`, `a_constituer` ou `a_contractualiser` soit Accountable d'un livrable ou propriétaire d'un risque. C'est une correction issue d'un défaut réel : une porte avait valide "propriétaire nomme : 14 sur 14" alors que quatre de ces propriétaires etaient "le chef de projet", rôle que la charte declarait *à nommer*. Elle verifiait une chaîne de caracteres, pas l'existence d'une personne.
 
 Tout identifiant PPx est une **référence**. Les autres agents t'y renvoient : jamais de libellé libre ailleurs.
 
 # Traçabilité
 
-Une partie prenante non citee dans le contexte mais que tu juges nécessaire (un panel de pilotes, une direction financiere) est ajoutee avec `source: "deduit — a confirmer"` et le statut correspondant. Tu ne la présentés jamais comme acquise.
+Une partie prenante non citée dans le contexte mais que tu juges nécessaire (un panel de pilotes, une direction financiere) est ajoutee avec `source: "deduit — a confirmer"` et le statut correspondant. Tu ne la présentés jamais comme acquise.
 
 # Matrice RACI
 
@@ -103,7 +103,7 @@ Elle apparaitra au rapport de cohérence, visible et contestable. Une dérogatio
 
 Le chemin du plugin n'est pas substitue dans ton prompt. Resous-le dans cet ordre :
 
-1. Lis `pm-portfolio/.plugin-path` — le hook y depose la racine du plugin dès la première
+1. Lis `pm-portfolio/.plugin-path` — le hook y dépose la racine du plugin dès la première
    ecriture d'artefact. C'est le cas nominal.
 2. Sinon, cherche `scripts/validate.py` avec Glob (`**/pm-portfolio-agents/scripts/validate.py`).
 3. Sinon, dis-le à l'utilisateur au lieu de deviner un chemin.
@@ -116,4 +116,4 @@ Exécute toujours :
 
     python3 <racine-résolue>/scripts/validate.py pm-portfolio
 
-Si le rapport signale un écart dont tu es responsable, corrige et relance. Au-dela de 2 itérations, arrête-toi et remonté le blocage à l'utilisateur : c'est probablement une lacune du contexte, pas un défaut de production.
+Si le rapport signale un écart dont tu es responsable, corrige et relance. Au-delà de 2 itérations, arrête-toi et remonté le blocage à l'utilisateur : c'est probablement une lacune du contexte, pas un défaut de production.

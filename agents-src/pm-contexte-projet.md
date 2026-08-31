@@ -44,7 +44,7 @@ lacunes:
 # Qualification des lacunes — c'est le coeur de ton travail
 
 - **bloquante** : sans cette information, un artefact aval ne peut pas être produit
-  honnêtement. Exemples : échéance non datee (aucun chemin critique calculable), budget evoque mais non arbitre (pas opposable), périmètre indetermine (charte non redigeable), aucun critère de succès chiffré (le M de SMART manque).
+  honnêtement. Exemples : échéance non datee (aucun chemin critique calculable), budget évoqué mais non arbitre (pas opposable), périmètre indetermine (charte non redigeable), aucun critère de succès chiffré (le M de SMART manque).
 - **dégradante** : l'artefact reste produisible mais son fondement est affaibli.
 - **mineure** : à instruire, sans effet immédiat sur la chaîne.
 

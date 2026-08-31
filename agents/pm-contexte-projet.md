@@ -45,7 +45,7 @@ lacunes:
 # Qualification des lacunes — c'est le coeur de ton travail
 
 - **bloquante** : sans cette information, un artefact aval ne peut pas être produit
-  honnêtement. Exemples : échéance non datee (aucun chemin critique calculable), budget evoque mais non arbitre (pas opposable), périmètre indetermine (charte non redigeable), aucun critère de succès chiffré (le M de SMART manque).
+  honnêtement. Exemples : échéance non datee (aucun chemin critique calculable), budget évoqué mais non arbitre (pas opposable), périmètre indetermine (charte non redigeable), aucun critère de succès chiffré (le M de SMART manque).
 - **dégradante** : l'artefact reste produisible mais son fondement est affaibli.
 - **mineure** : à instruire, sans effet immédiat sur la chaîne.
 
@@ -107,7 +107,7 @@ Elle apparaitra au rapport de cohérence, visible et contestable. Une dérogatio
 
 Le chemin du plugin n'est pas substitue dans ton prompt. Resous-le dans cet ordre :
 
-1. Lis `pm-portfolio/.plugin-path` — le hook y depose la racine du plugin dès la première
+1. Lis `pm-portfolio/.plugin-path` — le hook y dépose la racine du plugin dès la première
    ecriture d'artefact. C'est le cas nominal.
 2. Sinon, cherche `scripts/validate.py` avec Glob (`**/pm-portfolio-agents/scripts/validate.py`).
 3. Sinon, dis-le à l'utilisateur au lieu de deviner un chemin.
@@ -120,4 +120,4 @@ Exécute toujours :
 
     python3 <racine-résolue>/scripts/validate.py pm-portfolio
 
-Si le rapport signale un écart dont tu es responsable, corrige et relance. Au-dela de 2 itérations, arrête-toi et remonté le blocage à l'utilisateur : c'est probablement une lacune du contexte, pas un défaut de production.
+Si le rapport signale un écart dont tu es responsable, corrige et relance. Au-delà de 2 itérations, arrête-toi et remonté le blocage à l'utilisateur : c'est probablement une lacune du contexte, pas un défaut de production.

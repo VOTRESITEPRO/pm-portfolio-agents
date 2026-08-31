@@ -19,6 +19,31 @@ AVERTISSEMENT = ("> Genere depuis `{src}` par `render.py`. Ne pas editer ce fich
                  "toute correction se fait dans le YAML, puis on regenere.\n")
 
 
+# Les donnees restent en ASCII technique ; le rendu destine a l'humain les traduit.
+LIBELLES = {
+    # categories de risque
+    "perimetre":"périmètre","technique":"technique","budget":"budget","delai":"délai",
+    "ressources":"ressources","organisation":"organisation","metier":"métier","donnees":"données",
+    "conformite":"conformité","externe":"externe","qualite":"qualité","securite":"sécurité",
+    # strategies de reponse
+    "eviter":"éviter","reduire":"réduire","transferer":"transférer","accepter":"accepter",
+    # statuts de partie prenante
+    "confirme":"confirmé","a_confirmer":"à confirmer","a_constituer":"à constituer",
+    "a_contractualiser":"à contractualiser","a_nommer":"à nommer",
+    # gravites et statuts de lacune
+    "bloquante":"bloquante","degradante":"dégradante","mineure":"mineure",
+    "ouverte":"ouverte","arbitree":"arbitrée","convertie_en_risque":"convertie en risque",
+    # natures et types
+    "interne":"interne","contractuel":"contractuel","conduite":"conduite","production":"production",
+    "waterfall":"waterfall","agile":"agile","hybride":"hybride","composite":"composite",
+    "mixte":"mixte","risque":"risque","eleve":"élevé","moyen":"moyen","faible":"faible",
+}
+
+def lib(v):
+    """Traduit une valeur technique en libelle lisible."""
+    return LIBELLES.get(str(v), v) if v is not None else "—"
+
+
 def val(champ, defaut="—"):
     """Rend un champ chiffre {valeur, unite, statut} de facon lisible et honnete."""
     if not isinstance(champ, dict) or "valeur" not in champ:
@@ -62,8 +87,8 @@ def r_contexte(d):
               "système refuse de combler par plausibilité.", ""]
         L += tableau(["#", "Lacune", "Gravité", "Statut", "Arbitrage / conversion"],
                      [[x.get("id"), x.get("libelle"),
-                       f"**{x.get('gravite')}**" if x.get("gravite") == "bloquante" else x.get("gravite"),
-                       x.get("statut"), x.get("arbitrage") or x.get("converti_en") or ""] for x in lac])
+                       f"**{lib(x.get('gravite'))}**" if x.get("gravite") == "bloquante" else lib(x.get("gravite")),
+                       lib(x.get("statut")), x.get("arbitrage") or x.get("converti_en") or ""] for x in lac])
         ouvertes = [x for x in lac if x.get("gravite") == "bloquante" and x.get("statut") == "ouverte"]
         L += [f"**Verdict : {'ESCALADER' if ouvertes else 'AVANCER'}** — "
               f"{len(ouvertes)} lacune(s) bloquante(s) ouverte(s).", ""]
@@ -72,12 +97,12 @@ def r_contexte(d):
 
 def r_methodologie(d):
     L = ["# Recommandation de méthodologie", "",
-         f"## **{str(d.get('recommandation','')).upper()}** — {d.get('profil','')}", ""]
+         f"## **{str(lib(d.get('recommandation',''))).upper()}** — {d.get('profil','')}", ""]
     if d.get("cadence"):
         L += [f"Cadence : {d['cadence']}", ""]
     L += ["## Analyse par critères", ""]
     L += tableau(["#", "Critère", "Constat dans ce contexte", "Pousse vers"],
-                 [[c.get("id"), c.get("libelle"), c.get("constat"), c.get("pousse_vers")]
+                 [[c.get("id"), c.get("libelle"), c.get("constat"), lib(c.get("pousse_vers"))]
                   for c in liste(d.get("criteres"))])
     L += ["## Alternatives écartées", ""]
     L += tableau(["Alternative", "Motif d'écartement"],
@@ -128,7 +153,7 @@ def r_parties(d):
     L += tableau(["#", "Nom", "Rôle", "Pouvoir", "Intérêt", "Statut"],
                  [[p.get("id"), p.get("nom"), p.get("role"), p.get("pouvoir"),
                    p.get("interet"),
-                   f"**{p.get('statut')}**" if p.get("statut") != "confirme" else p.get("statut")]
+                   f"**{lib(p.get('statut'))}**" if p.get("statut") != "confirme" else lib(p.get("statut"))]
                   for p in liste(d.get("registre"))])
     if d.get("engagement"):
         L += ["## Stratégie d'engagement par quadrant", ""]
@@ -169,7 +194,7 @@ def r_plan(d):
         L += ["## Jalons", ""]
         L += tableau(["#", "Jalon", "Cible", "Nature"],
                      [[j.get("id"), j.get("libelle"), j.get("cible"),
-                       f"**{j.get('nature')}**" if j.get("nature") == "contractuel" else j.get("nature")]
+                       f"**{j.get('nature')}**" if j.get("nature") == "contractuel" else lib(j.get("nature"))]
                       for j in liste(d["jalons"])])
     return L
 
@@ -183,9 +208,9 @@ def r_risques(d):
         c = p * i
         dec = r.get("declencheur") or {}
         seuil = f" — seuil {val(dec['seuil'])}" if dec.get("seuil") else ""
-        lignes.append([r.get("id"), r.get("libelle"), r.get("categorie"),
+        lignes.append([r.get("id"), r.get("libelle"), lib(r.get("categorie")),
                        ", ".join(str(x) for x in liste(r.get("lots_couverts"))) or "—",
-                       p, i, f"**{c}**" if c >= 15 else c, r.get("reponse"),
+                       p, i, f"**{c}**" if c >= 15 else c, lib(r.get("reponse")),
                        r.get("proprietaire"), (dec.get("libelle") or "") + seuil])
     L += tableau(["#", "Risque", "Catégorie", "Lots couverts", "P", "I", "C", "Réponse",
                   "Propriétaire", "Déclencheur"], lignes)

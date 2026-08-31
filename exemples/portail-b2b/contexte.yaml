@@ -28,27 +28,27 @@ fenetre:
 
 lacunes:
   - id: L1
-    libelle: "Exercice fiscal non defini, echeance non datee"
+    libelle: "Exercice fiscal non defini, échéance non datee"
     gravite: bloquante
     statut: arbitree
-    arbitrage: "Annee civile. Echeance ferme au 31/12/2027, avant le pic commercial de janvier."
+    arbitrage: "Année civile. Échéance ferme au 31/12/2027, avant le pic commercial de janvier."
   - id: L2
     libelle: "Budget evoque en comite, non vote. Plafond ou cible ?"
     gravite: bloquante
     statut: arbitree
     arbitrage: "400 k EUR = plafond vote, non extensible."
   - id: L3
-    libelle: "Espace de devis en ligne : dans le perimetre ou non ?"
+    libelle: "Espace de devis en ligne : dans le périmètre ou non ?"
     gravite: bloquante
     statut: arbitree
-    arbitrage: "Hors perimetre v1, inscrit en evolution post-mise en service."
+    arbitrage: "Hors périmètre v1, inscrit en évolution post-mise en service."
   - id: L4
-    libelle: "Part des 4 personnes IT reellement allouee"
+    libelle: "Part des 4 personnes IT réellement allouee"
     gravite: degradante
     statut: arbitree
-    arbitrage: "1,5 ETP alloue sur la duree."
+    arbitrage: "1,5 ETP alloue sur la durée."
   - id: L5
-    libelle: "Typologie et volumetrie detaillees des 60 appels/jour"
+    libelle: "Typologie et volumétrie detaillees des 60 appels/jour"
     gravite: degradante
     statut: convertie_en_risque
     converti_en: R-07
@@ -56,9 +56,9 @@ lacunes:
     libelle: "Cadre RGPD, DPO identifie ?"
     gravite: mineure
     statut: arbitree
-    arbitrage: "DPO externe mandate, a associer au cadrage."
+    arbitrage: "DPO externe mandate, à associer au cadrage."
   - id: L7
-    libelle: "Aucun critere de succes chiffre"
+    libelle: "Aucun critère de succès chiffré"
     gravite: bloquante
     statut: arbitree
-    arbitrage: "Reduction de 40 % des appels auto-resolvables, cible 36 appels/jour."
+    arbitrage: "Réduction de 40 % des appels auto-résolvables, cible 36 appels/jour."

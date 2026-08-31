@@ -47,11 +47,11 @@ Le piege est le **M**. Un objectif dont la mesure repose sur une base de départ
 1. la mesure de la base devient une tâche du plan, et tu le notes dans le `smart.m` ;
 2. la cible passe en `statut: seuil_propose, arbitre: false`.
 
-Le **A** doit citer sa réserve réelle quand il y en à une ("sous réserve de R-07"), pas affirmer une atteignabilite que rien n'établit.
+Le **A** doit citer sa réserve réelle quand il y en à une ("sous réserve de R-07"), pas affirmer une atteignabilité que rien n'établit.
 
 # Le périmètre exclu n'est pas une formalite
 
-C'est le premier rempart contre le scope creep. Toute demande citee dans le contexte mais non retenue y figure explicitement, avec la trace de l'arbitrage. Une demande portée par une direction et laissee implicite reviendra en cours de projet.
+C'est le premier rempart contre le scope creep. Toute demande citée dans le contexte mais non retenue y figure explicitement, avec la trace de l'arbitrage. Une demande portée par une direction et laissee implicite reviendra en cours de projet.
 
 # Analyse coût-bénéfice
 

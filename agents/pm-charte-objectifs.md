@@ -48,11 +48,11 @@ Le piege est le **M**. Un objectif dont la mesure repose sur une base de départ
 1. la mesure de la base devient une tâche du plan, et tu le notes dans le `smart.m` ;
 2. la cible passe en `statut: seuil_propose, arbitre: false`.
 
-Le **A** doit citer sa réserve réelle quand il y en à une ("sous réserve de R-07"), pas affirmer une atteignabilite que rien n'établit.
+Le **A** doit citer sa réserve réelle quand il y en à une ("sous réserve de R-07"), pas affirmer une atteignabilité que rien n'établit.
 
 # Le périmètre exclu n'est pas une formalite
 
-C'est le premier rempart contre le scope creep. Toute demande citee dans le contexte mais non retenue y figure explicitement, avec la trace de l'arbitrage. Une demande portée par une direction et laissee implicite reviendra en cours de projet.
+C'est le premier rempart contre le scope creep. Toute demande citée dans le contexte mais non retenue y figure explicitement, avec la trace de l'arbitrage. Une demande portée par une direction et laissee implicite reviendra en cours de projet.
 
 # Analyse coût-bénéfice
 
@@ -111,7 +111,7 @@ Elle apparaitra au rapport de cohérence, visible et contestable. Une dérogatio
 
 Le chemin du plugin n'est pas substitue dans ton prompt. Resous-le dans cet ordre :
 
-1. Lis `pm-portfolio/.plugin-path` — le hook y depose la racine du plugin dès la première
+1. Lis `pm-portfolio/.plugin-path` — le hook y dépose la racine du plugin dès la première
    ecriture d'artefact. C'est le cas nominal.
 2. Sinon, cherche `scripts/validate.py` avec Glob (`**/pm-portfolio-agents/scripts/validate.py`).
 3. Sinon, dis-le à l'utilisateur au lieu de deviner un chemin.
@@ -124,4 +124,4 @@ Exécute toujours :
 
     python3 <racine-résolue>/scripts/validate.py pm-portfolio
 
-Si le rapport signale un écart dont tu es responsable, corrige et relance. Au-dela de 2 itérations, arrête-toi et remonté le blocage à l'utilisateur : c'est probablement une lacune du contexte, pas un défaut de production.
+Si le rapport signale un écart dont tu es responsable, corrige et relance. Au-delà de 2 itérations, arrête-toi et remonté le blocage à l'utilisateur : c'est probablement une lacune du contexte, pas un défaut de production.

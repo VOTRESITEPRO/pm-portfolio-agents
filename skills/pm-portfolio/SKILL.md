@@ -19,7 +19,7 @@ Aucune porte qualité ne repose sur le jugement d'un modèle sur sa propre produ
 
     1. pm-contexte-projet      -> contexte.yaml      + registre des lacunes
        [reprise humaine : arbitrage des lacunes bloquantes]
-    2. pm-methodologue         -> methodologie.yaml  + drapeau agile
+    2. pm-methodologue         -> méthodologie.yaml  + drapeau agile
        [reprise humaine : VALIDATION OBLIGATOIRE]
     3. pm-charte-objectifs     -> charte.yaml
        [reprise humaine : périmètre et coût-bénéfice]
@@ -27,7 +27,7 @@ Aucune porte qualité ne repose sur le jugement d'un modèle sur sa propre produ
     5. pm-planificateur-wbs    -> plan.yaml
        [reprise humaine : VALIDATION OBLIGATOIRE des estimations]
     6. pm-risques              -> risques.yaml
-    7. pm-verificateur-coherence -> RAPPORT-COHERENCE.md
+    7. pm-vérificateur-cohérence -> RAPPORT-Cohérence.md
 
 Les étapes 4 et 5 peuvent être menees en parallele : toutes deux ne dépendent que de la charte. L'étape 6 exige imperativement le chemin critique produit en 5.
 
@@ -52,7 +52,7 @@ Sans ce fichier, la tranche est deduite des artefacts presents.
 
 `${CLAUDE_PLUGIN_ROOT}` n'est PAS substitue dans le corps d'un skill ni d'un agent — la substitution ne fonctionne que dans les JSON de hooks (bug anthropics/claude-code#9354). Resous le chemin ainsi :
 
-1. `pm-portfolio/.plugin-path` — depose par le hook dès la première ecriture d'artefact ;
+1. `pm-portfolio/.plugin-path` — dépose par le hook dès la première ecriture d'artefact ;
 2. sinon, Glob sur `**/pm-portfolio-agents/scripts/validate.py` ;
 3. sinon, demande le chemin à l'utilisateur. Ne devine pas.
 
@@ -64,7 +64,7 @@ Après qu'un agent a ecrit son artefact :
 
     python3 RACINE/scripts/validate.py pm-portfolio
 
-Le rapport atterrit dans `pm-portfolio/RAPPORT-COHERENCE.md`. Un écart bloquant est renvoye à l'agent nomme dans le rapport, dans la limite de 3 itérations. Au-dela, remonté à l'utilisateur : l'écart vient probablement d'une lacune du contexte, pas d'un défaut de production.
+Le rapport atterrit dans `pm-portfolio/RAPPORT-COHERENCE.md`. Un écart bloquant est renvoye à l'agent nomme dans le rapport, dans la limite de 3 itérations. Au-delà, remonté à l'utilisateur : l'écart vient probablement d'une lacune du contexte, pas d'un défaut de production.
 
 ## Rendu lisible
 
