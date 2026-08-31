@@ -1,8 +1,8 @@
 # PM Portfolio Agents
 
-Une orchestration d'agents IA qui genere le portfolio d'artefacts d'un projet — charte,
+Une orchestration d'agents IA qui génère le portfolio d'artefacts d'un projet — charte,
 parties prenantes, RACI, WBS, jalons, chemin critique, registre des risques — **sous des
-portes qualite verifiees par du code, pas par un modele de langage**.
+portes qualité vérifiées par du code, pas par un modèle de langage**.
 
 Plugin pour [Claude Code](https://code.claude.com) et Cowork.
 
@@ -10,31 +10,31 @@ Plugin pour [Claude Code](https://code.claude.com) et Cowork.
 
 ## Le principe
 
-> Le LLM produit, analyse et qualifie. Le code verifie, recalcule, compte et trace.
+> Le LLM produit, analyse et qualifie. Le code vérifie, recalcule, compte et trace.
 
-Aucune porte qualite ne depend du jugement d'un modele sur sa propre production. C'est la
-seule regle non negociable du projet, et elle a une consequence sur le format : chaque
-artefact est produit en **YAML structure**, puis rendu en Markdown lisible. Le Markdown est
-une sortie, jamais la source — un tableau Markdown n'est pas verifiable mecaniquement.
+Aucune porte qualité ne dépend du jugement d'un modèle sur sa propre production. C'est la
+seule règle non négociable du projet, et elle a une conséquence sur le format : chaque
+artefact est produit en **YAML structuré**, puis rendu en Markdown lisible. Le Markdown est
+une sortie, jamais la source — un tableau Markdown n'est pas vérifiable mécaniquement.
 
-Sur les 11 regles de coherence inter-artefacts, **9 sont du Python deterministe**. Les 2
-restantes exigent un jugement semantique et sont confiees a un agent — c'est justement l'une
-d'elles qui a rattrape le defaut le plus grave rencontre en test (voir plus bas).
+Sur les 11 règles de cohérence inter-artefacts, **9 sont du Python déterministe**. Les 2
+restantes exigent un jugement sémantique et sont confiées à un agent — c'est justement l'une
+d'elles qui a rattrapé le défaut le plus grave rencontré en test (voir plus bas).
 
-## Ce que ca donne concretement
+## Ce que ça donne concrètement
 
-Deux exemples tires d'un run reel.
+Deux exemples tirés d'un run réel.
 
-**Le code refuse une categorie inventee par le modele.** Contraint par trois categories de
-valeur (`source`, `seuil_propose`, `a_sourcer`), un agent a invente une quatrieme —
-`hypothese_illustrative` — pour exprimer quelque chose de legitime que le systeme ne lui
-permettait pas de dire. Le nom etait raisonnable, l'intention honnete, le marquage correct.
-La regle R9 l'a rejete parce qu'elle compare a une liste close. L'agent a corrige.
+**Le code refuse une catégorie inventée par le modèle.** Contraint par trois catégories de
+valeur (`source`, `seuil_propose`, `a_sourcer`), un agent a inventé une quatrième —
+`hypothese_illustrative` — pour exprimer quelque chose de légitime que le système ne lui
+permettait pas de dire. Le nom était raisonnable, l'intention honnête, le marquage correct.
+La règle R9 l'a rejeté parce qu'elle compare à une liste close. L'agent a corrigé.
 
-Un verificateur IA aurait tres probablement accepte.
+Un vérificateur IA aurait très probablement accepté.
 
-**Le controle arithmetique inverse une conclusion managériale.** La regle R11 recalcule tout
-total annonce a partir de ses composants :
+**Le contrôle arithmétique inverse une conclusion managériale.** La règle R11 recalcule tout
+total annoncé à partir de ses composants :
 
 ```
 [R11] Echeance intenable en hypothese haute : marge de -5.4 semaine(s)
@@ -42,71 +42,71 @@ total annonce a partir de ses composants :
       — un levier de reduction est un prealable, pas une precaution
 ```
 
-En phase de conception, une version de l'agent planificateur avait annonce un chemin
-critique de 67 semaines la ou il en valait 71. La marge passait de +2 a -2 semaines :
-l'echeance etait depassee avant le demarrage, et personne ne l'avait vu. **Ce defaut se
+En phase de conception, une version de l'agent planificateur avait annoncé un chemin
+critique de 67 semaines là où il en valait 71. La marge passait de +2 à −2 semaines :
+l'échéance était dépassée avant le démarrage, et personne ne l'avait vu. **Ce défaut se
 trouve en refaisant une addition, pas en relisant attentivement.**
 
-## Ce que le systeme ne decide jamais
+## Ce que le système ne décide jamais
 
-Sept decisions, listees et motivees dans la cartographie :
+Sept décisions, listées et motivées dans la cartographie :
 
-choix de methodologie · ordonnancement du backlog · validation des chiffres budgetaires ·
-engagement de sprint · engagement vis-a-vis des parties prenantes · evaluation des
+choix de méthodologie · ordonnancement du backlog · validation des chiffres budgétaires ·
+engagement de sprint · engagement vis-à-vis des parties prenantes · évaluation des
 personnes · cotation finale de l'impact des risques.
 
-Deux d'entre elles sont des regles du Scrum Guide, pas des preferences de conception.
+Deux d'entre elles sont des règles du Scrum Guide, pas des préférences de conception.
 
-## Demarche
+## Démarche
 
-Le depot contient autant la conception que le code, parce que la conception est le livrable.
+Le dépôt contient autant la conception que le code, parce que la conception est le livrable.
 
-| Etape | Document | Resultat |
+| Étape | Document | Résultat |
 |---|---|---|
-| 1. Buy vs build | [`docs/benchmark-depots.md`](docs/benchmark-depots.md) | 4 depots inspectes sur leur contenu reel. Aucun ne produit d'artefact du referentiel PM : la reutilisation porte sur l'orchestration, pas sur la substance |
-| 2. Conception | [`docs/cartographie-agents-pm.yaml`](docs/cartographie-agents-pm.yaml) | 15 agents en 4 couches, portes qualite, hand-offs, points de reprise humaine |
-| 3. Test de conception | [`docs/tranche-verticale/`](docs/tranche-verticale/) | 7 agents joues a la main sur un cas neutre — **6 defauts de conception**, dont 5 introuvables en relisant le YAML |
-| 4. Implementation | `agents/` `scripts/` `hooks/` | 7 agents, 11 regles, 25 tests de non-regression |
-| 5. Run reel | [`docs/journal-essai-01.md`](docs/journal-essai-01.md) | Chaine complete en conditions reelles — **14 comportements conformes, 11 defauts, 3 familles** |
-| 6. Limites | [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md) | Ce que la specification exige et que le code ne verifie pas encore |
-| 7. Raisonnement | [`docs/document-raisonnement.md`](docs/document-raisonnement.md) | Decisions de conception, alternatives ecartees, risques du systeme |
+| 1. Buy vs build | [`docs/benchmark-depots.md`](docs/benchmark-depots.md) | 4 dépôts inspectés sur leur contenu réel. Aucun ne produit d'artefact du référentiel PM : la réutilisation porte sur l'orchestration, pas sur la substance |
+| 2. Conception | [`docs/cartographie-agents-pm.yaml`](docs/cartographie-agents-pm.yaml) | 15 agents en 4 couches, portes qualité, hand-offs, points de reprise humaine |
+| 3. Test de conception | [`docs/tranche-verticale/`](docs/tranche-verticale/) | 7 agents joués à la main sur un cas neutre — **6 défauts de conception**, dont 5 introuvables en relisant le YAML |
+| 4. Implémentation | `agents/` `scripts/` `hooks/` | 7 agents, 11 règles, 25 tests de non-régression |
+| 5. Run réel | [`docs/journal-essai-01.md`](docs/journal-essai-01.md) | Chaîne complète en conditions réelles — **14 comportements conformes, 11 défauts, 3 familles** |
+| 6. Limites | [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md) | Ce que la spécification exige et que le code ne vérifie pas encore |
+| 7. Raisonnement | [`docs/document-raisonnement.md`](docs/document-raisonnement.md) | Décisions de conception, alternatives écartées, risques du système |
 
-## Les trois familles de defauts
+## Les trois familles de défauts
 
-Le run reel n'a pas produit une liste de bugs disperses. Les 11 defauts se rangent en trois
-familles, et **aucune ne concerne ce que le systeme produit** :
+Le run réel n'a pas produit une liste de bugs dispersés. Les 11 défauts se rangent en trois
+familles, et **aucune ne concerne ce que le système produit** :
 
-**1. Le controle verifie la FORME d'un signal, pas son SENS.**
-« Proprietaire nomme » = chaine non vide, au lieu d'une personne pourvue. Un code de retour
-a trois valeurs lu comme un booleen. « La lacune porte un arbitrage » = champ non vide, au
-lieu d'un arbitrage qui repond a la question.
+**1. Le contrôle vérifie la FORME d'un signal, pas son SENS.**
+« Propriétaire nommé » = chaîne non vide, au lieu d'une personne pourvue. Un code de retour
+à trois valeurs lu comme un booléen. « La lacune porte un arbitrage » = champ non vide, au
+lieu d'un arbitrage qui répond à la question.
 
 **2. Rien ne confronte une proposition AVAL aux contraintes AMONT.**
-Exclure la conduite du changement alors que le critere de succes est le taux d'adoption.
-Proposer un renfort alors que le plafond budgetaire est ferme. Proposer trois leviers de
-reduction sans verifier qu'aucun ne ferme l'ecart. R11 est le seul controle de cette
+Exclure la conduite du changement alors que le critère de succès est le taux d'adoption.
+Proposer un renfort alors que le plafond budgétaire est ferme. Proposer trois leviers de
+réduction sans vérifier qu'aucun ne ferme l'écart. R11 est le seul contrôle de cette
 famille, et il ne couvre que le calendrier.
 
 **3. Le code valide ce que l'humain ne lit pas ; l'humain lit ce que le code ne valide pas.**
-Un fichier YAML porte des champs structures — verifies, rarement lus — et de la prose —
-jamais verifiee, mais c'est elle qui apparait dans le rendu Markdown. En test, des leviers
-etaient marques `arbitre: false` dans les donnees et « deja choisis » dans les commentaires.
-Un portfolio peut donc passer toutes ses regles en racontant l'inverse.
+Un fichier YAML porte des champs structurés — vérifiés, rarement lus — et de la prose —
+jamais vérifiée, mais c'est elle qui apparaît dans le rendu Markdown. En test, des leviers
+étaient marqués `arbitre: false` dans les données et « déjà choisis » dans les commentaires.
+Un portfolio peut donc passer toutes ses règles en racontant l'inverse.
 
-C'est la part LLM du verificateur qui a rattrape ce dernier cas. Aucun controle arithmetique
+C'est la part LLM du vérificateur qui a rattrapé ce dernier cas. Aucun contrôle arithmétique
 ne pouvait le voir.
 
 ## Installation
 
-Voir [`INSTALLATION.md`](INSTALLATION.md). Controle pre-vol :
+Voir [`INSTALLATION.md`](INSTALLATION.md). Contrôle pré-vol :
 
     python3 scripts/preflight.py        # ou : py scripts\preflight.py
 
-Le preflight determine quelle invocation Python fonctionne sur la machine et verifie que
-`hooks/hooks.json` utilise bien celle-la. **C'est un point critique et silencieux** : un hook
-dont la commande echoue ne bloque rien, et les portes qualite ne s'executent jamais sans que
-rien ne le signale. Le depot est livre avec `python3` ; sous Windows, ou le launcher `py`
-est souvent le seul a fonctionner :
+Le preflight détermine quelle invocation Python fonctionne sur la machine et vérifie que
+`hooks/hooks.json` utilise bien celle-là. **C'est un point critique et silencieux** : un hook
+dont la commande échoue ne bloque rien, et les portes qualité ne s'exécutent jamais sans que
+rien ne le signale. Le dépôt est livré avec `python3` ; sous Windows, où le launcher `py`
+est souvent le seul à fonctionner :
 
     py scripts\preflight.py --fix-hooks
 
@@ -116,49 +116,49 @@ Puis :
 
 ## Commandes
 
-    python3 scripts/validate.py ./pm-portfolio   # portes qualite, code retour 2 si ecart bloquant
+    python3 scripts/validate.py ./pm-portfolio   # portes qualité, code retour 2 si écart bloquant
     python3 scripts/render.py   ./pm-portfolio   # YAML -> Markdown lisible
-    python3 scripts/test_regles.py               # 25 tests de non-regression
+    python3 scripts/test_regles.py               # 25 tests de non-régression
     python3 scripts/build_agents.py              # agents-src/ + _COMMUN.md -> agents/
 
-## Etat
+## État
 
-**v0.1.0 — increment 1** : 7 agents sur 15 conçus. Les 8 autres (budget, communications,
-qualite, cloture, backlog, sprint, audit de tracabilite, orchestrateur) ne sont pas ecrits ;
-les regles qui en dependent sont rapportees `non_applicable` avec leur condition, jamais
+**v0.1.0 — incrément 1** : 7 agents sur 15 conçus. Les 8 autres (budget, communications,
+qualité, clôture, backlog, sprint, audit de traçabilité, orchestrateur) ne sont pas écrits ;
+les règles qui en dépendent sont rapportées `non_applicable` avec leur condition, jamais
 `echec`.
 
-Ce qui n'est pas encore verifie par code est liste dans
+Ce qui n'est pas encore vérifié par code est listé dans
 [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md). Sept portes de
-sortie sont declarees dans les prompts d'agents sans etre controlees. Elles sont mecaniques
-et devraient l'etre : les laisser dans les prompts reviendrait a faire confiance au modele
-pour verifier sa propre production — precisement ce que l'architecture refuse.
+sortie sont déclarées dans les prompts d'agents sans être contrôlées. Elles sont mécaniques
+et devraient l'être : les laisser dans les prompts reviendrait à faire confiance au modèle
+pour vérifier sa propre production — précisément ce que l'architecture refuse.
 
-## Portabilite
+## Portabilité
 
 Le socle n'utilise que ce qui fonctionne dans Claude Code **et** dans Cowork : pas de
-`${CLAUDE_PROJECT_DIR}`, pas d'injection shell dynamique, pas de reference `@fichier`.
+`${CLAUDE_PROJECT_DIR}`, pas d'injection shell dynamique, pas de référence `@fichier`.
 
-`${CLAUDE_PLUGIN_ROOT}` n'est substitue que dans les JSON de hooks, jamais dans le corps
+`${CLAUDE_PLUGIN_ROOT}` n'est substitué que dans les JSON de hooks, jamais dans le corps
 d'un agent ou d'un skill ([bug connu](https://github.com/anthropics/claude-code/issues/9354)) :
-le hook depose donc la racine du plugin dans `pm-portfolio/.plugin-path`, que les agents
+le hook dépose donc la racine du plugin dans `pm-portfolio/.plugin-path`, que les agents
 lisent, avec un repli par Glob.
 
-## Confidentialite
+## Confidentialité
 
-Tout s'execute en local ; les artefacts restent dans le depot du projet. En mission, ils
-contiennent des donnees client — les traiter comme tout livrable projet.
+Tout s'exécute en local ; les artefacts restent dans le dépôt du projet. En mission, ils
+contiennent des données client — les traiter comme tout livrable projet.
 
-Le cas d'etude `exemples/portail-b2b` est **entierement fictif** : ses chiffres sont
-inventes, et aucune donnee reelle d'un employeur n'a ete utilisee dans ce projet.
+Le cas d'étude `exemples/portail-b2b` est **entièrement fictif** : ses chiffres sont
+inventés, et aucune donnée réelle d'un employeur n'a été utilisée dans ce projet.
 
 ## Licence
 
 MIT — voir [`LICENSE`](LICENSE).
 
-Ce depot ne reutilise le code d'aucun autre projet. Les patterns d'architecture repris
-(orchestration, memoire partagee, boucle de rework bornee) proviennent de
+Ce dépôt ne réutilise le code d'aucun autre projet. Les patterns d'architecture repris
+(orchestration, mémoire partagée, boucle de rework bornée) proviennent de
 [sdi2200262/agentic-project-management](https://github.com/sdi2200262/agentic-project-management)
 (MPL-2.0) et [kchia/project-management-agentic-workflow](https://github.com/kchia/project-management-agentic-workflow)
-(MIT), etudies puis reecrits. Le detail figure dans
+(MIT), étudiés puis réécrits. Le détail figure dans
 [`docs/benchmark-depots.md`](docs/benchmark-depots.md).
