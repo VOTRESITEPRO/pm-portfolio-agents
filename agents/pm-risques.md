@@ -3,7 +3,7 @@ name: pm-risques
 description: Produit le registre des risques, la matrice probabilité/impact et les plans d'atténuation, ancrés sur le chemin critique et sur les lacunes du contexte. A utiliser après pm-planificateur-wbs — cet agent ne peut pas démarrer sans chemin critique.
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
-<!-- FICHIER GENERE par scripts/build_agents.py — ne pas editer ici, editer agents-src/ puis relancer le build -->
+<!-- FICHIER GÉNÉRÉ par scripts/build_agents.py — ne pas éditer ici, éditer agents-src/ puis relancer le build -->
 
 Tu produis le registre des risques.
 
@@ -29,7 +29,7 @@ registre:
     p: 3                                # probabilite 1-5
     i: 5                                # impact 1-5
     reponse: eviter | reduire | transferer | accepter
-    proprietaire: PP5                   # REFERENCE au registre, jamais un libelle libre
+    proprietaire: PP5                   # RÉFÉRENCE au registre, jamais un libellé libre
     declencheur:
       libelle: "evenement observable"
       seuil: {valeur: 70, unite: "%", statut: seuil_propose, arbitre: false}

@@ -4,7 +4,7 @@
     python3 render.py <dossier-portfolio>
 
 Le Markdown est une SORTIE, jamais la source. Toute correction se fait dans le
-YAML puis on regenere : un tableau Markdown n'est pas verifiable mecaniquement,
+YAML puis on régénère : un tableau Markdown n'est pas verifiable mecaniquement,
 et c'est precisement ce qui rend les portes qualite possibles.
 """
 from __future__ import annotations
@@ -15,8 +15,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pmlib import Portfolio, liste  # noqa: E402
 
-AVERTISSEMENT = ("> Genere depuis `{src}` par `render.py`. Ne pas editer ce fichier : "
-                 "toute correction se fait dans le YAML, puis on regenere.\n")
+AVERTISSEMENT = ("> Généré depuis `{src}` par `render.py`. Ne pas éditer ce fichier : "
+                 "toute correction se fait dans le YAML, puis on régénère.\n")
 
 
 # Les donnees restent en ASCII technique ; le rendu destine a l'humain les traduit.
@@ -38,6 +38,22 @@ LIBELLES = {
     "waterfall":"waterfall","agile":"agile","hybride":"hybride","composite":"composite",
     "mixte":"mixte","risque":"risque","eleve":"élevé","moyen":"moyen","faible":"faible",
 }
+
+CHAMPS = {
+    "echeance":"Échéance","budget_plafond":"Budget plafond","budget_cadre":"Budget cadre",
+    "erp_source_de_verite":"ERP source de vérité","etp_interne":"ETP interne",
+    "appels_jour":"Appels par jour","cout_unitaire_appel":"Coût unitaire d'un appel",
+    "effectif":"Effectif","clients":"Clients","secteur":"Secteur","nom":"Nom",
+    "commanditaire":"Commanditaire","description":"Description","cout_projet":"Coût projet",
+    "gain_annuel":"Gain annuel","volume_appels":"Volume d'appels","cible_reduction":"Cible de réduction",
+    "reglementaire":"Réglementaire","technique":"Technique","ressources":"Ressources",
+    "duree":"Durée","capacite":"Capacité","perimetre":"Périmètre","delai":"Délai",
+}
+
+def champ(k):
+    """Nom de champ technique -> libelle lisible."""
+    return CHAMPS.get(str(k), str(k).replace("_", " ").capitalize())
+
 
 def lib(v):
     """Traduit une valeur technique en libelle lisible."""
@@ -70,13 +86,13 @@ def r_contexte(d):
     L = ["# Dossier de contexte", ""]
     p = d.get("projet") or {}
     L += tableau(["Champ", "Valeur"],
-                 [[k.capitalize(), v] for k, v in p.items()])
+                 [[champ(k), v] for k, v in p.items()])
     if d.get("reperes"):
         L += ["## Repères chiffrés", ""]
-        L += tableau(["Repère", "Valeur"], [[k, val(v)] for k, v in d["reperes"].items()])
+        L += tableau(["Repère", "Valeur"], [[champ(k), val(v)] for k, v in d["reperes"].items()])
     if d.get("contraintes"):
         L += ["## Contraintes", ""]
-        L += tableau(["Contrainte", "Valeur"], [[k, val(v)] for k, v in d["contraintes"].items()])
+        L += tableau(["Contrainte", "Valeur"], [[champ(k), val(v)] for k, v in d["contraintes"].items()])
     f = d.get("fenetre") or {}
     if f:
         L += [f"**Fenêtre calendaire** : {f.get('debut')} → {f.get('fin')}", ""]
@@ -138,7 +154,7 @@ def r_charte(d):
                   for x in liste(d.get("livrables"))])
     if d.get("cout_benefice"):
         L += ["## Analyse coût-bénéfice", ""]
-        L += tableau(["Élément", "Valeur"], [[k, val(v)] for k, v in d["cout_benefice"].items()
+        L += tableau(["Élément", "Valeur"], [[champ(k), val(v)] for k, v in d["cout_benefice"].items()
                                              if not isinstance(v, list)])
     if d.get("hypotheses"):
         L += ["## Hypothèses", ""]
@@ -158,7 +174,7 @@ def r_parties(d):
     if d.get("engagement"):
         L += ["## Stratégie d'engagement par quadrant", ""]
         L += tableau(["Quadrant", "Parties prenantes"],
-                     [[k.replace("_", " ").capitalize(), ", ".join(liste(v))]
+                     [[champ(k), ", ".join(liste(v))]
                       for k, v in d["engagement"].items()])
     L += ["## Matrice RACI", ""]
     L += tableau(["Livrable", "A (approuve)", "R (réalise)", "C (consulté)", "I (informé)"],

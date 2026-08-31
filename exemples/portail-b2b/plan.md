@@ -1,4 +1,4 @@
-> Genere depuis `plan.yaml` par `render.py`. Ne pas editer ce fichier : toute correction se fait dans le YAML, puis on regenere.
+> Généré depuis `plan.yaml` par `render.py`. Ne pas éditer ce fichier : toute correction se fait dans le YAML, puis on régénère.
 
 # Plan de projet, jalons et chemin critique
 
@@ -28,11 +28,11 @@
 | &nbsp;&nbsp;&nbsp;&nbsp;3.4 | Parcours consultation des commandes | D2 | 4-5 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;3.5 | Parcours consultation des factures | D3 | 3-4 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;3.6 | Parcours de commande sur catalogue | D4 | 8-11 sem. |
-| &nbsp;&nbsp;&nbsp;&nbsp;3.7 | Conformite responsive (transverse) | D5 | 0-0 sem. |
+| &nbsp;&nbsp;&nbsp;&nbsp;3.7 | Conformité responsive (transverse) | D5 | 0-0 sem. |
 | 4 | Reprise et bascule | *conduite* | 9-13 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;4.1 | Reprise des comptes clients | D7 | 4-6 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;4.2 | Recette fonctionnelle et UAT | D1, D2, D3, D4, D5, D6, D7 | 5-7 sem. |
-| &nbsp;&nbsp;&nbsp;&nbsp;4.3 | Validation de conformite RGPD | D3, D7 | 2-3 sem. |
+| &nbsp;&nbsp;&nbsp;&nbsp;4.3 | Validation de conformité RGPD | D3, D7 | 2-3 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;4.4 | Mise en service et bascule | D1, D2, D3, D4, D5, D6, D7 | 2-3 sem. |
 | 5 | Post-mise en service | *conduite* | 12-12 sem. |
 | &nbsp;&nbsp;&nbsp;&nbsp;5.1 | Support renforce (hypercare) | *conduite* | 6-6 sem. |

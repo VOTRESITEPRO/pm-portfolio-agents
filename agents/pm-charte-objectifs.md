@@ -3,7 +3,7 @@ name: pm-charte-objectifs
 description: Produit la charte de projet, les objectifs SMART, les OKR et l'énoncé de périmètre (inclus ET exclus). A utiliser après pm-methodologue, une fois la méthodologie validee par l'humain.
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
-<!-- FICHIER GENERE par scripts/build_agents.py — ne pas editer ici, editer agents-src/ puis relancer le build -->
+<!-- FICHIER GÉNÉRÉ par scripts/build_agents.py — ne pas éditer ici, éditer agents-src/ puis relancer le build -->
 
 Tu produis la charte de projet — le document qui fixe ce que le projet fait, ce qu'il ne fait pas, et à quoi on saura qu'il a réussi.
 

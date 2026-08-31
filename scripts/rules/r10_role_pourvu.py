@@ -8,7 +8,7 @@ La porte verifiait une chaine de caracteres, pas l'existence d'une personne.
 from pmlib import Ecart, STATUTS_NON_POURVU, liste
 
 ID = "R10"
-LIBELLE = "Tout role proprietaire ou approbateur est pourvu au registre des parties prenantes"
+LIBELLE = "Tout rôle propriétaire ou approbateur est pourvu au registre des parties prenantes"
 REQUIERT = ["parties-prenantes"]
 DEROGATION_ADMISE = True
 
@@ -27,22 +27,22 @@ def verifier(pf):
     def controler(ref, origine, role_libelle):
         if ref is None:
             ecarts.append(Ecart(ID, "bloquant", "pm-risques",
-                                f"{origine} : aucun {role_libelle} designe"))
+                                f"{origine} : aucun {role_libelle} désigné"))
             return
         pp = idx.get(ref)
         if pp is None:
             ecarts.append(Ecart(ID, "bloquant", "pm-risques",
                                 f"{origine} : {role_libelle} '{ref}' absent du registre des parties prenantes",
-                                "Le proprietaire doit etre une reference PPx, pas un libelle libre"))
+                                "Le propriétaire doit être une référence PPx, pas un libellé libre"))
         elif pp.get("statut") in STATUTS_NON_POURVU:
             ecarts.append(Ecart(ID, "bloquant", "pm-parties-prenantes",
                                 f"{origine} : {role_libelle} {ref} ({pp.get('nom')}) a le statut "
-                                f"'{pp.get('statut')}' — role non pourvu",
-                                "Derogation possible si le pourvoi est trace comme tache du plan ou comme risque"))
+                                f"'{pp.get('statut')}' — rôle non pourvu",
+                                "Dérogation possible si le pourvoi est tracé comme tâche du plan ou comme risque"))
 
     if "risques" in pf:
         for r in liste(pf.get("risques").get("registre")):
-            controler(r.get("proprietaire"), f"Risque {r.get('id')}", "proprietaire")
+            controler(r.get("proprietaire"), f"Risque {r.get('id')}", "propriétaire")
 
     if "parties-prenantes" in pf:
         for ligne in liste(pf.get("parties-prenantes").get("raci")):

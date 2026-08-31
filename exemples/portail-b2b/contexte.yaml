@@ -4,8 +4,8 @@ agent: pm-contexte-projet
 
 projet:
   nom: "Refonte du portail client B2B"
-  commanditaire: "Direction generale"
-  secteur: "Distribution de materiel industriel"
+  commanditaire: "Direction générale"
+  secteur: "Distribution de matériel industriel"
   description: >
     Portail client de 2016 : consultation des devis, commandes et factures, commande
     sur catalogue. Juge lent et inutilisable sur mobile.
@@ -33,10 +33,10 @@ lacunes:
     statut: arbitree
     arbitrage: "Année civile. Échéance ferme au 31/12/2027, avant le pic commercial de janvier."
   - id: L2
-    libelle: "Budget evoque en comite, non vote. Plafond ou cible ?"
+    libelle: "Budget evoque en comité, non voté. Plafond ou cible ?"
     gravite: bloquante
     statut: arbitree
-    arbitrage: "400 k EUR = plafond vote, non extensible."
+    arbitrage: "400 k EUR = plafond voté, non extensible."
   - id: L3
     libelle: "Espace de devis en ligne : dans le périmètre ou non ?"
     gravite: bloquante

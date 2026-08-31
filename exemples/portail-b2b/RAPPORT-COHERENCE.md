@@ -1,110 +1,110 @@
-# Rapport de coherence inter-artefacts
+# Rapport de cohérence inter-artefacts
 
-Genere le 31/08/2026 a 16:58 par `validate.py` (controle deterministe, sans intervention d'un modele de langage).
+Généré le 31/08/2026 à 17:07 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
 
-**Artefacts presents** : charte, contexte, methodologie, parties-prenantes, plan, risques
+**Artefacts présents** : charte, contexte, methodologie, parties-prenantes, plan, risques
 
-**Tranche declaree** : charte, contexte, methodologie, parties-prenantes, plan, risques
+**Tranche déclarée** : charte, contexte, methodologie, parties-prenantes, plan, risques
 
 
 
 ## Verdict : **RETRAVAILLER**
 
-9 ecart(s) bloquant(s) · 2 mineur(s) · 4 derogation(s) accordee(s)
+9 écart(s) bloquant(s) · 2 mineur(s) · 4 dérogation(s) accordée(s)
 
-## Execution des regles
+## Exécution des règles
 
-| Regle | Libelle | Etat | Detail |
+| Règle | Libellé | État | Détail |
 |---|---|---|---|
-| R1 | Perimetre de la charte == somme des lots de la WBS | derogation |  |
-| R2 | Somme des postes budgetaires == budget total annonce | non applicable | hors tranche declaree : pm-budget-achats |
-| R3 | Reserve de contingence justifiee par des risques cotes | non applicable | hors tranche declaree : pm-budget-achats |
-| R4 | Toute partie prenante presente dans le RACI et le plan de communication | non applicable | hors tranche declaree : pm-communications |
+| R1 | Périmètre de la charte == somme des lots de la WBS | dérogation |  |
+| R2 | Somme des postes budgétaires == budget total annoncé | non applicable | hors tranche déclarée : pm-budget-achats |
+| R3 | Réserve de contingence justifiée par des risques cotés | non applicable | hors tranche déclarée : pm-budget-achats |
+| R4 | Toute partie prenante présente dans le RACI et le plan de communication | non applicable | hors tranche déclarée : pm-communications |
 | R5 | Un seul Accountable par livrable dans le RACI | conforme |  |
-| R6 | Chaque critere de succes couvert par un KPI et present en checklist de cloture | non applicable | hors tranche declaree : pm-qualite-suivi, pm-equipe-cloture |
-| R7 | Chaque tache du chemin critique couverte par un risque analyse | conforme |  |
-| R8 | Chaque livrable de la charte couvert par au moins une story | non applicable | hors tranche declaree : pm-backlog-stories — ATTENTION : methodologie.drapeau_agile == True, cet artefact est attendu des que la tranche s'elargit |
-| R9 | Toute valeur chiffree appartient a une categorie de valeur declaree | conforme |  |
-| R10 | Tout role proprietaire ou approbateur est pourvu au registre des parties prenantes | **ECART** | 6 ecart(s) |
-| R11 | Tout total annonce est recalcule a partir de ses composants | **ECART** | 5 ecart(s) |
+| R6 | Chaque critère de succès couvert par un KPI et présent en checklist de clôture | non applicable | hors tranche déclarée : pm-qualite-suivi, pm-equipe-cloture |
+| R7 | Chaque tâche du chemin critique couverte par un risque analysé | conforme |  |
+| R8 | Chaque livrable de la charte couvert par au moins une story | non applicable | hors tranche déclarée : pm-backlog-stories — ATTENTION : methodologie.drapeau_agile == True, cet artefact est attendu dès que la tranche s'élargit |
+| R9 | Toute valeur chiffrée appartient à une catégorie de valeur déclarée | conforme |  |
+| R10 | Tout rôle propriétaire ou approbateur est pourvu au registre des parties prenantes | **ÉCART** | 6 écart(s) |
+| R11 | Tout total annoncé est recalculé à partir de ses composants | **ÉCART** | 5 écart(s) |
 
-**6 regle(s) sur 11 executee(s).** Une regle non applicable l'est par condition declaree, jamais par absence constatee d'artefact.
+**6 règle(s) sur 11 exécutée(s).** Une règle non applicable l'est par condition déclarée, jamais par absence constatée d'artefact.
 
-## Ecarts bloquants
+## Écarts bloquants
 
-### [R10] Risque R-01 : proprietaire PP12 (Chef de projet) a le statut 'a_nommer' — role non pourvu
+### [R10] Risque R-01 : propriétaire PP12 (Chef de projet) a le statut 'a_nommer' — rôle non pourvu
 
-Derogation possible si le pourvoi est trace comme tache du plan ou comme risque
-
-*Agent responsable de la correction : `pm-parties-prenantes`*
-
-### [R10] Risque R-04 : proprietaire PP12 (Chef de projet) a le statut 'a_nommer' — role non pourvu
-
-Derogation possible si le pourvoi est trace comme tache du plan ou comme risque
+Dérogation possible si le pourvoi est tracé comme tâche du plan ou comme risque
 
 *Agent responsable de la correction : `pm-parties-prenantes`*
 
-### [R10] Risque R-06 : proprietaire PP12 (Chef de projet) a le statut 'a_nommer' — role non pourvu
+### [R10] Risque R-04 : propriétaire PP12 (Chef de projet) a le statut 'a_nommer' — rôle non pourvu
 
-Derogation possible si le pourvoi est trace comme tache du plan ou comme risque
-
-*Agent responsable de la correction : `pm-parties-prenantes`*
-
-### [R10] Risque R-10 : proprietaire PP7 (Prestataire externe) a le statut 'a_contractualiser' — role non pourvu
-
-Derogation possible si le pourvoi est trace comme tache du plan ou comme risque
+Dérogation possible si le pourvoi est tracé comme tâche du plan ou comme risque
 
 *Agent responsable de la correction : `pm-parties-prenantes`*
 
-### [R10] Risque R-12 : proprietaire PP12 (Chef de projet) a le statut 'a_nommer' — role non pourvu
+### [R10] Risque R-06 : propriétaire PP12 (Chef de projet) a le statut 'a_nommer' — rôle non pourvu
 
-Derogation possible si le pourvoi est trace comme tache du plan ou comme risque
-
-*Agent responsable de la correction : `pm-parties-prenantes`*
-
-### [R10] Risque R-14 : proprietaire PP7 (Prestataire externe) a le statut 'a_contractualiser' — role non pourvu
-
-Derogation possible si le pourvoi est trace comme tache du plan ou comme risque
+Dérogation possible si le pourvoi est tracé comme tâche du plan ou comme risque
 
 *Agent responsable de la correction : `pm-parties-prenantes`*
 
-### [R11] Chemin critique, hypothese basse : 50 annonce, 52 recalcule
+### [R10] Risque R-10 : propriétaire PP7 (Prestataire externe) a le statut 'a_contractualiser' — rôle non pourvu
 
-ecart de +2 semaines
+Dérogation possible si le pourvoi est tracé comme tâche du plan ou comme risque
+
+*Agent responsable de la correction : `pm-parties-prenantes`*
+
+### [R10] Risque R-12 : propriétaire PP12 (Chef de projet) a le statut 'a_nommer' — rôle non pourvu
+
+Dérogation possible si le pourvoi est tracé comme tâche du plan ou comme risque
+
+*Agent responsable de la correction : `pm-parties-prenantes`*
+
+### [R10] Risque R-14 : propriétaire PP7 (Prestataire externe) a le statut 'a_contractualiser' — rôle non pourvu
+
+Dérogation possible si le pourvoi est tracé comme tâche du plan ou comme risque
+
+*Agent responsable de la correction : `pm-parties-prenantes`*
+
+### [R11] Chemin critique, hypothèse basse : 50 annoncé, 52 recalculé
+
+écart de +2 semaines
 
 *Agent responsable de la correction : `pm-planificateur-wbs`*
 
-### [R11] Chemin critique, hypothese haute : 67 annonce, 71 recalcule
+### [R11] Chemin critique, hypothèse haute : 67 annoncé, 71 recalculé
 
-ecart de +4 semaines
-
-*Agent responsable de la correction : `pm-planificateur-wbs`*
-
-### [R11] Echeance intenable en hypothese haute : marge de -1.6 semaine(s)
-
-fenetre 69.4 sem. (2026-09-01 -> 2027-12-31) contre un chemin critique de 71 sem. — un levier de reduction est un prealable, pas une precaution
+écart de +4 semaines
 
 *Agent responsable de la correction : `pm-planificateur-wbs`*
 
-## Ecarts mineurs
+### [R11] Échéance intenable en hypothèse haute : marge de -1.6 semaine(s)
 
-### [R11] Lot 1 : sous-total 10-14 inferieur a son chemin interne 13-18
-
-Le sous-total suppose un parallelisme que le chemin critique interdit
+fenêtre 69.4 sem. (2026-09-01 -> 2027-12-31) contre un chemin critique de 71 sem. — un levier de réduction est un préalable, pas une précaution
 
 *Agent responsable de la correction : `pm-planificateur-wbs`*
 
-### [R11] Lot 4 : sous-total 9-13 inferieur a son chemin interne 11-16
+## Écarts mineurs
 
-Le sous-total suppose un parallelisme que le chemin critique interdit
+### [R11] Lot 1 : sous-total 10-14 inférieur à son chemin interne 13-18
+
+Le sous-total suppose un parallélisme que le chemin critique interdit
 
 *Agent responsable de la correction : `pm-planificateur-wbs`*
 
-## Derogations accordees
+### [R11] Lot 4 : sous-total 9-13 inférieur à son chemin interne 11-16
 
-Visibles et contestables — une derogation n'est jamais silencieuse.
+Le sous-total suppose un parallélisme que le chemin critique interdit
 
-| Regle | Element | Motif | Declaree dans |
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+## Dérogations accordées
+
+Visibles et contestables — une dérogation n'est jamais silencieuse.
+
+| Règle | Élément | Motif | Déclarée dans |
 |---|---|---|---|
 | R1 | 1.1 | Lot de conduite de projet — cadrage | plan.yaml |
 | R1 | 1.5 | Lot de conduite de projet — appel d'offres | plan.yaml |
@@ -113,7 +113,7 @@ Visibles et contestables — une derogation n'est jamais silencieuse.
 
 ## Renvoi aux agents
 
-Les ecarts bloquants sont renvoyes a leur agent auteur :
+Les écarts bloquants sont renvoyés à leur agent auteur :
 
 - `pm-parties-prenantes`
 - `pm-planificateur-wbs`

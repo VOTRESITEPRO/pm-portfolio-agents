@@ -16,7 +16,7 @@ def verifier(pf):
         if len(a) != 1:
             ecarts.append(Ecart(ID, "bloquant", "pm-parties-prenantes",
                                 f"Livrable {liv} : {len(a)} Accountable (exactement 1 attendu)",
-                                f"trouves : {a or 'aucun'}"))
+                                f"trouvés : {a or 'aucun'}"))
         if not r:
             ecarts.append(Ecart(ID, "bloquant", "pm-parties-prenantes",
                                 f"Livrable {liv} : aucun Responsible"))

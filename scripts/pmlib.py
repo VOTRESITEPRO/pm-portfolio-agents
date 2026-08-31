@@ -1,7 +1,7 @@
 """Socle commun des validateurs du portfolio PM.
 
-Principe directeur : le LLM produit, le code verifie. Aucune fonction de ce module
-n'emet de jugement qualitatif — elle compte, recalcule, croise et trace.
+Principe directeur : le LLM produit, le code vérifie. Aucune fonction de ce module
+n'émet de jugement qualitatif — elle compte, recalcule, croise et trace.
 """
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ ARTEFACTS = {
     "parties-prenantes": "pm-parties-prenantes",
     "plan": "pm-planificateur-wbs",
     "risques": "pm-risques",
-    # increment 2 — declares ici pour que les regles sachent les attendre
+    # increment 2 — déclarés ici pour que les règles sachent les attendre
     "budget": "pm-budget-achats",
     "communications": "pm-communications",
     "qualite": "pm-qualite-suivi",
@@ -38,10 +38,10 @@ INCREMENT_ACTUEL = {
     "contexte", "methodologie", "charte", "parties-prenantes", "plan", "risques",
 }
 
-# --- Dependances entre artefacts (correction C1) -----------------------------
-# Une tranche d'execution se definit comme la FERMETURE TRANSITIVE des dependances
-# des agents vises, jamais comme une selection d'agents. Selectionner un agent,
-# c'est selectionner tout son arbre amont.
+# --- Dépendances entre artefacts (correction C1) -----------------------------
+# Une tranche d'exécution se définit comme la FERMETURE TRANSITIVE des dépendances
+# des agents visés, jamais comme une sélection d'agents. Sélectionner un agent,
+# c'est sélectionner tout son arbre amont.
 
 DEPENDANCES = {
     "contexte": [],
@@ -60,7 +60,7 @@ DEPENDANCES = {
 
 
 def fermeture_transitive(artefacts) -> set[str]:
-    """Retourne les artefacts vises PLUS tout leur arbre amont."""
+    """Retourne les artefacts visés PLUS tout leur arbre amont."""
     vus, pile = set(), list(artefacts)
     while pile:
         a = pile.pop()
@@ -71,13 +71,13 @@ def fermeture_transitive(artefacts) -> set[str]:
     return vus
 
 # --- Categories de valeur (correction C4 de la cartographie) ----------------
-# Une valeur chiffree porte toujours un statut. C'est la structure qui fait
-# respecter la regle, pas la bonne volonte de l'agent.
+# Une valeur chiffrée porte toujours un statut. C'est la structure qui fait
+# respecter la règle, pas la bonne volonté de l'agent.
 
 STATUTS_VALEUR = {
-    "source",          # tracable vers le contexte ou un arbitrage humain — autorise
-    "seuil_propose",   # proposition de pilotage — autorisee SI marquee et non engageante
-    "a_sourcer",       # donnee absente, explicitement non produite — autorise
+    "source",          # traçable vers le contexte ou un arbitrage humain — autorisée
+    "seuil_propose",   # proposition de pilotage — autorisée SI marquée et non engageante
+    "a_sourcer",       # donnée absente, explicitement non produite — autorisée
 }
 
 STATUTS_NON_POURVU = {"a_nommer", "a_confirmer", "a_constituer", "a_contractualiser"}
@@ -110,7 +110,7 @@ class ResultatRegle:
 # --- Chargement -------------------------------------------------------------
 
 class Portfolio:
-    """Vue en lecture des artefacts presents sur disque."""
+    """Vue en lecture des artefacts présents sur disque."""
 
     def __init__(self, racine: str):
         self.racine = racine
@@ -130,10 +130,10 @@ class Portfolio:
         self._charger_tranche()
 
     def _charger_tranche(self):
-        """tranche.yaml declare le perimetre d'execution voulu (correction C1).
+        """tranche.yaml déclare le périmètre d'exécution voulu (correction C1).
 
-        Absent : la tranche est deduite des artefacts presents, ce qui revient a
-        dire que l'utilisateur n'a pas declare d'intention — les regles portant sur
+        Absent : la tranche est déduite des artefacts présents, ce qui revient à
+        dire que l'utilisateur n'a pas déclaré d'intention — les règles portant sur
         un artefact absent sont alors non applicables.
         """
         chemin = os.path.join(self.racine, "tranche.yaml")
@@ -147,7 +147,7 @@ class Portfolio:
                 self.tranche = set(self.data)
         else:
             self.tranche = set(self.data)
-        # Un artefact de la tranche declaree mais absent du disque est un manque reel
+        # Un artefact de la tranche déclarée mais absent du disque est un manque réel
         self.tranche_incomplete = sorted(self.tranche - set(self.data))
 
     def dans_la_tranche(self, artefact: str) -> bool:
@@ -167,7 +167,7 @@ class Portfolio:
         return [ARTEFACTS[a] for a in artefacts_requis if a not in self.data]
 
     def derogations(self, regle: str) -> list[dict]:
-        """Derogations declarees par les agents, tous artefacts confondus (correction C6)."""
+        """Dérogations déclarées par les agents, tous artefacts confondus (correction C6)."""
         out = []
         for nom, contenu in self.data.items():
             for d in (contenu or {}).get("derogations", []) or []:
@@ -176,7 +176,7 @@ class Portfolio:
         return out
 
 
-# --- Utilitaires de lecture tolerante ---------------------------------------
+# --- Utilitaires de lecture tolérante ---------------------------------------
 
 def liste(valeur) -> list:
     if valeur is None:
@@ -185,7 +185,7 @@ def liste(valeur) -> list:
 
 
 def valeur_de(champ) -> Any:
-    """Extrait la valeur d'un champ chiffre structure {valeur, statut}."""
+    """Extrait la valeur d'un champ chiffré structuré {valeur, statut}."""
     if isinstance(champ, dict):
         return champ.get("valeur")
     return champ
@@ -198,7 +198,7 @@ def statut_de(champ) -> str | None:
 
 
 def parcourir_valeurs(noeud, chemin="") -> list[tuple[str, dict]]:
-    """Retourne tous les champs structures {valeur: ...} du document, avec leur chemin."""
+    """Retourne tous les champs structurés {valeur: ...} du document, avec leur chemin."""
     trouves = []
     if isinstance(noeud, dict):
         if "valeur" in noeud and not isinstance(noeud.get("valeur"), (dict, list)):
@@ -212,7 +212,7 @@ def parcourir_valeurs(noeud, chemin="") -> list[tuple[str, dict]]:
 
 
 def somme_bornes(items, cle="duree") -> tuple[float, float]:
-    """Somme les bornes min/max d'une liste d'elements portant {cle: {min, max}}."""
+    """Somme les bornes min/max d'une liste d'éléments portant {cle: {min, max}}."""
     mn = mx = 0.0
     for it in items:
         d = (it or {}).get(cle) or {}

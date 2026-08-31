@@ -6,7 +6,7 @@ a_sourcer (autorisee). Une valeur sans statut est une donnee factuelle generee.
 from pmlib import Ecart, STATUTS_VALEUR, parcourir_valeurs
 
 ID = "R9"
-LIBELLE = "Toute valeur chiffree appartient a une categorie de valeur declaree"
+LIBELLE = "Toute valeur chiffrée appartient à une catégorie de valeur déclarée"
 REQUIERT = []          # s'applique a tous les artefacts presents
 DEROGATION_ADMISE = False
 
@@ -19,13 +19,13 @@ def verifier(pf):
             if statut is None:
                 ecarts.append(Ecart(ID, "bloquant", f"agent producteur de {nom}",
                                     f"{nom}.yaml : valeur sans statut en {chemin}",
-                                    "Donnee factuelle generee — marquer source / seuil_propose / a_sourcer"))
+                                    "Donnée factuelle générée — marquer source / seuil_propose / a_sourcer"))
             elif statut not in STATUTS_VALEUR:
                 ecarts.append(Ecart(ID, "bloquant", f"agent producteur de {nom}",
                                     f"{nom}.yaml : statut inconnu '{statut}' en {chemin}",
                                     f"attendus : {sorted(STATUTS_VALEUR)}"))
             elif statut == "a_sourcer" and champ.get("valeur") is not None:
                 ecarts.append(Ecart(ID, "bloquant", f"agent producteur de {nom}",
-                                    f"{nom}.yaml : statut a_sourcer mais une valeur est renseignee en {chemin}",
-                                    "Une donnee a sourcer ne porte pas de valeur produite par le modele"))
+                                    f"{nom}.yaml : statut a_sourcer mais une valeur est renseignée en {chemin}",
+                                    "Une donnée à sourcer ne porte pas de valeur produite par le modèle"))
     return ecarts

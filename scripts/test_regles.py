@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Tests de non-regression des regles de coherence.
+"""Tests de non-régression des règles de cohérence.
 
-Chaque test construit un portfolio minimal en memoire et verifie que la regle
-DETECTE ce qu'elle pretend detecter — et, tout aussi important, qu'elle ne
-declenche PAS sur un cas conforme.
+Chaque test construit un portfolio minimal en mémoire et vérifie que la règle
+DÉTECTE ce qu'elle prétend détecter — et, tout aussi important, qu'elle ne
+déclenche PAS sur un cas conforme.
 
     python3 scripts/test_regles.py
 """
@@ -51,11 +51,11 @@ verifie("livrable non couvert par un lot", "R1",
         portfolio(charte={"livrables": [{"id": "D1"}, {"id": "D2"}]},
                   plan={"lots": [{"id": "1", "livrables": ["D1"]}]}),
         "ecart", "D2")
-verifie("lot sans livrable non declare conduite", "R1",
+verifie("lot sans livrable non déclaré conduite", "R1",
         portfolio(charte={"livrables": [{"id": "D1"}]},
                   plan={"lots": [{"id": "1", "livrables": ["D1"]}, {"id": "2"}]}),
         "ecart", "ne trace vers aucun livrable")
-verifie("lot de conduite accepte", "R1",
+verifie("lot de conduite accepté", "R1",
         portfolio(charte={"livrables": [{"id": "D1"}]},
                   plan={"lots": [{"id": "1", "livrables": ["D1"]}, {"id": "2", "type": "conduite"}]}),
         "conforme")
@@ -77,50 +77,50 @@ verifie("lot critique sans risque", "R7",
                   risques={"registre": [{"id": "R-01", "lots_couverts": ["1.1"]}]}),
         "ecart", "1.2")
 
-print("R9 — categories de valeur")
-verifie("valeur sans statut = donnee factuelle generee", "R9",
+print("R9 — catégories de valeur")
+verifie("valeur sans statut = donnée factuelle générée", "R9",
         portfolio(charte={"cout": {"valeur": 12, "unite": "EUR"}}),
         "ecart", "sans statut")
 verifie("statut inconnu", "R9",
         portfolio(charte={"cout": {"valeur": 12, "statut": "estime"}}),
         "ecart", "statut inconnu")
-verifie("a_sourcer avec une valeur renseignee", "R9",
+verifie("a_sourcer avec une valeur renseignée", "R9",
         portfolio(charte={"cout": {"valeur": 12, "statut": "a_sourcer"}}),
         "ecart", "a_sourcer mais une valeur")
-verifie("seuil correctement marque", "R9",
+verifie("seuil correctement marqué", "R9",
         portfolio(charte={"seuil": {"valeur": 70, "statut": "seuil_propose", "arbitre": False}}),
         "conforme")
 
-print("R10 — role pourvu")
-verifie("proprietaire au statut a_nommer", "R10",
+print("R10 — rôle pourvu")
+verifie("propriétaire au statut a_nommer", "R10",
         portfolio(parties_prenantes={"registre": [{"id": "PP1", "nom": "CP", "statut": "a_nommer"}], "raci": []},
                   risques={"registre": [{"id": "R-01", "proprietaire": "PP1"}]}),
         "ecart", "non pourvu")
-verifie("proprietaire en libelle libre au lieu d'une reference", "R10",
+verifie("propriétaire en libellé libre au lieu d'une référence", "R10",
         portfolio(parties_prenantes={"registre": [{"id": "PP1", "nom": "CP", "statut": "confirme"}], "raci": []},
                   risques={"registre": [{"id": "R-01", "proprietaire": "le chef de projet"}]}),
         "ecart", "absent du registre")
-verifie("proprietaire pourvu", "R10",
+verifie("propriétaire pourvu", "R10",
         portfolio(parties_prenantes={"registre": [{"id": "PP1", "nom": "CP", "statut": "confirme"}], "raci": []},
                   risques={"registre": [{"id": "R-01", "proprietaire": "PP1"}]}),
         "conforme")
 
-print("R11 — coherence arithmetique")
-verifie("total annonce faux", "R11",
+print("R11 — cohérence arithmétique")
+verifie("total annoncé faux", "R11",
         portfolio(plan={"lots": [{"id": "a", "duree": {"min": 4, "max": 5}},
                                  {"id": "b", "duree": {"min": 6, "max": 8}}],
                         "chemin_critique": ["a", "b"],
                         "totaux_annonces": {"chemin_critique": {"min": {"valeur": 10, "statut": "source"},
                                                                 "max": {"valeur": 12, "statut": "source"}}}}),
-        "ecart", "13 recalcule")
-verifie("total annonce juste", "R11",
+        "ecart", "13 recalculé")
+verifie("total annoncé juste", "R11",
         portfolio(plan={"lots": [{"id": "a", "duree": {"min": 4, "max": 5}},
                                  {"id": "b", "duree": {"min": 6, "max": 8}}],
                         "chemin_critique": ["a", "b"],
                         "totaux_annonces": {"chemin_critique": {"min": {"valeur": 10, "statut": "source"},
                                                                 "max": {"valeur": 13, "statut": "source"}}}}),
         "conforme")
-verifie("echeance intenable detectee", "R11",
+verifie("échéance intenable détectée", "R11",
         portfolio(contexte={"fenetre": {"debut": "2026-09-01", "fin": "2026-12-31"}},
                   plan={"lots": [{"id": "a", "duree": {"min": 20, "max": 30}}],
                         "chemin_critique": ["a"]}),
@@ -130,7 +130,7 @@ verifie("lot du chemin critique inexistant", "R11",
                         "chemin_critique": ["a", "zzz"]}),
         "ecart", "inexistant")
 
-print("R8 — applicabilite conditionnelle (corrections C1 et C2)")
+print("R8 — applicabilité conditionnelle (corrections C1 et C2)")
 verifie("drapeau agile faux -> non applicable", "R8",
         portfolio(charte={"livrables": [{"id": "D1"}]}, methodologie={"drapeau_agile": False}),
         "non_applicable")
@@ -143,33 +143,33 @@ _ok = "ATTENTION" in res.motif_non_applicable
 print(f"  [{'ok  ' if _ok else 'ECHEC'}] l'avertissement signale que la branche agile est active")
 if not _ok:
     ECHECS.append("avertissement R8 hors tranche")
-verifie("backlog DANS la tranche mais absent -> ECART, pas non applicable", "R8",
+verifie("backlog DANS la tranche mais absent -> ÉCART, pas non applicable", "R8",
         portfolio(_tranche=["backlog"],
                   charte={"livrables": [{"id": "D1"}]}, methodologie={"drapeau_agile": True}),
         "ecart", "attendu et manquant")
 
-print("C1 — fermeture transitive des dependances")
+print("C1 — fermeture transitive des dépendances")
 from pmlib import fermeture_transitive
 _ft = fermeture_transitive(["risques"])
 _att = {"risques", "plan", "charte", "methodologie", "contexte"}
 _ok = _ft == _att
-print(f"  [{'ok  ' if _ok else 'ECHEC'}] declarer 'risques' entraine {sorted(_att)}")
+print(f"  [{'ok  ' if _ok else 'ECHEC'}] déclarer 'risques' entraîne {sorted(_att)}")
 if not _ok:
     ECHECS.append("fermeture transitive")
     print(f"         obtenu {sorted(_ft)}")
 
-print("Regles hors perimetre (correction C2)")
+print("Règles hors périmètre (correction C2)")
 verifie("R2 sans budget -> non applicable avec motif", "R2",
         portfolio(plan={"lots": []}), "non_applicable")
 
-print("Derogations (correction C6)")
-verifie("derogation refusee sur une regle qui n'en admet pas", "R5",
+print("Dérogations (correction C6)")
+verifie("dérogation refusée sur une règle qui n'en admet pas", "R5",
         portfolio(parties_prenantes={"raci": [{"livrable": "D1", "a": "PP1", "r": ["PP2"]}],
                                      "derogations": [{"regle": "R5", "element": "D1", "motif": "parce que"}]}),
-        "ecart", "n'admet pas de derogation")
+        "ecart", "n'admet pas de dérogation")
 
 print()
 if ECHECS:
-    print(f"{len(ECHECS)} test(s) en echec : {ECHECS}")
+    print(f"{len(ECHECS)} test(s) en échec : {ECHECS}")
     sys.exit(1)
 print("Tous les tests passent.")

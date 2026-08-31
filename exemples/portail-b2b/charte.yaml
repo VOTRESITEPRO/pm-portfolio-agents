@@ -9,30 +9,30 @@ objectifs_smart:
   - id: O1
     enonce: "Réduire de 40 % le volume d'appels entrants auto-résolvables, de 60 à 36 appels/jour en moyenne mensuelle, mesure au 31/03/2028."
     cible: {valeur: 36, unite: "appels/jour", statut: source}
-    smart: {s: "volume d'appels entrants", m: "source : outil de telephonie", a: "sous reserve de R-07", r: "coherent budget/echeance", t: "31/03/2028"}
+    smart: {s: "volume d'appels entrants", m: "source : outil de téléphonie", a: "sous réserve de R-07", r: "cohérent budget/échéance", t: "31/03/2028"}
   - id: O2
     enonce: "Atteindre 30 % de sessions mobile/tablette au 31/03/2028, la base de depart etant mesurée au lot 1.4."
     cible: {valeur: 30, unite: "%", statut: seuil_propose, arbitre: false}
-    smart: {s: "part de sessions mobile", m: "analytics, base mesurée au lot 1.4", a: "conditionnel a la base", r: "a confirmer", t: "31/03/2028"}
+    smart: {s: "part de sessions mobile", m: "analytics, base mesurée au lot 1.4", a: "conditionnel à la base", r: "à confirmer", t: "31/03/2028"}
   - id: O3
     enonce: "Mettre en service le portail refondu au plus tard le 31/12/2027, parcours de consultation et de commande operationnels et alimentes par l'ERP."
-    smart: {s: "parcours nommes", m: "en production oui/non", a: "sous reserve des estimations", r: "sous reserve du plafond", t: "31/12/2027"}
+    smart: {s: "parcours nommés", m: "en production oui/non", a: "sous réserve des estimations", r: "sous réserve du plafond", t: "31/12/2027"}
 
 perimetre:
   inclus:
     - "Parcours de consultation : devis, commandes, factures"
     - "Parcours de commande sur catalogue"
     - "Conception responsive mobile et tablette"
-    - "Interfacage ERP en lecture"
+    - "Interfaçage ERP en lecture"
     - "Reprise des comptes clients existants"
     - "Instrumentation analytique"
   exclus:
-    - "Espace de devis en ligne (arbitrage L3, evolution post-mise en service)"
+    - "Espace de devis en ligne (arbitrage L3, évolution post-mise en service)"
     - "Modification de l'ERP"
     - "Refonte du catalogue produit"
     - "Application mobile native"
-    - "Demarche d'amelioration continue du process de service client"
-    - "Migration du systeme de facturation"
+    - "Demarche d'amélioration continue du process de service client"
+    - "Migration du système de facturation"
 
 livrables:
   - {id: D1, libelle: "Parcours de consultation des devis", critere_succes: "consultation sans appel ; chargement sous le seuil de performance retenu"}

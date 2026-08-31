@@ -28,7 +28,7 @@ registre:
     p: 3                                # probabilite 1-5
     i: 5                                # impact 1-5
     reponse: eviter | reduire | transferer | accepter
-    proprietaire: PP5                   # REFERENCE au registre, jamais un libelle libre
+    proprietaire: PP5                   # RÉFÉRENCE au registre, jamais un libellé libre
     declencheur:
       libelle: "evenement observable"
       seuil: {valeur: 70, unite: "%", statut: seuil_propose, arbitre: false}

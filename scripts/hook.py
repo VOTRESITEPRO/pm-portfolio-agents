@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Point d'entree des hooks : valide le portfolio apres ecriture, et au Stop.
+"""Point d'entrée des hooks : valide le portfolio après écriture, et au Stop.
 
-Lit l'evenement sur stdin (JSON), decide, et sort :
-  0 = laisser passer   2 = bloquer (stderr devient le retour a Claude)
+Lit l'événement sur stdin (JSON), décide, et sort :
+  0 = laisser passer   2 = bloquer (stderr devient le retour à Claude)
 
-Mode PostToolUse : informatif. On ne bloque pas une ecriture d'artefact au motif
-que les artefacts suivants n'existent pas encore — la chaine est sequentielle.
-Mode Stop : bloquant. Un tour ne se conclut pas sur un portfolio en ecart.
+Mode PostToolUse : informatif. On ne bloque pas une écriture d'artefact au motif
+que les artefacts suivants n'existent pas encore — la chaîne est séquentielle.
+Mode Stop : bloquant. Un tour ne se conclut pas sur un portfolio en écart.
 """
 import json
 import os
@@ -29,7 +29,7 @@ def main() -> int:
     try:
         evt = json.load(sys.stdin)
     except Exception:
-        return 0                      # jamais bloquer sur un evenement illisible
+        return 0                      # jamais bloquer sur un événement illisible
 
     cwd = evt.get("cwd") or os.getcwd()
     event = evt.get("hook_event_name", "")
@@ -37,17 +37,17 @@ def main() -> int:
     if not portfolio:
         return 0
 
-    # ${CLAUDE_PLUGIN_ROOT} n'est substitue que dans les JSON de hooks, jamais dans le
+    # ${CLAUDE_PLUGIN_ROOT} n'est substitué que dans les JSON de hooks, jamais dans le
     # corps d'un agent ou d'un skill (bug connu anthropics/claude-code#9354). Le hook est
-    # donc le seul endroit qui connaisse de facon fiable la racine du plugin : il la
-    # depose dans le portfolio, ou les agents peuvent la lire.
+    # donc le seul endroit qui connaisse de façon fiable la racine du plugin : il la
+    # dépose dans le portfolio, où les agents peuvent la lire.
     try:
         with open(os.path.join(portfolio, ".plugin-path"), "w", encoding="utf-8") as fh:
             fh.write(RACINE + "\n")
     except OSError:
         pass
 
-    # PostToolUse : ne reagir qu'aux ecritures dans le portfolio
+    # PostToolUse : ne réagir qu'aux écritures dans le portfolio
     if event.startswith("PostToolUse"):
         chemin = (evt.get("tool_input") or {}).get("file_path", "")
         if "pm-portfolio" not in chemin.replace("\\", "/") or not chemin.endswith(".yaml"):
@@ -57,27 +57,27 @@ def main() -> int:
                          capture_output=True, text=True)
 
     # Codes de retour de validate.py :
-    #   0 = conforme · 1 = rien a valider ou erreur d'usage · 2 = ecart bloquant
-    # Seul le 2 justifie de bloquer. Traiter le 1 comme un ecart faisait echouer le
+    #   0 = conforme · 1 = rien à valider ou erreur d'usage · 2 = écart bloquant
+    # Seul le 2 justifie de bloquer. Traiter le 1 comme un écart faisait échouer le
     # hook Stop sur un portfolio encore vide — ce qui n'a aucun sens et bloque la
-    # chaine avant meme qu'elle ait produit quoi que ce soit.
+    # chaîne avant même qu'elle ait produit quoi que ce soit.
     if res.returncode != 2:
         return 0
 
     rapport = os.path.join(portfolio, "RAPPORT-COHERENCE.md")
     resume = (res.stderr or "").strip().splitlines()
-    resume = resume[-1] if resume else "ecarts detectes"
+    resume = resume[-1] if resume else "écarts détectés"
 
     if event == "Stop":
-        print(f"Portfolio en ecart : {resume}\n"
-              f"Lis {rapport}, corrige via l'agent responsable indique pour chaque ecart, "
-              f"puis relance la validation. Ne conclus pas sur un portfolio en ecart bloquant.",
+        print(f"Portfolio en écart : {resume}\n"
+              f"Lis {rapport}, corrige via l'agent responsable indiqué pour chaque écart, "
+              f"puis relance la validation. Ne conclus pas sur un portfolio en écart bloquant.",
               file=sys.stderr)
         return 2
 
     # PostToolUse : informatif seulement
     nb = resume.split()[1] if resume.startswith("BLOQUE") else "?"
-    print(f"[pm-portfolio] {nb} ecart(s) bloquant(s) — voir {rapport}", file=sys.stderr)
+    print(f"[pm-portfolio] {nb} écart(s) bloquant(s) — voir {rapport}", file=sys.stderr)
     return 0
 
 

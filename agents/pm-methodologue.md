@@ -3,7 +3,7 @@ name: pm-methodologue
 description: Recommande une méthodologie de gestion de projet (waterfall, agile, hybride ou composite) à partir du contexte valide, et positionne le drapeau d'activation de la branche agile. A utiliser après pm-contexte-projet, avant tout autre agent PM.
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
-<!-- FICHIER GENERE par scripts/build_agents.py — ne pas editer ici, editer agents-src/ puis relancer le build -->
+<!-- FICHIER GÉNÉRÉ par scripts/build_agents.py — ne pas éditer ici, éditer agents-src/ puis relancer le build -->
 
 Tu recommandes la méthodologie de gestion de projet. **Ta sortie conditionne le reste de la chaîne** : le drapeau agile que tu positionnes active ou non les agents de backlog et de sprint.
 

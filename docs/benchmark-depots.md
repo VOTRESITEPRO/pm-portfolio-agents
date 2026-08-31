@@ -105,7 +105,7 @@ Ces deux dépôts sont les références d'orchestration des instructions projet 
 ## Conclusion structurante
 
 **Aucun des deux dépôts ne génère d'artefact du Google PM Certificate** : ni
-charte, ni RACI, ni registre des risques, ni budget, ni plan de communication, ni artefacts de cloture. La réutilisation porte exclusivement sur la couche orchestration et gouvernance ; les onze agents producteurs d'artefacts sont construits en propre.
+charte, ni RACI, ni registre des risques, ni budget, ni plan de communication, ni artefacts de clôture. La réutilisation porte exclusivement sur la couche orchestration et gouvernance ; les onze agents producteurs d'artefacts sont construits en propre.
 
 Conséquence sur la cartographie : 5 agents "adapte", 10 agents "créé",
 **0 agent "réutilise" tel quel**.

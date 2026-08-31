@@ -3,7 +3,7 @@ checklist de cloture."""
 from pmlib import Ecart, liste
 
 ID = "R6"
-LIBELLE = "Chaque critere de succes couvert par un KPI et present en checklist de cloture"
+LIBELLE = "Chaque critère de succès couvert par un KPI et présent en checklist de clôture"
 REQUIERT = ["charte", "qualite", "cloture"]
 DEROGATION_ADMISE = False
 
@@ -16,7 +16,7 @@ def verifier(pf):
         kpi_cibles |= set(liste(k.get("couvre")))
         if not k.get("source_donnee"):
             ecarts.append(Ecart(ID, "bloquant", "pm-qualite-suivi",
-                                f"KPI {k.get('id')} sans source de donnee identifiee"))
+                                f"KPI {k.get('id')} sans source de donnée identifiée"))
     checklist = set()
     for c in liste(pf.get("cloture").get("checklist")):
         checklist |= set(liste(c.get("couvre")))
@@ -24,8 +24,8 @@ def verifier(pf):
     for d in livrables:
         if d["id"] not in kpi_cibles:
             ecarts.append(Ecart(ID, "bloquant", "pm-qualite-suivi",
-                                f"Critere de succes du livrable {d['id']} couvert par aucun KPI"))
+                                f"Critère de succès du livrable {d['id']} couvert par aucun KPI"))
         if d["id"] not in checklist:
             ecarts.append(Ecart(ID, "bloquant", "pm-equipe-cloture",
-                                f"Livrable {d['id']} absent de la checklist de cloture"))
+                                f"Livrable {d['id']} absent de la checklist de clôture"))
     return ecarts

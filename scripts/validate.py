@@ -66,12 +66,12 @@ def evaluer(mod, pf) -> ResultatRegle:
     hors_tranche = [a for a in requis if not pf.dans_la_tranche(a)]
     if hors_tranche:
         res.etat = "non_applicable"
-        res.motif_non_applicable = ("hors tranche declaree : "
+        res.motif_non_applicable = ("hors tranche déclarée : "
                                     + ", ".join(ARTEFACTS[a] for a in hors_tranche))
         if cond is True:
             art, champ, attendu = mod.CONDITION_SUPPLEMENTAIRE
             res.motif_non_applicable += (f" — ATTENTION : {art}.{champ} == {attendu}, "
-                                         "cet artefact est attendu des que la tranche s'elargit")
+                                         "cet artefact est attendu dès que la tranche s'élargit")
         return res
 
     if manquants:
@@ -81,13 +81,13 @@ def evaluer(mod, pf) -> ResultatRegle:
             from pmlib import Ecart
             res.etat = "ecart"
             motif = ("la condition d'activation est satisfaite"
-                     if cond is True else "artefact declare dans la tranche")
+                     if cond is True else "artefact déclaré dans la tranche")
             res.ecarts = [Ecart(mod.ID, "bloquant", ", ".join(manquants),
                                 "Artefact attendu et manquant",
                                 f"{motif} ; requis : {manquants}")]
             return res
         res.etat = "non_applicable"
-        res.motif_non_applicable = "agent(s) hors perimetre : " + ", ".join(manquants)
+        res.motif_non_applicable = "agent(s) hors périmètre : " + ", ".join(manquants)
         return res
 
     ecarts = mod.verifier(pf)
@@ -110,8 +110,8 @@ def evaluer(mod, pf) -> ResultatRegle:
             from pmlib import Ecart
             for d in refusees:
                 ecarts.append(Ecart(mod.ID, "bloquant", d.get("artefact", "?"),
-                                    f"Derogation refusee sur {mod.ID} : cette regle n'admet pas de derogation",
-                                    f"element : {d.get('element')}"))
+                                    f"Dérogation refusée sur {mod.ID} : cette règle n'admet pas de dérogation",
+                                    f"élément : {d.get('element')}"))
 
     res.ecarts = ecarts
     if ecarts:
@@ -126,44 +126,44 @@ def rapport_markdown(racine, resultats, pf) -> str:
     mineurs = [e for r in resultats for e in r.ecarts if e.gravite == "mineur"]
     derogs = [d for r in resultats for d in r.derogations]
 
-    verdict = "**RETRAVAILLER**" if bloquants else ("**AVANCER avec ecarts mineurs**" if mineurs else "**AVANCER**")
+    verdict = "**RETRAVAILLER**" if bloquants else ("**AVANCER avec écarts mineurs**" if mineurs else "**AVANCER**")
 
     L = [
-        "# Rapport de coherence inter-artefacts",
+        "# Rapport de cohérence inter-artefacts",
         "",
-        f"Genere le {datetime.now().strftime('%d/%m/%Y a %H:%M')} par `validate.py` "
-        "(controle deterministe, sans intervention d'un modele de langage).",
+        f"Généré le {datetime.now().strftime('%d/%m/%Y à %H:%M')} par `validate.py` "
+        "(contrôle déterministe, sans intervention d'un modèle de langage).",
         "",
-        f"**Artefacts presents** : {', '.join(sorted(pf.presents)) or 'aucun'}",
+        f"**Artefacts présents** : {', '.join(sorted(pf.presents)) or 'aucun'}",
         "",
-        (f"**Tranche declaree** : {', '.join(sorted(pf.tranche))}"
+        (f"**Tranche déclarée** : {', '.join(sorted(pf.tranche))}"
          if os.path.isfile(os.path.join(racine, 'tranche.yaml'))
-         else "**Tranche** : non declaree — deduite des artefacts presents"),
+         else "**Tranche** : non déclarée — déduite des artefacts présents"),
         "",
-        (f"**Manquants dans la tranche declaree** : {', '.join(pf.tranche_incomplete)}"
+        (f"**Manquants dans la tranche déclarée** : {', '.join(pf.tranche_incomplete)}"
          if pf.tranche_incomplete else ""),
         "",
         f"## Verdict : {verdict}",
         "",
-        f"{len(bloquants)} ecart(s) bloquant(s) · {len(mineurs)} mineur(s) · "
-        f"{len(derogs)} derogation(s) accordee(s)",
+        f"{len(bloquants)} écart(s) bloquant(s) · {len(mineurs)} mineur(s) · "
+        f"{len(derogs)} dérogation(s) accordée(s)",
         "",
-        "## Execution des regles",
+        "## Exécution des règles",
         "",
-        "| Regle | Libelle | Etat | Detail |",
+        "| Règle | Libellé | État | Détail |",
         "|---|---|---|---|",
     ]
-    sym = {"conforme": "conforme", "ecart": "**ECART**", "non_applicable": "non applicable",
-           "derogation_accordee": "derogation"}
+    sym = {"conforme": "conforme", "ecart": "**ÉCART**", "non_applicable": "non applicable",
+           "derogation_accordee": "dérogation"}
     for r in resultats:
-        detail = r.motif_non_applicable or (f"{len(r.ecarts)} ecart(s)" if r.ecarts else "")
+        detail = r.motif_non_applicable or (f"{len(r.ecarts)} écart(s)" if r.ecarts else "")
         L.append(f"| {r.regle} | {r.libelle} | {sym[r.etat]} | {detail} |")
 
     exec_ = sum(1 for r in resultats if r.etat != "non_applicable")
-    L += ["", f"**{exec_} regle(s) sur {len(resultats)} executee(s).** Une regle non applicable "
-              "l'est par condition declaree, jamais par absence constatee d'artefact.", ""]
+    L += ["", f"**{exec_} règle(s) sur {len(resultats)} exécutée(s).** Une règle non applicable "
+              "l'est par condition déclarée, jamais par absence constatée d'artefact.", ""]
 
-    for titre, lot in (("Ecarts bloquants", bloquants), ("Ecarts mineurs", mineurs)):
+    for titre, lot in (("Écarts bloquants", bloquants), ("Écarts mineurs", mineurs)):
         if not lot:
             continue
         L += [f"## {titre}", ""]
@@ -174,9 +174,9 @@ def rapport_markdown(racine, resultats, pf) -> str:
             L.append(f"\n*Agent responsable de la correction : `{e.agent}`*\n")
 
     if derogs:
-        L += ["## Derogations accordees", "",
-              "Visibles et contestables — une derogation n'est jamais silencieuse.", "",
-              "| Regle | Element | Motif | Declaree dans |", "|---|---|---|---|"]
+        L += ["## Dérogations accordées", "",
+              "Visibles et contestables — une dérogation n'est jamais silencieuse.", "",
+              "| Règle | Élément | Motif | Déclarée dans |", "|---|---|---|---|"]
         for d in derogs:
             L.append(f"| {d.get('regle')} | {d.get('element')} | {d.get('motif','')} | {d.get('artefact')}.yaml |")
         L.append("")
@@ -184,7 +184,7 @@ def rapport_markdown(racine, resultats, pf) -> str:
     if bloquants:
         agents = sorted({e.agent for e in bloquants})
         L += ["## Renvoi aux agents", "",
-              "Les ecarts bloquants sont renvoyes a leur agent auteur :", ""]
+              "Les écarts bloquants sont renvoyés à leur agent auteur :", ""]
         L += [f"- `{a}`" for a in agents]
         L.append("")
     return "\n".join(L)
@@ -232,7 +232,7 @@ def main():
         print(f"\n-> {chemin}", file=sys.stderr)
 
     if bloquants:
-        print(f"\nBLOQUE : {len(bloquants)} ecart(s) bloquant(s). "
+        print(f"\nBLOQUÉ : {len(bloquants)} écart(s) bloquant(s). "
               f"Voir {os.path.join(args.portfolio, 'RAPPORT-COHERENCE.md')}", file=sys.stderr)
         return 2
     return 0

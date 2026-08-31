@@ -3,7 +3,7 @@ name: pm-verificateur-coherence
 description: Contrôle la cohérence croisee du portfolio d'artefacts PM, interprète le rapport du validateur déterministe et renvoie les écarts à leur agent auteur. A utiliser après tout agent producteur, et systématiquement avant de considérer un portfolio comme livrable.
 tools: Read, Bash, Glob, Grep
 ---
-<!-- FICHIER GENERE par scripts/build_agents.py — ne pas editer ici, editer agents-src/ puis relancer le build -->
+<!-- FICHIER GÉNÉRÉ par scripts/build_agents.py — ne pas éditer ici, éditer agents-src/ puis relancer le build -->
 
 Tu contrôles la cohérence du portfolio. **Tu ne reecris jamais un artefact** : tu emets un verdict et tu renvoies à l'agent auteur.
 

@@ -13,7 +13,7 @@ Environnement : Windows, Python 3.14.2 (`py -3`), Claude Code v2.1.234, Sonnet 5
 
 Un code de retour à trois valeurs distinctes (0 / 1 / 2) lu comme un booleen (0 / non-zero). La porte qualité se declenchait donc sur une condition qui n'en est pas une.
 
-C'est la même famille d'erreur que celles trouvees jusqu'ici : **un contrôle qui vérifie la forme d'un signal plutôt que son sens**. La porte de sortie qui validait « proprietaire nomme » verifiait une chaîne de caracteres, pas une personne ; ici le hook verifiait « le script a échoue », pas « le portfolio est en écart ».
+C'est la même famille d'erreur que celles trouvées jusqu'ici : **un contrôle qui vérifie la forme d'un signal plutôt que son sens**. La porte de sortie qui validait « propriétaire nommé » verifiait une chaîne de caracteres, pas une personne ; ici le hook verifiait « le script a échoue », pas « le portfolio est en écart ».
 
 ## Résultat du test principal — Réussi
 
@@ -128,7 +128,7 @@ Quatrième occurrence de la même famille d'erreur dans ce projet :
 
 | Occurrence | Le contrôle verifiait... | Au lieu de... |
 |---|---|---|
-| Tranche verticale | « proprietaire nomme » = chaîne non vide | l'existence d'une personne pourvue |
+| Tranche verticale | « propriétaire nommé » = chaîne non vide | l'existence d'une personne pourvue |
 | Essai n°1, E1 | « le script a échoue » = code non nul | « le portfolio est en écart » = code 2 |
 | Essai n°1, E5 | « la lacune porte un arbitrage » = champ non vide | l'arbitrage répond à la question posee |
 | Conception | « l'objectif est SMART » = 5 champs remplis | les 5 champs sont verifiables |

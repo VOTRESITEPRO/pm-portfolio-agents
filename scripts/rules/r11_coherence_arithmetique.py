@@ -1,4 +1,4 @@
-"""R11 — Tout total annonce est recalcule a partir de ses composants (correction C3).
+"""R11 — Tout total annoncé est recalculé à partir de ses composants (correction C3).
 
 Origine : le chemin critique annonce 50-67 semaines valait en realite 52-71. La
 conclusion managériale en etait inversee : marge annoncee +2 semaines, marge reelle
@@ -10,7 +10,7 @@ from datetime import date
 from pmlib import Ecart, liste, somme_bornes, valeur_de
 
 ID = "R11"
-LIBELLE = "Tout total annonce est recalcule a partir de ses composants"
+LIBELLE = "Tout total annoncé est recalculé à partir de ses composants"
 REQUIERT = ["plan"]
 DEROGATION_ADMISE = False
 
@@ -39,12 +39,12 @@ def verifier(pf):
     a_mn, a_mx = valeur_de(annonce.get("min")), valeur_de(annonce.get("max"))
     if a_mn is not None and float(a_mn) != mn:
         ecarts.append(Ecart(ID, "bloquant", "pm-planificateur-wbs",
-                            f"Chemin critique, hypothese basse : {a_mn} annonce, {mn:g} recalcule",
-                            f"ecart de {mn - float(a_mn):+g} semaines"))
+                            f"Chemin critique, hypothèse basse : {a_mn} annoncé, {mn:g} recalculé",
+                            f"écart de {mn - float(a_mn):+g} semaines"))
     if a_mx is not None and float(a_mx) != mx:
         ecarts.append(Ecart(ID, "bloquant", "pm-planificateur-wbs",
-                            f"Chemin critique, hypothese haute : {a_mx} annonce, {mx:g} recalcule",
-                            f"ecart de {mx - float(a_mx):+g} semaines"))
+                            f"Chemin critique, hypothèse haute : {a_mx} annoncé, {mx:g} recalculé",
+                            f"écart de {mx - float(a_mx):+g} semaines"))
 
     # 3. Un sous-total de lot parent ne peut pas etre inferieur a son chemin interne
     for lot in liste(plan.get("lots")):
@@ -58,9 +58,9 @@ def verifier(pf):
             l_mx = float((lot.get("duree") or {}).get("max") or 0)
             if l_mn < i_mn or l_mx < i_mx:
                 ecarts.append(Ecart(ID, "mineur", "pm-planificateur-wbs",
-                                    f"Lot {lot.get('id')} : sous-total {l_mn:g}-{l_mx:g} inferieur a son "
+                                    f"Lot {lot.get('id')} : sous-total {l_mn:g}-{l_mx:g} inférieur à son "
                                     f"chemin interne {i_mn:g}-{i_mx:g}",
-                                    "Le sous-total suppose un parallelisme que le chemin critique interdit"))
+                                    "Le sous-total suppose un parallélisme que le chemin critique interdit"))
 
     # 4. Marge = fenetre calendaire reelle - duree du chemin critique
     fen = (pf.get("contexte").get("fenetre") or {}) if "contexte" in pf else {}
@@ -72,7 +72,7 @@ def verifier(pf):
         marge_haute = semaines - mx
         if marge_haute < 0:
             ecarts.append(Ecart(ID, "bloquant", "pm-planificateur-wbs",
-                                f"Echeance intenable en hypothese haute : marge de {marge_haute:+.1f} semaine(s)",
-                                f"fenetre {semaines:.1f} sem. ({d} -> {f}) contre un chemin critique de {mx:g} sem. "
-                                f"— un levier de reduction est un prealable, pas une precaution"))
+                                f"Échéance intenable en hypothèse haute : marge de {marge_haute:+.1f} semaine(s)",
+                                f"fenêtre {semaines:.1f} sem. ({d} -> {f}) contre un chemin critique de {mx:g} sem. "
+                                f"— un levier de réduction est un préalable, pas une précaution"))
     return ecarts

@@ -3,7 +3,7 @@ communication, ou fait l'objet d'une derogation motivee."""
 from pmlib import Ecart, liste
 
 ID = "R4"
-LIBELLE = "Toute partie prenante presente dans le RACI et le plan de communication"
+LIBELLE = "Toute partie prenante présente dans le RACI et le plan de communication"
 REQUIERT = ["parties-prenantes", "communications"]
 DEROGATION_ADMISE = True
 
@@ -25,7 +25,7 @@ def verifier(pf):
         if pid not in dans_raci:
             ecarts.append(Ecart(ID, "mineur", "pm-parties-prenantes",
                                 f"{pid} ({pp.get('nom')}) absent du RACI",
-                                "Derogation possible si non responsable d'un livrable, avec rattachement explicite"))
+                                "Dérogation possible si non responsable d'un livrable, avec rattachement explicite"))
         if pid not in dans_com:
             ecarts.append(Ecart(ID, "mineur", "pm-communications",
                                 f"{pid} ({pp.get('nom')}) absent du plan de communication"))

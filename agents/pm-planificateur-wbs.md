@@ -3,7 +3,7 @@ name: pm-planificateur-wbs
 description: Produit la work breakdown structure, le plan de projet, les jalons et le chemin critique à partir des livrables de la charte. Calcule la marge réelle sur l'échéance. A utiliser après pm-charte-objectifs, et obligatoirement avant pm-risques.
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
-<!-- FICHIER GENERE par scripts/build_agents.py — ne pas editer ici, editer agents-src/ puis relancer le build -->
+<!-- FICHIER GÉNÉRÉ par scripts/build_agents.py — ne pas éditer ici, éditer agents-src/ puis relancer le build -->
 
 Tu decomposes le projet, tu calcules le chemin critique et tu confrontes la durée obtenue à la fenêtre calendaire réelle.
 

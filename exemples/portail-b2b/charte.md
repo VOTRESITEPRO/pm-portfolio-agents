@@ -1,4 +1,4 @@
-> Genere depuis `charte.yaml` par `render.py`. Ne pas editer ce fichier : toute correction se fait dans le YAML, puis on regenere.
+> Généré depuis `charte.yaml` par `render.py`. Ne pas éditer ce fichier : toute correction se fait dans le YAML, puis on régénère.
 
 # Charte de projet
 
@@ -17,9 +17,9 @@ Cible : 36 appels/jour
 | Critère | Vérification |
 |---|---|
 | S | volume d'appels entrants |
-| M | source : outil de telephonie |
-| A | sous reserve de R-07 |
-| R | coherent budget/echeance |
+| M | source : outil de téléphonie |
+| A | sous réserve de R-07 |
+| R | cohérent budget/échéance |
 | T | 31/03/2028 |
 
 ### O2
@@ -32,8 +32,8 @@ Cible : 30 % *(seuil proposé, **à arbitrer**)*
 |---|---|
 | S | part de sessions mobile |
 | M | analytics, base mesurée au lot 1.4 |
-| A | conditionnel a la base |
-| R | a confirmer |
+| A | conditionnel à la base |
+| R | à confirmer |
 | T | 31/03/2028 |
 
 ### O3
@@ -42,10 +42,10 @@ Cible : 30 % *(seuil proposé, **à arbitrer**)*
 
 | Critère | Vérification |
 |---|---|
-| S | parcours nommes |
+| S | parcours nommés |
 | M | en production oui/non |
-| A | sous reserve des estimations |
-| R | sous reserve du plafond |
+| A | sous réserve des estimations |
+| R | sous réserve du plafond |
 | T | 31/12/2027 |
 
 ## Périmètre
@@ -55,18 +55,18 @@ Cible : 30 % *(seuil proposé, **à arbitrer**)*
 - Parcours de consultation : devis, commandes, factures
 - Parcours de commande sur catalogue
 - Conception responsive mobile et tablette
-- Interfacage ERP en lecture
+- Interfaçage ERP en lecture
 - Reprise des comptes clients existants
 - Instrumentation analytique
 
 ### Exclus explicitement
 
-- Espace de devis en ligne (arbitrage L3, evolution post-mise en service)
+- Espace de devis en ligne (arbitrage L3, évolution post-mise en service)
 - Modification de l'ERP
 - Refonte du catalogue produit
 - Application mobile native
-- Demarche d'amelioration continue du process de service client
-- Migration du systeme de facturation
+- Demarche d'amélioration continue du process de service client
+- Migration du système de facturation
 
 > La section « exclus » est aussi contraignante que la section « inclus ». C'est le premier rempart contre le scope creep.
 

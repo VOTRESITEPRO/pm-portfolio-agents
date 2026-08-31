@@ -10,7 +10,7 @@ registre:
     i: 4
     reponse: eviter
     proprietaire: PP12
-    declencheur: {libelle: "Demande d'évolution mentionnant le devis en comite de pilotage"}
+    declencheur: {libellé: "Demande d'évolution mentionnant le devis en comité de pilotage"}
   - id: R-02
     libelle: "L'ERP n'expose pas les données nécessaires en lecture"
     categorie: technique
@@ -19,7 +19,7 @@ registre:
     i: 5
     reponse: reduire
     proprietaire: PP5
-    declencheur: {libelle: "Rapport d'étude 1.3 concluant à l'absence d'interface exploitable"}
+    declencheur: {libellé: "Rapport d'étude 1.3 concluant à l'absence d'interface exploitable"}
   - id: R-03
     libelle: "Le plafond de 400 k EUR est atteint avant la mise en service"
     categorie: budget
@@ -28,7 +28,7 @@ registre:
     i: 5
     reponse: reduire
     proprietaire: PP1
-    declencheur: {libelle: "Consommation au jalon J4", seuil: {valeur: 70, unite: "%", statut: seuil_propose, arbitre: false}}
+    declencheur: {libellé: "Consommation au jalon J4", seuil: {valeur: 70, unite: "%", statut: seuil_propose, arbitre: false}}
   - id: R-04
     libelle: "L'appel d'offres et la contractualisation dépassent le délai prévu"
     categorie: delai
@@ -37,7 +37,7 @@ registre:
     i: 5
     reponse: reduire
     proprietaire: PP12
-    declencheur: {libelle: "Absence de candidat retenu à J2 moins 4 semaines"}
+    declencheur: {libellé: "Absence de candidat retenu à J2 moins 4 semaines"}
   - id: R-05
     libelle: "1,5 ETP interne insuffisant pour l'encadrement et la recette"
     categorie: ressources
@@ -46,7 +46,7 @@ registre:
     i: 4
     reponse: reduire
     proprietaire: PP5
-    declencheur: {libelle: "Retard de validation sur deux sprints consecutifs", seuil: {valeur: 5, unite: "jours ouvres", statut: seuil_propose, arbitre: false}}
+    declencheur: {libellé: "Retard de validation sur deux sprints consecutifs", seuil: {valeur: 5, unite: "jours ouvres", statut: seuil_propose, arbitre: false}}
   - id: R-06
     libelle: "L'organisation n'a pas la maturité agile supposee par la cadence de sprints"
     categorie: organisation
@@ -55,7 +55,7 @@ registre:
     i: 3
     reponse: reduire
     proprietaire: PP12
-    declencheur: {libelle: "Deux revues de sprint sans participation metier"}
+    declencheur: {libellé: "Deux revues de sprint sans participation metier"}
   - id: R-07
     libelle: "La part réellement auto-résolvable des appels est trop faible pour atteindre -40 %"
     categorie: metier
@@ -64,7 +64,7 @@ registre:
     i: 5
     reponse: reduire
     proprietaire: PP3
-    declencheur: {libelle: "Résultat du lot 1.2 : part auto-résolvable sous le seuil", seuil: {valeur: 40, unite: "%", statut: seuil_propose, arbitre: false}}
+    declencheur: {libellé: "Résultat du lot 1.2 : part auto-résolvable sous le seuil", seuil: {valeur: 40, unite: "%", statut: seuil_propose, arbitre: false}}
   - id: R-08
     libelle: "La qualité des données des comptes empeche une reprise propre"
     categorie: donnees
@@ -73,7 +73,7 @@ registre:
     i: 4
     reponse: reduire
     proprietaire: PP5
-    declencheur: {libelle: "Taux d'anomalies sur un échantillon de contrôle", seuil: {valeur: 5, unite: "%", statut: seuil_propose, arbitre: false}}
+    declencheur: {libellé: "Taux d'anomalies sur un échantillon de contrôle", seuil: {valeur: 5, unite: "%", statut: seuil_propose, arbitre: false}}
   - id: R-09
     libelle: "La validation RGPD intervient trop tard et bloque la mise en service"
     categorie: conformite
@@ -82,7 +82,7 @@ registre:
     i: 5
     reponse: eviter
     proprietaire: PP10
-    declencheur: {libelle: "DPO non saisi avant le jalon J4"}
+    declencheur: {libellé: "DPO non saisi avant le jalon J4"}
   - id: R-10
     libelle: "L'exigence de performance n'est pas tenue par le socle technique"
     categorie: technique
@@ -91,7 +91,7 @@ registre:
     i: 4
     reponse: reduire
     proprietaire: PP7
-    declencheur: {libelle: "Mesure en recette de sprint au-delà du seuil de performance", seuil: {valeur: 2, unite: "s", statut: seuil_propose, arbitre: false}}
+    declencheur: {libellé: "Mesure en recette de sprint au-delà du seuil de performance", seuil: {valeur: 2, unite: "s", statut: seuil_propose, arbitre: false}}
   - id: R-11
     libelle: "Le panel de clients pilotes ne se constitue pas ou se démobilise"
     categorie: externe
@@ -100,7 +100,7 @@ registre:
     i: 3
     reponse: reduire
     proprietaire: PP2
-    declencheur: {libelle: "Moins de 5 pilotes actifs après deux sprints"}
+    declencheur: {libellé: "Moins de 5 pilotes actifs après deux sprints"}
   - id: R-12
     libelle: "La concentration des approbations sur le responsable IT créé un goulot"
     categorie: organisation
@@ -109,7 +109,7 @@ registre:
     i: 4
     reponse: reduire
     proprietaire: PP12
-    declencheur: {libelle: "Délai moyen d'approbation", seuil: {valeur: 5, unite: "jours ouvres", statut: seuil_propose, arbitre: false}}
+    declencheur: {libellé: "Délai moyen d'approbation", seuil: {valeur: 5, unite: "jours ouvres", statut: seuil_propose, arbitre: false}}
   - id: R-13
     libelle: "L'échéance du 31/12/2027, adossée au pic commercial, n'a aucune fenêtre de report"
     categorie: delai
@@ -118,7 +118,7 @@ registre:
     i: 5
     reponse: reduire
     proprietaire: PP1
-    declencheur: {libelle: "Marge du chemin critique au jalon J4", seuil: {valeur: 4, unite: "semaines", statut: seuil_propose, arbitre: false}}
+    declencheur: {libellé: "Marge du chemin critique au jalon J4", seuil: {valeur: 4, unite: "semaines", statut: seuil_propose, arbitre: false}}
   - id: R-14
     libelle: "La complexite fonctionnelle du catalogue et des règles de commande B2B est sous-estimée"
     categorie: technique
@@ -127,4 +127,4 @@ registre:
     i: 4
     reponse: reduire
     proprietaire: PP7
-    declencheur: {libelle: "Dépassement de l'estimation sur le lot 3.3", seuil: {valeur: 30, unite: "%", statut: seuil_propose, arbitre: false}}
+    declencheur: {libellé: "Dépassement de l'estimation sur le lot 3.3", seuil: {valeur: 30, unite: "%", statut: seuil_propose, arbitre: false}}

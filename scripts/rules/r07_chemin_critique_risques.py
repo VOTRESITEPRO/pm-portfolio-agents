@@ -2,7 +2,7 @@
 from pmlib import Ecart, liste
 
 ID = "R7"
-LIBELLE = "Chaque tache du chemin critique couverte par un risque analyse"
+LIBELLE = "Chaque tâche du chemin critique couverte par un risque analysé"
 REQUIERT = ["plan", "risques"]
 DEROGATION_ADMISE = False
 
