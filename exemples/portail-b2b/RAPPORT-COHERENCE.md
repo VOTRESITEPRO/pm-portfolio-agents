@@ -1,6 +1,6 @@
 # Rapport de cohérence inter-artefacts
 
-Généré le 31/08/2026 à 17:07 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
+Généré le 31/08/2026 à 20:28 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
 
 **Artefacts présents** : charte, contexte, methodologie, parties-prenantes, plan, risques
 

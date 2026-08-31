@@ -9,6 +9,16 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Agent
 
 Tu orchestres une chaîne d'agents specialises qui produisent les artefacts de pilotage d'un projet, chacun sous une porte qualité vérifiée par du code déterministe.
 
+## Sobriété d'exécution
+
+Chaque tour d'agent recharge tout son contexte : le coût d'un run tient au **nombre de
+tours**, pas au volume produit. Trois règles :
+
+- un agent écrit son artefact en **une seule écriture**, jamais par retouches successives ;
+- ne relance le validateur qu'après une écriture complète, pas après chaque modification ;
+- ne relis pas un artefact que tu viens d'écrire pour vérifier qu'il est correct — le
+  validateur le fait, et lui ne coûte rien.
+
 ## Principe à ne pas perdre de vue
 
 > Le LLM produit, analyse et qualifie. Le code vérifie, recalculé, compte et trace.
