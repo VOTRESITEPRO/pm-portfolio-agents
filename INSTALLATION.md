@@ -10,7 +10,7 @@ Depuis le dossier du plugin, sur la machine cible :
     # ou, si python3 n'existe pas :
     python scripts\preflight.py
 
-Il vérifie la version de Python, la presence de PyYAML, l'integrite du manifeste, des 7 agents et des 11 règles, et il exécute le validateur sur l'exemple de référence. Il n'installé rien.
+Il vérifie la version de Python, la presence de PyYAML, l'integrite du manifeste, des 7 agents, des 15 règles et des 6 portes, et il exécute le validateur sur l'exemple de référence. Il n'installé rien.
 
 **Il determine surtout quelle invocation Python fonctionne sur cette machine** — `py -3`,
 `python3` ou `python` — et vérifie que `hooks/hooks.json` utilise bien celle-là. C'est un point critique et silencieux : un hook dont la commande échoue ne bloque rien, et les portes qualité ne s'executent jamais sans que rien ne le signale.

@@ -6,13 +6,27 @@ Plugin pour [Claude Code](https://code.claude.com) et Cowork.
 
 ---
 
+## En clair
+
+On décrit un projet en quelques phrases — objectif, parties prenantes, budget, échéance.
+Une chaîne d'agents IA spécialisés se passe ensuite le dossier : chacun rédige un document
+(charte, cartographie des parties prenantes, calendrier, registre des risques...) à partir
+de ce que les précédents ont écrit, comme une équipe qui se transmettrait le dossier.
+
+Une fois les documents produits, un programme classique — pas un modèle de langage — les
+relit et vérifie mécaniquement ce qui est vérifiable : il recalcule les totaux au lieu de
+croire ceux annoncés, il vérifie que toute personne citée comme responsable existe bien
+dans la liste des parties prenantes, que le budget ne dépasse pas le plafond fixé au
+départ. Un écart repart vers l'agent responsable, avec une limite d'allers-retours pour
+que ça ne boucle pas indéfiniment.
+
 ## Le principe
 
 > Le LLM produit, analyse et qualifie. Le code vérifie, recalcule, compte et trace.
 
 Aucune porte qualité ne dépend du jugement d'un modèle sur sa propre production. C'est la seule règle non négociable du projet, et elle a une conséquence sur le format : chaque artefact est produit en **YAML structuré**, puis rendu en Markdown lisible. Le Markdown est une sortie, jamais la source — un tableau Markdown n'est pas vérifiable mécaniquement.
 
-Sur les 11 règles de cohérence inter-artefacts, **9 sont du Python déterministe**. Les 2 restantes exigent un jugement sémantique et sont confiées à un agent — c'est justement l'une d'elles qui a rattrapé le défaut le plus grave rencontré en test (voir plus bas).
+Les 15 règles de cohérence inter-artefacts et les 6 portes de sortie par artefact sont **entièrement du Python déterministe** — voir [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md) pour le détail. Une part reste hors de portée du calcul et confiée au jugement sémantique de l'agent vérificateur : c'est elle qui a rattrapé le défaut le plus grave rencontré en test (voir plus bas).
 
 ## Ce que ça donne concrètement
 
@@ -51,7 +65,7 @@ Le dépôt contient autant la conception que le code, parce que la conception es
 | 1. Buy vs build | [`docs/benchmark-depots.md`](docs/benchmark-depots.md) | 4 dépôts inspectés sur leur contenu réel. Aucun ne produit d'artefact du référentiel PM : la réutilisation porte sur l'orchestration, pas sur la substance |
 | 2. Conception | [`docs/cartographie-agents-pm.yaml`](docs/cartographie-agents-pm.yaml) | 15 agents en 4 couches, portes qualité, hand-offs, points de reprise humaine |
 | 3. Test de conception | [`docs/tranche-verticale/`](docs/tranche-verticale/) | 7 agents joués à la main sur un cas neutre — **6 défauts de conception**, dont 5 introuvables en relisant le YAML |
-| 4. Implémentation | `agents/` `scripts/` `hooks/` | 7 agents, 11 règles, 25 tests de non-régression |
+| 4. Implémentation | `agents/` `scripts/` `hooks/` | 7 agents, 15 règles + 6 portes de sortie, 51 tests de non-régression |
 | 5. Run réel | [`docs/journal-essai-01.md`](docs/journal-essai-01.md) | Chaîne complète en conditions réelles — **14 comportements conformes, 11 défauts, 3 familles** |
 | 6. Limites | [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md) | Ce que la spécification exige et que le code ne vérifie pas encore |
 | 7. Raisonnement | [`docs/document-raisonnement.md`](docs/document-raisonnement.md) | Décisions de conception, alternatives écartées, risques du système |
@@ -89,7 +103,7 @@ Puis :
 
     python3 scripts/validate.py ./pm-portfolio   # portes qualité, code retour 2 si écart bloquant
     python3 scripts/render.py   ./pm-portfolio   # YAML -> Markdown lisible
-    python3 scripts/test_regles.py               # 25 tests de non-régression
+    python3 scripts/test_regles.py               # 51 tests de non-régression
     python3 scripts/build_agents.py              # agents-src/ + _COMMUN.md -> agents/
 
 ## État
@@ -97,7 +111,7 @@ Puis :
 **v0.1.0 — incrément 1** : 7 agents sur 15 conçus. Les 8 autres (budget, communications,
 qualité, clôture, backlog, sprint, audit de traçabilité, orchestrateur) ne sont pas écrits ; les règles qui en dépendent sont rapportées `non_applicable` avec leur condition, jamais `echec`.
 
-Ce qui n'est pas encore vérifié par code est listé dans [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md). Sept portes de sortie sont déclarées dans les prompts d'agents sans être contrôlées. Elles sont mécaniques et devraient l'être : les laisser dans les prompts reviendrait à faire confiance au modèle pour vérifier sa propre production — précisément ce que l'architecture refuse.
+Ce qui reste à faire est listé dans [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md) : les règles dépendant des 8 agents non encore écrits, et le suivi de portabilité (hooks Cowork, invocation Python selon l'OS). Les sept portes de sortie qui n'étaient déclarées que dans un prompt d'agent, sans contrôle code, sont désormais implémentées (`scripts/gates/`, `scripts/rules/R12`-`R13`) — les laisser dans les prompts seuls aurait revenu à faire confiance au modèle pour vérifier sa propre production, précisément ce que l'architecture refuse.
 
 ## Portabilité
 
