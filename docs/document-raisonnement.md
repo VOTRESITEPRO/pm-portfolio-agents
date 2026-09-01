@@ -2,7 +2,7 @@
 
 **Projet** : orchestration d'agents IA pour la génération d'un portfolio d'artefacts de
 gestion de projet, aligné sur le Google Project Management Certificate (Cours 1-6).
-**Version** : 1.0 — 31/08/2026
+**Version** : 1.1 — 01/09/2026 (ajout §1.1-1.2 : limites cohérence/vérité, schéma LLM/Code/Humain)
 **Objet** : justifier les décisions de conception, pas décrire le système. La description
 est dans `cartographie-agents-pm.yaml` ; la démonstration est dans `portfolio-demo/`.
 
@@ -34,6 +34,45 @@ charte est automatisable. L'arbitrage de périmètre qu'elle contient ne l'est p
 
 **Ce que le système vise** : produire la structure exhaustive et vérifier sa cohérence.
 **Ce qu'il ne vise pas** : décider à la place du chef de projet.
+
+## 1.1 Ce que le système garantit, ce qu'il ne garantit pas
+
+**[BP]** — à formuler sans ambiguïté, parce que la profusion de règles et de portes (15
+règles, 6 portes, 51 tests) peut donner l'illusion inverse.
+
+Le système contrôle une **cohérence** : structurelle (tout champ requis présent), logique
+(un artefact aval retrouve bien ce que l'artefact amont a posé), arithmétique (un total
+recalculé à partir de ses composants correspond au total annoncé). Il peut vérifier que le
+budget total est la somme des postes ; il ne peut pas déterminer si 400 000 € est un
+budget réaliste pour ce projet. Il peut vérifier qu'un risque coté ≥ 15 porte un plan
+d'atténuation ; il ne peut pas juger si ce plan est le bon. Il peut vérifier qu'un RACI a
+exactement un Accountable par livrable ; il ne peut pas juger si c'est la bonne personne.
+
+> Le système garantit une **cohérence structurelle, logique et arithmétique**.
+> Il ne garantit pas la **vérité métier** ni la **qualité** du contenu.
+
+Cette frontière n'est pas un défaut à corriger : c'est la limite de ce qu'un contrôle
+mécanique peut faire, et la raison pour laquelle la reprise humaine (D8) reste centrale.
+
+## 1.2 Ce que produit le LLM, ce que vérifie le code
+
+```
+        LLM                          Code                         Humain
+   ────────────                 ─────────────                ──────────────
+   interprète                   calcule                      arbitre
+   raisonne                     vérifie                       décide
+   propose                      compare                       engage
+   rédige                       impose (exit 2)
+
+        │                            │                             │
+        ▼                            ▼                             ▼
+   artefacts YAML  ───────►  validation déterministe  ───────►  rapport d'écarts
+                              (règles + portes)                 → rework ou
+                                                                    reprise humaine
+```
+
+**[FAIT]** Décision d'architecture centrale du projet, appliquée depuis la première version :
+aucune porte qualité ne dépend du jugement d'un modèle sur sa propre production. Voir D6.
 
 ---
 
