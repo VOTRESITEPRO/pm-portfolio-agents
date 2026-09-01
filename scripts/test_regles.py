@@ -7,6 +7,7 @@ déclenche PAS sur un cas conforme.
 
     python3 scripts/test_regles.py
 """
+import json
 import os
 import sys
 import tempfile
@@ -286,6 +287,31 @@ verifie("lot avec durée et charge", "G6",
 verifie("lot sans durée (parent pur) -> hors périmètre de la porte", "G6",
         portfolio(plan={"lots": [{"id": "1", "type": "conduite"}]}),
         "conforme")
+
+print("D11 — scripts/tranche.py calcule la fermeture, jamais le raisonnement du skill")
+import subprocess
+RACINE_TEST = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TRANCHE_PY = os.path.join(RACINE_TEST, "scripts", "tranche.py")
+
+r = subprocess.run([sys.executable, TRANCHE_PY, "--cible", "budget", "--json"],
+                   capture_output=True, text=True)
+try:
+    d = json.loads(r.stdout)
+    attendu = ["contexte", "methodologie", "charte", "plan", "risques", "budget"]
+    ok = r.returncode == 0 and d.get("fermeture") == attendu
+except Exception:
+    ok = False
+print(f"  [{'ok  ' if ok else 'ECHEC'}] --cible budget -> fermeture dans l'ordre topologique attendu")
+if not ok:
+    ECHECS.append("tranche.py --cible budget")
+    print(f"         sortie : {r.stdout!r} {r.stderr!r}")
+
+r2 = subprocess.run([sys.executable, TRANCHE_PY, "--cible", "inexistant"],
+                    capture_output=True, text=True)
+ok2 = r2.returncode == 1 and "inconnu" in r2.stderr.lower()
+print(f"  [{'ok  ' if ok2 else 'ECHEC'}] --cible inexistant -> erreur explicite, code 1")
+if not ok2:
+    ECHECS.append("tranche.py --cible inexistant")
 
 print("Gouvernance — toute règle et toute porte déclare son origine")
 TYPES_ORIGINE_VALIDES = {"standard", "source", "choix_architecture", "convention"}

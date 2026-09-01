@@ -75,7 +75,7 @@ Le code de ces règles est ecrit et lisible, mais **aucun test ne le couvre** fa
 |---|---|
 | `max_rework` par agent (2 ou 3 selon l'agent) | Énoncé dans les prompts, **non compte** par le système |
 | Verdict `escalader` après épuisement des boucles | Repose sur la discipline de l'agent |
-| Agents `orchestrateur-pm` et `auditeur-curriculum` | Non implémentés — le skill `pm-portfolio` tient lieu d'orchestration |
+| Agents `orchestrateur-pm` et `auditeur-curriculum` | Non implémentés — le skill `pm-portfolio` tient lieu d'orchestration. Son seul calcul mécanique (fermeture transitive d'une tranche) est code-vérifié depuis le 01/09/2026 via `scripts/tranche.py`, plus laissé au raisonnement du skill (voir décision D11) |
 | Matrice de traçabilité compétence Google PM Cert -> artefact | Non implémentée (rôle de `auditeur-curriculum`) |
 | Catégorie de valeur : jugement sur un statut usurpé | Non automatisable — confie à `pm-verificateur-coherence` |
 

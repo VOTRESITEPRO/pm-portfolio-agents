@@ -43,13 +43,19 @@ Les étapes 4 et 5 peuvent être menees en parallele : toutes deux ne dépendent
 
 ## Règle de tranche
 
-Une exécution partielle se déclare comme la **fermeture transitive** des dépendances des artefacts vises, jamais comme une sélection d'agents. Ecris `pm-portfolio/tranche.yaml` :
+Une exécution partielle se déclare comme la **fermeture transitive** des dépendances des
+artefacts visés, jamais comme une sélection d'agents. **Tu ne calcules jamais cette
+fermeture toi-même** — c'est exactement le type de calcul mécanique que ce projet confie au
+code, pas au jugement d'un modèle (voir docs/document-raisonnement.md, décision D11) :
 
-```yaml
-artefacts: [risques, parties-prenantes]   # entraine plan, charte, methodologie, contexte
-```
+    python3 RACINE/scripts/tranche.py --cible risques,parties-prenantes
 
-Sans ce fichier, la tranche est deduite des artefacts presents.
+La sortie contient un bloc `tranche.yaml :` prêt à l'emploi. **Copie-le tel quel** dans
+`pm-portfolio/tranche.yaml` — ne le recompose pas de mémoire, même si le résultat te paraît
+évident. La liste "Agents à lancer, dans cet ordre" du même script est l'ordre à respecter
+pour cette tranche.
+
+Sans `tranche.yaml`, la tranche est deduite des artefacts presents.
 
 ## Démarrage
 

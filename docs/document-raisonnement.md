@@ -2,7 +2,7 @@
 
 **Projet** : orchestration d'agents IA pour la génération d'un portfolio d'artefacts de
 gestion de projet, aligné sur le Google Project Management Certificate (Cours 1-6).
-**Version** : 1.1 — 01/09/2026 (ajout §1.1-1.2 : limites cohérence/vérité, schéma LLM/Code/Humain)
+**Version** : 1.2 — 01/09/2026 (ajout D11 : le graphe de dépendances se calcule par du code)
 **Objet** : justifier les décisions de conception, pas décrire le système. La description
 est dans `cartographie-agents-pm.yaml` ; la démonstration est dans `portfolio-demo/`.
 
@@ -259,6 +259,33 @@ Les confondre conduit soit à interdire les déclencheurs — registre inexploit
 
 **Motif.** Le double registre est un impératif du projet, et l'agile en est la moitié : un
 agent unique l'affaiblirait. L'approvisionnement (appel d'offres, sélection fournisseurs, contractualisation, éthique) est **[FAIT]** une compétence nommée distincte du curriculum C3 — la fusionner dans la planification la ferait disparaître.
+
+## D11 — Le graphe de dépendances se calcule par du code, jamais par le jugement du LLM
+
+**Décision.** La fermeture transitive d'une tranche d'exécution (quels artefacts, donc
+quels agents, une demande partielle entraîne) est calculée par `scripts/tranche.py`, qui
+appelle `pmlib.fermeture_transitive()`. Le skill `pm-portfolio` (et tout agent qui en
+tiendra lieu par la suite) copie la sortie du script telle quelle dans `tranche.yaml` ; il
+ne la recompose jamais de mémoire.
+
+**Motif — cohérence avec D6.** `orchestrateur-pm` n'existe pas encore comme agent séparé :
+c'est le skill `pm-portfolio` qui tient lieu d'orchestration (voir
+`docs/ecarts-spec-implementation.md` §3). Avant cette décision, son seul calcul mécanique —
+« quels artefacts amont une tranche partielle entraîne » — était laissé au raisonnement du
+skill, alors que le code pour le faire exactement (`fermeture_transitive`) existait déjà,
+non appelé. C'est la même famille d'erreur que celle qui a produit R11 : un calcul
+énumérable, laissé à un modèle qui peut en oublier une branche sur un graphe à 12 noeuds.
+
+**Ce qui reste au jugement du LLM.** Interpréter la demande de l'utilisateur pour en tirer
+la *cible* (quels artefacts sont visés) reste une tâche d'interprétation, donc légitimement
+confiée au modèle. Ce qui en découle mécaniquement — la fermeture, l'ordre, la liste des
+agents — ne l'est plus.
+
+**Portée volontairement limitée.** Cette décision ne construit pas l'agent
+`orchestrateur-pm` séparé que décrit la cartographie : le skill actuel est déjà testé en
+conditions réelles (verdict AVANCER, voir §5) ; le remplacer par un agent neuf non testé
+aurait été un risque non justifié par le gain. Seul le point de jugement identifié comme
+réellement délégué à tort a été corrigé.
 
 ---
 
