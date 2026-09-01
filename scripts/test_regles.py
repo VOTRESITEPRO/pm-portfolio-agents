@@ -15,9 +15,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import yaml  # noqa: E402
 
 from pmlib import Portfolio  # noqa: E402
-from validate import charger_regles, evaluer  # noqa: E402
+from validate import charger_regles, charger_portes, evaluer  # noqa: E402
 
-REGLES = {m.ID: m for m in charger_regles()}
+REGLES = {m.ID: m for m in charger_regles() + charger_portes()}
 ECHECS = []
 
 
@@ -167,6 +167,83 @@ verifie("dérogation refusée sur une règle qui n'en admet pas", "R5",
         portfolio(parties_prenantes={"raci": [{"livrable": "D1", "a": "PP1", "r": ["PP2"]}],
                                      "derogations": [{"regle": "R5", "element": "D1", "motif": "parce que"}]}),
         "ecart", "n'admet pas de dérogation")
+
+print("G1 — plans d'atténuation et de secours (criticité ≥ 15)")
+verifie("criticité ≥ 15 sans plans", "G1",
+        portfolio(risques={"registre": [{"id": "R-01", "p": 3, "i": 5}]}),
+        "ecart", "manquant")
+verifie("criticité ≥ 15 avec plans", "G1",
+        portfolio(risques={"registre": [{"id": "R-01", "p": 3, "i": 5,
+                                         "attenuation": "...", "plan_de_secours": "..."}]}),
+        "conforme")
+verifie("criticité < 15 sans plans -> hors périmètre de la porte", "G1",
+        portfolio(risques={"registre": [{"id": "R-01", "p": 2, "i": 3}]}),
+        "conforme")
+
+print("G2 — critères SMART")
+verifie("critère T manquant", "G2",
+        portfolio(charte={"objectifs_smart": [{"id": "O1",
+                                                "smart": {"s": "x", "m": "x", "a": "x", "r": "x"}}]}),
+        "ecart", "T")
+verifie("cinq critères renseignés", "G2",
+        portfolio(charte={"objectifs_smart": [{"id": "O1",
+                                                "smart": {"s": "x", "m": "x", "a": "x", "r": "x", "t": "x"}}]}),
+        "conforme")
+
+print("G3 — critère de succès par livrable")
+verifie("livrable sans critère de succès", "G3",
+        portfolio(charte={"livrables": [{"id": "D1"}]}),
+        "ecart", "aucun critère")
+verifie("livrable avec critère de succès", "G3",
+        portfolio(charte={"livrables": [{"id": "D1", "critere_succes": "mesurable"}]}),
+        "conforme")
+
+print("G4 — grille méthodologique")
+verifie("moins de 5 critères motivés", "G4",
+        portfolio(methodologie={"criteres": [{"id": "C1", "constat": "x", "pousse_vers": "agile"}],
+                                "alternatives_ecartees": [{"nom": "x", "motif": "x"}]}),
+        "ecart", "critère")
+verifie("aucune alternative motivée", "G4",
+        portfolio(methodologie={"criteres": [{"id": f"C{i}", "constat": "x", "pousse_vers": "agile"}
+                                             for i in range(5)],
+                                "alternatives_ecartees": [{"nom": "x"}]}),
+        "ecart", "alternative")
+verifie("grille conforme", "G4",
+        portfolio(methodologie={"criteres": [{"id": f"C{i}", "constat": "x", "pousse_vers": "agile"}
+                                             for i in range(5)],
+                                "alternatives_ecartees": [{"nom": "x", "motif": "x"}]}),
+        "conforme")
+
+print("G5 — lacune bloquante ouverte")
+verifie("lacune bloquante ouverte", "G5",
+        portfolio(contexte={"lacunes": [{"id": "L1", "gravite": "bloquante", "statut": "ouverte"}]}),
+        "ecart", "L1")
+verifie("lacune bloquante arbitrée", "G5",
+        portfolio(contexte={"lacunes": [{"id": "L1", "gravite": "bloquante", "statut": "arbitree"}]}),
+        "conforme")
+verifie("lacune mineure ouverte -> hors périmètre de la porte", "G5",
+        portfolio(contexte={"lacunes": [{"id": "L1", "gravite": "mineure", "statut": "ouverte"}]}),
+        "conforme")
+
+print("R12 — lacune convertie_en_risque tracée")
+verifie("conversion annoncée, risque absent", "R12",
+        portfolio(contexte={"lacunes": [{"id": "L5", "statut": "convertie_en_risque", "converti_en": "R-07"}]},
+                  risques={"registre": [{"id": "R-01"}]}),
+        "ecart", "R-07")
+verifie("conversion annoncée, risque présent", "R12",
+        portfolio(contexte={"lacunes": [{"id": "L5", "statut": "convertie_en_risque", "converti_en": "R-07"}]},
+                  risques={"registre": [{"id": "R-07"}]}),
+        "conforme")
+
+print("R13 — hypothèse de la charte couverte")
+verifie("risque associé absent du registre", "R13",
+        portfolio(charte={"hypotheses": [{"id": "H1", "risque_associe": "R-02"}]},
+                  risques={"registre": [{"id": "R-01"}]}),
+        "ecart", "R-02")
+verifie("risque associé présent", "R13",
+        portfolio(charte={"hypotheses": [{"id": "H1", "risque_associe": "R-02"}]},
+                  risques={"registre": [{"id": "R-02"}]}),
+        "conforme")
 
 print()
 if ECHECS:

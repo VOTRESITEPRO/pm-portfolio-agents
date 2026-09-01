@@ -131,11 +131,13 @@ for nom in sorted(os.listdir(dossier)) if os.path.isdir(dossier) else []:
 print("\nChaîne de validation")
 sys.path.insert(0, os.path.join(RACINE, "scripts"))
 try:
-    from validate import charger_regles
+    from validate import charger_regles, charger_portes
     regles = charger_regles()
-    test(f"{len(regles)} règles chargées (11 attendues)", len(regles) == 11)
+    portes = charger_portes()
+    test(f"{len(regles)} règles chargées (13 attendues)", len(regles) == 13)
+    test(f"{len(portes)} portes chargées (5 attendues)", len(portes) == 5)
 except Exception as exc:
-    test("chargement des règles", False, str(exc))
+    test("chargement des règles et portes", False, str(exc))
 
 exemple = os.path.join(RACINE, "exemples", "portail-b2b")
 if os.path.isdir(exemple):

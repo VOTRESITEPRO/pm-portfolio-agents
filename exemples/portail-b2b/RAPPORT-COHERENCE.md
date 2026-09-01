@@ -1,6 +1,6 @@
 # Rapport de cohérence inter-artefacts
 
-Généré le 31/08/2026 à 20:28 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
+Généré le 01/09/2026 à 07:56 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
 
 **Artefacts présents** : charte, contexte, methodologie, parties-prenantes, plan, risques
 
@@ -10,9 +10,9 @@ Généré le 31/08/2026 à 20:28 par `validate.py` (contrôle déterministe, san
 
 ## Verdict : **RETRAVAILLER**
 
-9 écart(s) bloquant(s) · 2 mineur(s) · 4 dérogation(s) accordée(s)
+17 écart(s) bloquant(s) · 2 mineur(s) · 4 dérogation(s) accordée(s)
 
-## Exécution des règles
+## Exécution des règles et portes
 
 | Règle | Libellé | État | Détail |
 |---|---|---|---|
@@ -27,8 +27,15 @@ Généré le 31/08/2026 à 20:28 par `validate.py` (contrôle déterministe, san
 | R9 | Toute valeur chiffrée appartient à une catégorie de valeur déclarée | conforme |  |
 | R10 | Tout rôle propriétaire ou approbateur est pourvu au registre des parties prenantes | **ÉCART** | 6 écart(s) |
 | R11 | Tout total annoncé est recalculé à partir de ses composants | **ÉCART** | 5 écart(s) |
+| R12 | Lacune convertie_en_risque tracée dans le registre des risques | conforme |  |
+| R13 | Hypothèse de la charte couverte par le registre des risques | conforme |  |
+| G1 | Plans d'atténuation et de secours pour toute criticité (p × i) ≥ 15 | **ÉCART** | 8 écart(s) |
+| G2 | Les 5 critères SMART sont renseignés pour chaque objectif | conforme |  |
+| G3 | Chaque livrable porte un critère de succès non vide | conforme |  |
+| G4 | Au moins 5 critères motivés et 1 alternative écartée motivée | conforme |  |
+| G5 | Aucune lacune bloquante au statut ouverte | conforme |  |
 
-**6 règle(s) sur 11 exécutée(s).** Une règle non applicable l'est par condition déclarée, jamais par absence constatée d'artefact.
+**13 règle(s) sur 18 exécutée(s).** Une règle non applicable l'est par condition déclarée, jamais par absence constatée d'artefact.
 
 ## Écarts bloquants
 
@@ -86,6 +93,54 @@ fenêtre 69.4 sem. (2026-09-01 -> 2027-12-31) contre un chemin critique de 71 se
 
 *Agent responsable de la correction : `pm-planificateur-wbs`*
 
+### [G1] Risque R-01 (criticité 16) : attenuation, plan_de_secours manquant(s)
+
+p=4, i=4
+
+*Agent responsable de la correction : `pm-risques`*
+
+### [G1] Risque R-02 (criticité 15) : attenuation, plan_de_secours manquant(s)
+
+p=3, i=5
+
+*Agent responsable de la correction : `pm-risques`*
+
+### [G1] Risque R-03 (criticité 15) : attenuation, plan_de_secours manquant(s)
+
+p=3, i=5
+
+*Agent responsable de la correction : `pm-risques`*
+
+### [G1] Risque R-04 (criticité 15) : attenuation, plan_de_secours manquant(s)
+
+p=3, i=5
+
+*Agent responsable de la correction : `pm-risques`*
+
+### [G1] Risque R-05 (criticité 16) : attenuation, plan_de_secours manquant(s)
+
+p=4, i=4
+
+*Agent responsable de la correction : `pm-risques`*
+
+### [G1] Risque R-07 (criticité 15) : attenuation, plan_de_secours manquant(s)
+
+p=3, i=5
+
+*Agent responsable de la correction : `pm-risques`*
+
+### [G1] Risque R-13 (criticité 20) : attenuation, plan_de_secours manquant(s)
+
+p=4, i=5
+
+*Agent responsable de la correction : `pm-risques`*
+
+### [G1] Risque R-14 (criticité 16) : attenuation, plan_de_secours manquant(s)
+
+p=4, i=4
+
+*Agent responsable de la correction : `pm-risques`*
+
 ## Écarts mineurs
 
 ### [R11] Lot 1 : sous-total 10-14 inférieur à son chemin interne 13-18
@@ -117,3 +172,4 @@ Les écarts bloquants sont renvoyés à leur agent auteur :
 
 - `pm-parties-prenantes`
 - `pm-planificateur-wbs`
+- `pm-risques`

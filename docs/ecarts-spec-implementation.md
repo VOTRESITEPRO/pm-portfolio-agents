@@ -2,25 +2,40 @@
 
 Ce fichier trace ce que `../cartographie-agents-pm.yaml` (v1.1) spécifie et que le code ne vérifie pas encore. Il existe parce que le principe du système — *le code vérifie, pas le modèle* — perd sa valeur dès qu'une porte qualité n'est déclarée que dans un prompt.
 
-Mis à jour le 31/08/2026 · plugin v0.1.0
+Mis à jour le 01/09/2026 · plugin v0.1.0
 
-## 1. Portes de sortie déclarées dans un agent, non vérifiées par code
+## 1. Portes de sortie déclarées dans un agent — résolu
 
-| Agent | Critère déclare | Vérifie ? | Conséquence |
-|---|---|---|---|
-| `pm-risques` | Plan d'atténuation et plan de secours pour toute criticité (p x i) >= 15 | **Non** | Un registre peut passer avec des plans vides |
-| `pm-risques` | Chaque lacune `convertie_en_risque` existe dans le registre sous l'identifiant annoncé | **Non** | Une conversion peut être annoncée sans être faite |
-| `pm-risques` | Chaque hypothèse de la charte portant un `risque_associe` est couverte | **Non** | Idem |
-| `pm-charte-objectifs` | Les 5 critères SMART sont renseignes pour chaque objectif | **Non** | Un champ SMART vide passe |
-| `pm-charte-objectifs` | Chaque livrable porte un critère de succès non vide | **Non** | — |
-| `pm-methodologue` | Au moins 5 critères et 1 alternative écartée | **Non** | — |
-| `pm-contexte-projet` | Aucune lacune bloquante au statut `ouverte` | **Non** | La chaîne peut avancer sur un contexte incomplet |
+Les sept contrôles ci-dessous n'étaient déclarés que dans un prompt. Ils sont maintenant
+vérifiés par code, répartis selon le nombre d'artefacts qu'ils lisent :
 
-**Ces sept contrôles sont mecaniques et devraient l'être.** Ils ne dépendent d'aucun
-jugement : ils comptent des champs et croisent des identifiants. Les laisser dans les prompts revient à faire confiance au modèle pour vérifier sa propre production — exactement ce que l'architecture refuse.
+| Agent | Critère déclaré | Implémenté en |
+|---|---|---|
+| `pm-risques` | Plan d'atténuation et plan de secours pour toute criticité (p x i) >= 15 | `gates/G1` |
+| `pm-charte-objectifs` | Les 5 critères SMART sont renseignés pour chaque objectif | `gates/G2` |
+| `pm-charte-objectifs` | Chaque livrable porte un critère de succès non vide | `gates/G3` |
+| `pm-methodologue` | Au moins 5 critères et 1 alternative écartée | `gates/G4` |
+| `pm-contexte-projet` | Aucune lacune bloquante au statut `ouverte` | `gates/G5` |
+| `pm-risques` | Chaque lacune `convertie_en_risque` existe dans le registre sous l'identifiant annoncé | `rules/R12` |
+| `pm-risques` | Chaque hypothèse de la charte portant un `risque_associe` est couverte | `rules/R13` |
 
-**A faire** : les implémenter comme règles de porte (`scripts/gates/`), distinctes des
-règles de cohérence inter-artefacts (`scripts/rules/`). Une porte contrôle un artefact seul ; une règle de cohérence en croise plusieurs.
+**Reclassement note** : la doc initiale rangeait les sept comme « portes », au motif que le
+code vérifie ce qu'un prompt se contentait de déclarer. Mais G1-G5 lisent un seul artefact
+(`risques` seul, `charte` seule, `methodologie` seule, `contexte` seul) alors que les deux
+derniers croisent deux artefacts (`contexte`+`risques`, `charte`+`risques`) : ce sont des
+règles de cohérence par construction (`rules/`), pas des portes (`gates/`), au sens même où
+ce fichier définissait la distinction. D'où R12/R13 plutôt que G6/G7.
+
+`scripts/gates/` est un nouveau paquet, même interface que `scripts/rules/` (`ID`,
+`LIBELLE`, `REQUIERT`, `DEROGATION_ADMISE`, `verifier(pf)`). `validate.py` charge et évalue
+les deux via `charger_regles() + charger_portes()` — aucun changement à `hook.py`.
+
+**Gain révélé** : faire tourner `validate.py` sur `exemples/portail-b2b` après l'ajout de
+G1 fait apparaître 8 écarts bloquants qui n'existaient pas avant — les risques de criticité
+≥ 15 de cet exemple n'ont jamais porté `attenuation`/`plan_de_secours`. Le registre passait
+depuis le début sans ces plans ; seule l'absence de porte le masquait. L'exemple de
+référence n'a pas été corrigé : il documente maintenant un vrai manque, pas un défaut
+volontaire.
 
 ## 2. Règles de cohérence implémentées mais non testables en l'état
 
@@ -64,5 +79,13 @@ Le code de ces règles est ecrit et lisible, mais **aucun test ne le couvre** fa
 | R8 / C1 | Applicabilité conditionnelle, tranche, fermeture transitive | 5 |
 | C2 | Distinction non-applicable / écart | 1 |
 | C6 | Dérogation refusée sur une règle qui n'en admet pas | 1 |
+| R12 | Lacune `convertie_en_risque` tracée dans le registre des risques | 2 |
+| R13 | Hypothèse de la charte couverte par le registre des risques | 2 |
+| G1 | Plans d'atténuation/de secours pour criticité ≥ 15 | 3 |
+| G2 | Cinq critères SMART renseignés | 2 |
+| G3 | Critère de succès non vide par livrable | 2 |
+| G4 | ≥ 5 critères motivés et ≥ 1 alternative écartée motivée | 3 |
+| G5 | Aucune lacune bloquante au statut `ouverte` | 3 |
 
-**25 tests**, tous passants (`python3 scripts/test_regles.py`).
+**42 tests**, tous passants (`python3 scripts/test_regles.py`). 13 règles + 5 portes chargées
+(`python3 scripts/preflight.py`).

@@ -36,6 +36,19 @@ def charger_regles():
     return sorted(mods, key=lambda m: int(m.ID[1:]))
 
 
+def charger_portes():
+    """Portes mecaniques (scripts/gates/) : meme interface que les regles,
+    un artefact controle a la fois plutot qu'un croisement (voir
+    docs/ecarts-spec-implementation.md)."""
+    import gates
+    mods = []
+    for info in pkgutil.iter_modules(gates.__path__):
+        if not info.name.startswith("g"):
+            continue
+        mods.append(importlib.import_module(f"gates.{info.name}"))
+    return sorted(mods, key=lambda m: int(m.ID[1:]))
+
+
 def condition_supplementaire_satisfaite(mod, pf) -> bool | None:
     """None si la regle n'a pas de condition supplementaire."""
     cond = getattr(mod, "CONDITION_SUPPLEMENTAIRE", None)
@@ -148,7 +161,7 @@ def rapport_markdown(racine, resultats, pf) -> str:
         f"{len(bloquants)} écart(s) bloquant(s) · {len(mineurs)} mineur(s) · "
         f"{len(derogs)} dérogation(s) accordée(s)",
         "",
-        "## Exécution des règles",
+        "## Exécution des règles et portes",
         "",
         "| Règle | Libellé | État | Détail |",
         "|---|---|---|---|",
@@ -210,7 +223,7 @@ def main():
         print(f"Aucun artefact dans {args.portfolio}", file=sys.stderr)
         return 1
 
-    resultats = [evaluer(m, pf) for m in charger_regles()]
+    resultats = [evaluer(m, pf) for m in charger_regles() + charger_portes()]
     bloquants = [e for r in resultats for e in r.ecarts if e.gravite == "bloquant"]
 
     if args.json:
