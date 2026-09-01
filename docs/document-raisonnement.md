@@ -2,7 +2,7 @@
 
 **Projet** : orchestration d'agents IA pour la génération d'un portfolio d'artefacts de
 gestion de projet, aligné sur le Google Project Management Certificate (Cours 1-6).
-**Version** : 1.2 — 01/09/2026 (ajout D11 : le graphe de dépendances se calcule par du code)
+**Version** : 1.3 — 01/09/2026 (ajout §1.3 : schéma de l'architecture effectivement implémentée)
 **Objet** : justifier les décisions de conception, pas décrire le système. La description
 est dans `cartographie-agents-pm.yaml` ; la démonstration est dans `portfolio-demo/`.
 
@@ -73,6 +73,58 @@ mécanique peut faire, et la raison pour laquelle la reprise humaine (D8) reste 
 
 **[FAIT]** Décision d'architecture centrale du projet, appliquée depuis la première version :
 aucune porte qualité ne dépend du jugement d'un modèle sur sa propre production. Voir D6.
+
+## 1.3 Architecture effectivement implémentée (état au 01/09/2026)
+
+**[FAIT]** — le schéma ci-dessus (§1.2) est le principe général. Celui-ci est
+l'instanciation réelle, à distinguer explicitement de l'architecture théorique de
+`docs/cartographie-agents-pm.yaml` : `pm-orchestrateur-pm` y est spécifié comme un agent
+séparé, mais **n'existe pas encore** (incrément 2, non commencé). L'orchestration réelle est
+portée par le skill `pm-portfolio` — décision D11 assumée, pas un oubli (voir
+`docs/ecarts-spec-implementation.md` §3).
+
+```
+                              UTILISATEUR
+                                   │
+                                   ▼
+                    skill pm-portfolio  [LLM — orchestrateur réel]
+                    (pm-orchestrateur-pm séparé : pas encore construit)
+                                   │
+                 ┌─────────────────┴─────────────────┐
+                 ▼                                    ▼
+     scripts/tranche.py  [CODE]                 Agents PM  [LLM]
+     fermeture transitive                       contexte-projet, méthodologue,
+     + ordre d'exécution (D11)                  charte-objectifs, parties-prenantes,
+                 │                               planificateur-wbs, risques
+                 ▼                               (7 sur 15 construits, incrément 1)
+     tranche.yaml — copié tel quel,                    │
+     jamais recomposé de mémoire                       │
+                 └─────────────────┬────────────────────┘
+                                   ▼
+                     artefacts YAML (pm-portfolio/*.yaml)
+                                   │
+                    hook PostToolUse / Stop  [CODE — automatique]
+                                   ▼
+                       scripts/validate.py  [CODE]
+                    15 règles + 6 portes, chacune avec son ORIGINE
+                                   │
+                        RAPPORT-COHERENCE.md
+                                   │
+                       ┌───────────┴───────────┐
+                       ▼                       ▼
+                   conforme                  écart
+                       │                       │
+                       ▼                       ▼
+                   AVANCER          pm-verificateur-coherence  [LLM]
+                                     renvoie à l'agent auteur
+                                     (max_rework, puis ESCALADER — D7)
+```
+
+**Ce que ce schéma montre, que celui de §1.2 ne montre pas** : que l'orchestration
+elle-même est aujourd'hui un skill, pas un agent dédié ; que la fermeture transitive passe
+par un script appelé, jamais recalculée en prose ; et que la validation se déclenche deux
+fois — automatiquement par les hooks à chaque écriture, et explicitement dans la boucle de
+rework portée par `pm-verificateur-coherence`.
 
 ---
 
