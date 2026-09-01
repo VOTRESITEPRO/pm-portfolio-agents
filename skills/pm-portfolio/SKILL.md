@@ -80,6 +80,11 @@ Après qu'un agent a ecrit son artefact :
 
     python3 RACINE/scripts/validate.py pm-portfolio
 
+**Exécute cette commande toi-même, directement en Bash — ne la délègue jamais à un
+sous-agent**, y compris pour reconfirmer après une correction. C'est un appel de script
+déterministe, pas une tâche qui a besoin de raisonnement ; passer par un sous-agent ne
+fait que consommer des tours pour rien.
+
 Le rapport atterrit dans `pm-portfolio/RAPPORT-COHERENCE.md`. Un écart bloquant est renvoye à l'agent nomme dans le rapport, dans la limite de 3 itérations. Au-delà, remonté à l'utilisateur : l'écart vient probablement d'une lacune du contexte, pas d'un défaut de production.
 
 ## Rendu lisible

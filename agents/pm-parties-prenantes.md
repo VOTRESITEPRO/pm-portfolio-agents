@@ -2,7 +2,7 @@
 name: pm-parties-prenantes
 description: Cartographie les parties prenantes, produit la grille pouvoir/intérêt, la stratégie d'engagement par quadrant et la matrice RACI sur les livrables de la charte. À utiliser après pm-charte-objectifs.
 tools: Read, Write, Edit, Bash, Glob, Grep
-maxTurns: 10
+maxTurns: 14
 ---
 <!-- FICHIER GÉNÉRÉ par scripts/build_agents.py — ne pas éditer ici, éditer agents-src/ puis relancer le build -->
 

@@ -2,7 +2,7 @@
 name: pm-planificateur-wbs
 description: Produit la work breakdown structure, le plan de projet, les jalons et le chemin critique à partir des livrables de la charte. Calcule la marge réelle sur l'échéance. À utiliser après pm-charte-objectifs, et obligatoirement avant pm-risques.
 tools: Read, Write, Edit, Bash, Glob, Grep
-maxTurns: 14
+maxTurns: 18
 ---
 <!-- FICHIER GÉNÉRÉ par scripts/build_agents.py — ne pas éditer ici, éditer agents-src/ puis relancer le build -->
 
