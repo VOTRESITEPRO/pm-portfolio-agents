@@ -7,8 +7,7 @@
 | Nom | Refonte du portail client B2B |
 | Commanditaire | Direction générale |
 | Secteur | Distribution de matériel industriel |
-| Description | Portail client de 2016 : consultation des devis, commandes et factures, commande sur catalogue. Juge lent et inutilisable sur mobile.
- |
+| Description | Portail client de 2016 : consultation des devis, commandes et factures, commande sur catalogue. Juge lent et inutilisable sur mobile. |
 
 ## Repères chiffrés
 

@@ -74,11 +74,17 @@ def val(champ, defaut="—"):
     return txt
 
 
+def cellule(c):
+    if c is None:
+        return ""
+    return " ".join(str(c).split())
+
+
 def tableau(entetes, lignes):
     out = ["| " + " | ".join(entetes) + " |",
            "|" + "|".join(["---"] * len(entetes)) + "|"]
     for l in lignes:
-        out.append("| " + " | ".join("" if c is None else str(c) for c in l) + " |")
+        out.append("| " + " | ".join(cellule(c) for c in l) + " |")
     return out + [""]
 
 
