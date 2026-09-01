@@ -77,5 +77,6 @@ Ils ne sont pas des bugs à signaler, mais des points à confirmer :
 3. Hooks non exécutés dans Cowork — comportement non vérifié à ce jour.
 4. Les agents produisent du YAML non conforme au schéma au premier essai. Le validateur le
    dira ; c'est son rôle.
-5. Sept portes de sortie ne sont pas encore controlees par code — voir
-   `ECARTS-SPEC-IMPLEMENTATION.md`. Un artefact incomplet peut donc passer.
+5. Les règles dépendant d'un agent non encore écrit (budget, communications, qualité,
+   clôture, backlog, sprint) sortent `non_applicable`, jamais `échec` — voir
+   `docs/ecarts-spec-implementation.md`.
