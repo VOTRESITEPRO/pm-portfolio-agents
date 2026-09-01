@@ -2,7 +2,28 @@
 
 Ce fichier trace ce que `../cartographie-agents-pm.yaml` (v1.1) spécifie et que le code ne vérifie pas encore. Il existe parce que le principe du système — *le code vérifie, pas le modèle* — perd sa valeur dès qu'une porte qualité n'est déclarée que dans un prompt.
 
-Mis à jour le 01/09/2026 · plugin v0.1.0
+Mis à jour le 01/09/2026 (chantier C) · plugin v0.1.0
+
+## 0. Chantier C — généralisation du patron R11 (01/09/2026)
+
+R11 recalcule un total aval (durée du chemin critique) et le confronte à une contrainte
+amont fixée indépendamment dans `contexte.yaml` (la fenêtre calendaire). Seul le calendrier
+était couvert. État après investigation, par cible :
+
+| Cible | Verdict | Implémenté en |
+|---|---|---|
+| Budget | Gap réel contre la v1.1 : `budget-achats.porte_qualite.coherence_arithmetique` spécifiait déjà « écart au budget cadre == budget total − budget cadre, recalculé », jamais codé. R2 recalculait le total, sans jamais le confronter au plafond amont (`contexte.contraintes.budget_plafond`). | `rules/R14` |
+| Ressources | Absent de la v1.1 — aucune règle, aucun champ. `plan.yaml` ne portait qu'une `duree` calendaire, rien qui mesure l'effort. Extension de schéma décidée cette session : un champ `charge` (personne-semaines) par lot, distinct de `duree`. | `agents-src/pm-planificateur-wbs.md` (schéma + porte de sortie), `gates/G6` (charge déclarée si durée déclarée), `rules/R15` (charge cumulée ≤ etp_interne × fenêtre) |
+| Périmètre | Nature différente : `charte.perimetre.exclus` n'est pas un plafond numérique à confronter à un total recalculé, mais une liste à ne pas voir réapparaître en aval. Pas une généralisation du patron R11 — non traité dans ce chantier. | — |
+
+`docs/cartographie-agents-pm.yaml` mis à jour en conséquence (R12-R15 ajoutés à
+`regles_de_coherence`, contrôle de charge ajouté à `planificateur-wbs`).
+
+**Gain révélé** : faire tourner `validate.py` sur `exemples/portail-b2b` après G6 fait
+passer les écarts bloquants de 17 à 45 — les 28 lots de la WBS de cet exemple n'ont jamais
+porté de charge. R15 reste `conforme` sur cet exemple tant que G6 n'est pas corrigé (rien à
+confronter sans charge déclarée) ; R14 reste `non_applicable` (`pm-budget-achats` n'existe
+pas). Exemple non corrigé, pour la même raison qu'en chantier B : il documente un manque réel.
 
 ## 1. Portes de sortie déclarées dans un agent — résolu
 
@@ -81,11 +102,14 @@ Le code de ces règles est ecrit et lisible, mais **aucun test ne le couvre** fa
 | C6 | Dérogation refusée sur une règle qui n'en admet pas | 1 |
 | R12 | Lacune `convertie_en_risque` tracée dans le registre des risques | 2 |
 | R13 | Hypothèse de la charte couverte par le registre des risques | 2 |
+| R14 | Budget total recalculé confronté au budget cadre du contexte | 3 |
+| R15 | Charge cumulée confrontée à la capacité de l'équipe interne | 3 |
 | G1 | Plans d'atténuation/de secours pour criticité ≥ 15 | 3 |
 | G2 | Cinq critères SMART renseignés | 2 |
 | G3 | Critère de succès non vide par livrable | 2 |
 | G4 | ≥ 5 critères motivés et ≥ 1 alternative écartée motivée | 3 |
 | G5 | Aucune lacune bloquante au statut `ouverte` | 3 |
+| G6 | Chaque lot déclarant une durée déclare aussi une charge | 3 |
 
-**42 tests**, tous passants (`python3 scripts/test_regles.py`). 13 règles + 5 portes chargées
+**51 tests**, tous passants (`python3 scripts/test_regles.py`). 15 règles + 6 portes chargées
 (`python3 scripts/preflight.py`).

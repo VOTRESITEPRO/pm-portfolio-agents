@@ -424,6 +424,12 @@ agents:
           - "durée du chemin critique == somme des durées de ses lots, recalculée"
           - "sous-total de chaque lot de niveau 1 >= durée de son chemin interne"
           - "marge = fenêtre calendaire réelle - durée du chemin critique, recalculée"
+          # --- Ajout 01/09/2026 : generalisation du patron ci-dessus aux ressources.
+          # 'duree' est calendaire et se parallelise ; 'charge' (personne-semaines,
+          # nouveau champ par lot) ne se parallelise pas au-dela de l'equipe reelle.
+          # Un chemin critique qui tient sur le calendrier peut rester intenable si
+          # la charge cumulee sature l'equipe : ce sont deux contraintes independantes.
+          - "charge cumulée (hypothèse haute) <= etp_interne x durée de la fenêtre, recalculée (R15) — chaque lot déclarant une durée déclare aussi une charge (G6)"
         regle: >
           Tout écart entre un total annoncé et son recalcul est BLOQUANT, quelle
           que soit son ampleur. Origine : un écart de 4 semaines sur le chemin
@@ -917,6 +923,44 @@ agents:
         note: >
           Règle mecanique, donc fiable. C'est la seule catégorie d'erreur que la
           relecture ne détecte pas et que le recalcul détecte toujours.
+
+      # --- Ajout 01/09/2026 : les 7 portes de sortie declarees dans un prompt sans
+      # controle code (voir docs/ecarts-spec-implementation.md) sont implementees.
+      # Cinq lisent un seul artefact (gates/, hors de cette liste, qui ne recense
+      # que les regles croisant plusieurs artefacts) ; deux croisent contexte et
+      # risques, donc figurent ici.
+      - id: R12
+        regle: "chaque lacune convertie_en_risque existe dans le registre des risques sous l'identifiant annoncé"
+        condition_applicabilite: [contexte-projet, risques]
+        derogation_admise: true
+
+      - id: R13
+        regle: "chaque hypothèse de la charte portant un risque_associe est couverte par le registre des risques"
+        condition_applicabilite: [charte-objectifs, risques]
+        derogation_admise: true
+
+      # --- Ajout 01/09/2026 : generalisation du patron R11 (recalcul aval +
+      # confrontation a une contrainte amont fixee independamment) au-dela du
+      # seul calendrier. Origine : R11 ne couvrait que le chemin critique ;
+      # rien ne confrontait le budget ou la charge d'equipe a leurs contraintes
+      # amont du contexte.
+      - id: R14
+        regle: "budget total recalculé depuis les postes <= budget cadre du contexte, recalculé"
+        condition_applicabilite: [budget-achats, contexte-projet]
+        derogation_admise: false
+        note: >
+          Complete budget-achats.porte_qualite.coherence_arithmetique ("écart au
+          budget cadre"), specifie depuis la v1.1 mais jamais code : R2 recalculait
+          le total, sans jamais le confronter au plafond amont.
+
+      - id: R15
+        regle: "charge cumulée (hypothèse haute) <= etp_interne x durée de la fenêtre du contexte, recalculée"
+        condition_applicabilite: [planificateur-wbs, contexte-projet]
+        derogation_admise: false
+        note: >
+          Sans équivalent en v1.1 : le champ 'charge' par lot (personne-semaines,
+          distinct de 'duree' qui est calendaire) est une extension de schema
+          ajoutee dans cette session pour rendre cette confrontation possible.
 
     # --- Correction C6 : mecanisme de dérogation motivée.
     # Origine : 2 écarts sur 6 de la tranche verticale etaient des faux positifs,

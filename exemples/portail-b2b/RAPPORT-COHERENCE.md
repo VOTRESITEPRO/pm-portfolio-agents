@@ -1,6 +1,6 @@
 # Rapport de cohérence inter-artefacts
 
-Généré le 01/09/2026 à 07:56 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
+Généré le 01/09/2026 à 08:14 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
 
 **Artefacts présents** : charte, contexte, methodologie, parties-prenantes, plan, risques
 
@@ -10,7 +10,7 @@ Généré le 01/09/2026 à 07:56 par `validate.py` (contrôle déterministe, san
 
 ## Verdict : **RETRAVAILLER**
 
-17 écart(s) bloquant(s) · 2 mineur(s) · 4 dérogation(s) accordée(s)
+45 écart(s) bloquant(s) · 2 mineur(s) · 4 dérogation(s) accordée(s)
 
 ## Exécution des règles et portes
 
@@ -29,13 +29,16 @@ Généré le 01/09/2026 à 07:56 par `validate.py` (contrôle déterministe, san
 | R11 | Tout total annoncé est recalculé à partir de ses composants | **ÉCART** | 5 écart(s) |
 | R12 | Lacune convertie_en_risque tracée dans le registre des risques | conforme |  |
 | R13 | Hypothèse de la charte couverte par le registre des risques | conforme |  |
+| R14 | Budget total recalculé confronté au budget cadre du contexte | non applicable | hors tranche déclarée : pm-budget-achats |
+| R15 | Charge cumulée confrontée à la capacité de l'équipe interne | conforme |  |
 | G1 | Plans d'atténuation et de secours pour toute criticité (p × i) ≥ 15 | **ÉCART** | 8 écart(s) |
 | G2 | Les 5 critères SMART sont renseignés pour chaque objectif | conforme |  |
 | G3 | Chaque livrable porte un critère de succès non vide | conforme |  |
 | G4 | Au moins 5 critères motivés et 1 alternative écartée motivée | conforme |  |
 | G5 | Aucune lacune bloquante au statut ouverte | conforme |  |
+| G6 | Chaque lot portant une durée porte aussi une charge | **ÉCART** | 28 écart(s) |
 
-**13 règle(s) sur 18 exécutée(s).** Une règle non applicable l'est par condition déclarée, jamais par absence constatée d'artefact.
+**15 règle(s) sur 21 exécutée(s).** Une règle non applicable l'est par condition déclarée, jamais par absence constatée d'artefact.
 
 ## Écarts bloquants
 
@@ -140,6 +143,174 @@ p=4, i=5
 p=4, i=4
 
 *Agent responsable de la correction : `pm-risques`*
+
+### [G6] Lot 1 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 1.1 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 1.2 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 1.3 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 1.4 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 1.5 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 1.6 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 2 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 2.1 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 2.2 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 2.3 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 2.4 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 3 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 3.1 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 3.2 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 3.3 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 3.4 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 3.5 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 3.6 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 3.7 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 4 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 4.1 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 4.2 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 4.3 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 4.4 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 5 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 5.1 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
+
+### [G6] Lot 5.2 : durée déclarée sans charge
+
+sans charge, R15 ne peut pas confronter la charge cumulée à la capacité de l'équipe interne
+
+*Agent responsable de la correction : `pm-planificateur-wbs`*
 
 ## Écarts mineurs
 

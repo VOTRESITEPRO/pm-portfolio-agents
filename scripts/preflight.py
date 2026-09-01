@@ -134,8 +134,8 @@ try:
     from validate import charger_regles, charger_portes
     regles = charger_regles()
     portes = charger_portes()
-    test(f"{len(regles)} règles chargées (13 attendues)", len(regles) == 13)
-    test(f"{len(portes)} portes chargées (5 attendues)", len(portes) == 5)
+    test(f"{len(regles)} règles chargées (15 attendues)", len(regles) == 15)
+    test(f"{len(portes)} portes chargées (6 attendues)", len(portes) == 6)
 except Exception as exc:
     test("chargement des règles et portes", False, str(exc))
 

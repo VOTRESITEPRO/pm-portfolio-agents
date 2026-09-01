@@ -245,6 +245,48 @@ verifie("risque associé présent", "R13",
                   risques={"registre": [{"id": "R-02"}]}),
         "conforme")
 
+print("R14 — budget cadre (généralisation du patron R11)")
+verifie("budget recalculé dépasse le budget cadre", "R14",
+        portfolio(budget={"postes": [{"libelle": "x", "montant": {"valeur": 450000, "statut": "source"}}]},
+                  contexte={"contraintes": {"budget_plafond": {"valeur": 400000, "statut": "source"}}}),
+        "ecart", "dépasse")
+verifie("budget recalculé dans le budget cadre", "R14",
+        portfolio(budget={"postes": [{"libelle": "x", "montant": {"valeur": 350000, "statut": "source"}}]},
+                  contexte={"contraintes": {"budget_plafond": {"valeur": 400000, "statut": "source"}}}),
+        "conforme")
+verifie("pas de budget cadre déclaré -> rien à confronter", "R14",
+        portfolio(budget={"postes": [{"libelle": "x", "montant": {"valeur": 999999, "statut": "source"}}]},
+                  contexte={"contraintes": {}}),
+        "conforme")
+
+print("R15 — charge vs capacité de l'équipe interne (généralisation du patron R11)")
+verifie("charge haute dépasse la capacité", "R15",
+        portfolio(plan={"lots": [{"id": "1", "charge": {"min": 60, "max": 80}}]},
+                  contexte={"contraintes": {"etp_interne": {"valeur": 1.5, "statut": "source"}},
+                           "fenetre": {"debut": "2026-09-01", "fin": "2027-08-31"}}),
+        "ecart", "dépasse")
+verifie("charge haute tient dans la capacité", "R15",
+        portfolio(plan={"lots": [{"id": "1", "charge": {"min": 10, "max": 15}}]},
+                  contexte={"contraintes": {"etp_interne": {"valeur": 1.5, "statut": "source"}},
+                           "fenetre": {"debut": "2026-09-01", "fin": "2027-08-31"}}),
+        "conforme")
+verifie("aucun lot ne porte de charge -> rien à confronter", "R15",
+        portfolio(plan={"lots": [{"id": "1", "duree": {"min": 4, "max": 5}}]},
+                  contexte={"contraintes": {"etp_interne": {"valeur": 1.5, "statut": "source"}},
+                           "fenetre": {"debut": "2026-09-01", "fin": "2027-08-31"}}),
+        "conforme")
+
+print("G6 — charge déclarée pour tout lot portant une durée")
+verifie("lot avec durée sans charge", "G6",
+        portfolio(plan={"lots": [{"id": "1", "duree": {"min": 4, "max": 5}}]}),
+        "ecart", "sans charge")
+verifie("lot avec durée et charge", "G6",
+        portfolio(plan={"lots": [{"id": "1", "duree": {"min": 4, "max": 5}, "charge": {"min": 2, "max": 3}}]}),
+        "conforme")
+verifie("lot sans durée (parent pur) -> hors périmètre de la porte", "G6",
+        portfolio(plan={"lots": [{"id": "1", "type": "conduite"}]}),
+        "conforme")
+
 print()
 if ECHECS:
     print(f"{len(ECHECS)} test(s) en échec : {ECHECS}")
