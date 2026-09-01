@@ -7,6 +7,8 @@ ID = "G2"
 LIBELLE = "Les 5 critères SMART sont renseignés pour chaque objectif"
 REQUIERT = ["charte"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "standard", "reference":
+    "Définition des critères SMART elle-même (Google PM Cert Cours 2)."}
 
 CRITERES = ("s", "m", "a", "r", "t")
 

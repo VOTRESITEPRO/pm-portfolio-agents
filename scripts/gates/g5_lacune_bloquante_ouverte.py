@@ -8,6 +8,8 @@ ID = "G5"
 LIBELLE = "Aucune lacune bloquante au statut ouverte"
 REQUIERT = ["contexte"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "choix_architecture", "reference":
+    "Mécanique de gouvernance propre au système, directement liée à la décision D3 (le registre des lacunes est un livrable, pas une note interne)."}
 
 
 def verifier(pf):

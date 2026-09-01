@@ -6,6 +6,8 @@ ID = "R3"
 LIBELLE = "Réserve de contingence justifiée par des risques cotés"
 REQUIERT = ["budget", "risques"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "choix_architecture", "reference":
+    "La réserve justifiée par les risques est une pratique reconnue (Google PM Cert Cours 3) ; l'interdiction stricte du pourcentage forfaitaire est un choix de rigueur du système, pas une règle universelle."}
 
 
 def verifier(pf):

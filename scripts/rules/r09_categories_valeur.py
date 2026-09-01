@@ -9,6 +9,8 @@ ID = "R9"
 LIBELLE = "Toute valeur chiffrée appartient à une catégorie de valeur déclarée"
 REQUIERT = []          # s'applique a tous les artefacts presents
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "choix_architecture", "reference":
+    "Mitigation de l'hallucination LLM — décision D9 de document-raisonnement.md, propre à ce système."}
 
 
 def verifier(pf):

@@ -5,6 +5,8 @@ ID = "R2"
 LIBELLE = "Somme des postes budgétaires == budget total annoncé"
 REQUIERT = ["budget"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "standard", "reference":
+    "Ligne de base budgétaire = somme des estimations de coût (Google PM Cert Cours 3, budgétisation)."}
 
 
 def verifier(pf):

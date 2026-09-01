@@ -6,6 +6,8 @@ ID = "R6"
 LIBELLE = "Chaque critère de succès couvert par un KPI et présent en checklist de clôture"
 REQUIERT = ["charte", "qualite", "cloture"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "standard", "reference":
+    "Traçabilité critère de succès -> mesure de qualité -> clôture (Google PM Cert Cours 5-6, qualité et clôture)."}
 
 
 def verifier(pf):

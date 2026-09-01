@@ -13,6 +13,8 @@ ID = "R11"
 LIBELLE = "Tout total annoncé est recalculé à partir de ses composants"
 REQUIERT = ["plan"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "choix_architecture", "reference":
+    "Cœur de la décision D6 : une porte de sortie vérifie un format, le second niveau recalcule — choix architectural central du système."}
 
 
 def _lots_par_id(plan):

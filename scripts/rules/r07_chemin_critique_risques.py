@@ -5,6 +5,8 @@ ID = "R7"
 LIBELLE = "Chaque tâche du chemin critique couverte par un risque analysé"
 REQUIERT = ["plan", "risques"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "standard", "reference":
+    "Analyse des risques du chemin critique en priorité (Google PM Cert Cours 3, gestion des risques)."}
 
 
 def verifier(pf):

@@ -8,6 +8,8 @@ ID = "R12"
 LIBELLE = "Lacune convertie_en_risque tracée dans le registre des risques"
 REQUIERT = ["contexte", "risques"]
 DEROGATION_ADMISE = True
+ORIGINE = {"type": "choix_architecture", "reference":
+    "Mécanique interne de traçabilité du registre des lacunes (décision D3), propre à ce système."}
 
 
 def verifier(pf):

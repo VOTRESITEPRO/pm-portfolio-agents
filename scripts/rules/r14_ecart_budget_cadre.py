@@ -13,6 +13,8 @@ ID = "R14"
 LIBELLE = "Budget total recalculé confronté au budget cadre du contexte"
 REQUIERT = ["budget", "contexte"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "source", "reference":
+    "Spécifié dans docs/cartographie-agents-pm.yaml (budget-achats.porte_qualite.coherence_arithmetique) mais non codé jusqu'à ce chantier — comble un écart spec/implémentation, pas une règle nouvelle."}
 
 
 def verifier(pf):

@@ -7,6 +7,8 @@ ID = "G1"
 LIBELLE = "Plans d'atténuation et de secours pour toute criticité (p × i) ≥ 15"
 REQUIERT = ["risques"]
 DEROGATION_ADMISE = True
+ORIGINE = {"type": "choix_architecture", "reference":
+    "La grille probabilité x impact est un standard de gestion des risques (Google PM Cert Cours 3) ; le seuil précis '15' est un seuil de gestion arbitraire propre à ce système (cf. décision D9 — seuil de gestion proposé, pas une donnée factuelle)."}
 
 
 def verifier(pf):

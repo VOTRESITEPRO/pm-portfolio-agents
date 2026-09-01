@@ -7,6 +7,8 @@ ID = "G4"
 LIBELLE = "Au moins 5 critères motivés et 1 alternative écartée motivée"
 REQUIERT = ["methodologie"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "choix_architecture", "reference":
+    "Les seuils '5 critères' et '1 alternative motivée' sont fixés par le concepteur du système ; le Google PM Cert Cours 1 recommande de comparer les méthodologies sans fixer de nombre."}
 
 
 def verifier(pf):

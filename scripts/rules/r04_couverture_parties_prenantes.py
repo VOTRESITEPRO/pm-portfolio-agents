@@ -6,6 +6,8 @@ ID = "R4"
 LIBELLE = "Toute partie prenante présente dans le RACI et le plan de communication"
 REQUIERT = ["parties-prenantes", "communications"]
 DEROGATION_ADMISE = True
+ORIGINE = {"type": "standard", "reference":
+    "Analyse et plan d'engagement des parties prenantes : toute partie prenante identifiée doit être engagée (Google PM Cert Cours 2)."}
 
 
 def verifier(pf):

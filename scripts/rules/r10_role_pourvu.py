@@ -11,6 +11,8 @@ ID = "R10"
 LIBELLE = "Tout rôle propriétaire ou approbateur est pourvu au registre des parties prenantes"
 REQUIERT = ["parties-prenantes"]
 DEROGATION_ADMISE = True
+ORIGINE = {"type": "choix_architecture", "reference":
+    "Corrige un défaut trouvé au test (correction C5 / risque S-08) : un rôle nommé doit être une personne réellement pourvue, pas un libellé."}
 
 
 def _index(pf):

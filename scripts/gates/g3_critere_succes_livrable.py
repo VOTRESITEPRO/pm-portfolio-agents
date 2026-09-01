@@ -6,6 +6,8 @@ ID = "G3"
 LIBELLE = "Chaque livrable porte un critère de succès non vide"
 REQUIERT = ["charte"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "standard", "reference":
+    "Un livrable sans critère de succès n'est pas un livrable géré — gestion de la qualité (Google PM Cert Cours 2/5)."}
 
 
 def verifier(pf):

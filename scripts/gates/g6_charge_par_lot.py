@@ -10,6 +10,8 @@ ID = "G6"
 LIBELLE = "Chaque lot portant une durée porte aussi une charge"
 REQUIERT = ["plan"]
 DEROGATION_ADMISE = True
+ORIGINE = {"type": "source", "reference":
+    "Porte déclarée dans agents-src/pm-planificateur-wbs.md (section Porte de sortie) mais non vérifiée par code avant ce chantier — comble un écart spec/implémentation, comme R14."}
 
 
 def verifier(pf):

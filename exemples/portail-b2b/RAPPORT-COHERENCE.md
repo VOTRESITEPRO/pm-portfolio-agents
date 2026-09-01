@@ -1,6 +1,6 @@
 # Rapport de cohérence inter-artefacts
 
-Généré le 01/09/2026 à 08:14 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
+Généré le 01/09/2026 à 11:20 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
 
 **Artefacts présents** : charte, contexte, methodologie, parties-prenantes, plan, risques
 
@@ -14,29 +14,31 @@ Généré le 01/09/2026 à 08:14 par `validate.py` (contrôle déterministe, san
 
 ## Exécution des règles et portes
 
-| Règle | Libellé | État | Détail |
-|---|---|---|---|
-| R1 | Périmètre de la charte == somme des lots de la WBS | dérogation |  |
-| R2 | Somme des postes budgétaires == budget total annoncé | non applicable | hors tranche déclarée : pm-budget-achats |
-| R3 | Réserve de contingence justifiée par des risques cotés | non applicable | hors tranche déclarée : pm-budget-achats |
-| R4 | Toute partie prenante présente dans le RACI et le plan de communication | non applicable | hors tranche déclarée : pm-communications |
-| R5 | Un seul Accountable par livrable dans le RACI | conforme |  |
-| R6 | Chaque critère de succès couvert par un KPI et présent en checklist de clôture | non applicable | hors tranche déclarée : pm-qualite-suivi, pm-equipe-cloture |
-| R7 | Chaque tâche du chemin critique couverte par un risque analysé | conforme |  |
-| R8 | Chaque livrable de la charte couvert par au moins une story | non applicable | hors tranche déclarée : pm-backlog-stories — ATTENTION : methodologie.drapeau_agile == True, cet artefact est attendu dès que la tranche s'élargit |
-| R9 | Toute valeur chiffrée appartient à une catégorie de valeur déclarée | conforme |  |
-| R10 | Tout rôle propriétaire ou approbateur est pourvu au registre des parties prenantes | **ÉCART** | 6 écart(s) |
-| R11 | Tout total annoncé est recalculé à partir de ses composants | **ÉCART** | 5 écart(s) |
-| R12 | Lacune convertie_en_risque tracée dans le registre des risques | conforme |  |
-| R13 | Hypothèse de la charte couverte par le registre des risques | conforme |  |
-| R14 | Budget total recalculé confronté au budget cadre du contexte | non applicable | hors tranche déclarée : pm-budget-achats |
-| R15 | Charge cumulée confrontée à la capacité de l'équipe interne | conforme |  |
-| G1 | Plans d'atténuation et de secours pour toute criticité (p × i) ≥ 15 | **ÉCART** | 8 écart(s) |
-| G2 | Les 5 critères SMART sont renseignés pour chaque objectif | conforme |  |
-| G3 | Chaque livrable porte un critère de succès non vide | conforme |  |
-| G4 | Au moins 5 critères motivés et 1 alternative écartée motivée | conforme |  |
-| G5 | Aucune lacune bloquante au statut ouverte | conforme |  |
-| G6 | Chaque lot portant une durée porte aussi une charge | **ÉCART** | 28 écart(s) |
+Origine : **standard** (référentiel nommé, non négociable) · **source** (comble un écart entre une spécification déjà écrite du projet et le code) · **choix_architecture** (décision de conception de ce système, pas une règle universelle) · **convention** (format technique).
+
+| Règle | Libellé | État | Origine | Détail |
+|---|---|---|---|---|
+| R1 | Périmètre de la charte == somme des lots de la WBS | dérogation | standard |  |
+| R2 | Somme des postes budgétaires == budget total annoncé | non applicable | standard | hors tranche déclarée : pm-budget-achats |
+| R3 | Réserve de contingence justifiée par des risques cotés | non applicable | choix_architecture | hors tranche déclarée : pm-budget-achats |
+| R4 | Toute partie prenante présente dans le RACI et le plan de communication | non applicable | standard | hors tranche déclarée : pm-communications |
+| R5 | Un seul Accountable par livrable dans le RACI | conforme | standard |  |
+| R6 | Chaque critère de succès couvert par un KPI et présent en checklist de clôture | non applicable | standard | hors tranche déclarée : pm-qualite-suivi, pm-equipe-cloture |
+| R7 | Chaque tâche du chemin critique couverte par un risque analysé | conforme | standard |  |
+| R8 | Chaque livrable de la charte couvert par au moins une story | non applicable | choix_architecture | hors tranche déclarée : pm-backlog-stories — ATTENTION : methodologie.drapeau_agile == True, cet artefact est attendu dès que la tranche s'élargit |
+| R9 | Toute valeur chiffrée appartient à une catégorie de valeur déclarée | conforme | choix_architecture |  |
+| R10 | Tout rôle propriétaire ou approbateur est pourvu au registre des parties prenantes | **ÉCART** | choix_architecture | 6 écart(s) |
+| R11 | Tout total annoncé est recalculé à partir de ses composants | **ÉCART** | choix_architecture | 5 écart(s) |
+| R12 | Lacune convertie_en_risque tracée dans le registre des risques | conforme | choix_architecture |  |
+| R13 | Hypothèse de la charte couverte par le registre des risques | conforme | choix_architecture |  |
+| R14 | Budget total recalculé confronté au budget cadre du contexte | non applicable | source | hors tranche déclarée : pm-budget-achats |
+| R15 | Charge cumulée confrontée à la capacité de l'équipe interne | conforme | choix_architecture |  |
+| G1 | Plans d'atténuation et de secours pour toute criticité (p × i) ≥ 15 | **ÉCART** | choix_architecture | 8 écart(s) |
+| G2 | Les 5 critères SMART sont renseignés pour chaque objectif | conforme | standard |  |
+| G3 | Chaque livrable porte un critère de succès non vide | conforme | standard |  |
+| G4 | Au moins 5 critères motivés et 1 alternative écartée motivée | conforme | choix_architecture |  |
+| G5 | Aucune lacune bloquante au statut ouverte | conforme | choix_architecture |  |
+| G6 | Chaque lot portant une durée porte aussi une charge | **ÉCART** | source | 28 écart(s) |
 
 **15 règle(s) sur 21 exécutée(s).** Une règle non applicable l'est par condition déclarée, jamais par absence constatée d'artefact.
 

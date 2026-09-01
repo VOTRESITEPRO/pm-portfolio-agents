@@ -12,6 +12,8 @@ LIBELLE = "Chaque livrable de la charte couvert par au moins une story"
 REQUIERT = ["charte", "backlog"]
 DEROGATION_ADMISE = False
 CONDITION_SUPPLEMENTAIRE = ("methodologie", "drapeau_agile", True)
+ORIGINE = {"type": "choix_architecture", "reference":
+    "Pont entre le vocabulaire waterfall (charte/livrables) et agile (stories) : propre à ce système à double registre, pas une règle du Scrum Guide."}
 
 
 def verifier(pf):

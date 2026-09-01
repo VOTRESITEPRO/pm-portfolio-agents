@@ -287,6 +287,17 @@ verifie("lot sans durée (parent pur) -> hors périmètre de la porte", "G6",
         portfolio(plan={"lots": [{"id": "1", "type": "conduite"}]}),
         "conforme")
 
+print("Gouvernance — toute règle et toute porte déclare son origine")
+TYPES_ORIGINE_VALIDES = {"standard", "source", "choix_architecture", "convention"}
+for rid, mod in sorted(REGLES.items()):
+    origine = getattr(mod, "ORIGINE", None)
+    ok = (isinstance(origine, dict) and origine.get("type") in TYPES_ORIGINE_VALIDES
+          and str(origine.get("reference") or "").strip())
+    statut = "ok  " if ok else "ECHEC"
+    if not ok:
+        ECHECS.append(f"{rid} : ORIGINE absente ou invalide")
+    print(f"  [{statut}] {rid} déclare une origine valide")
+
 print()
 if ECHECS:
     print(f"{len(ECHECS)} test(s) en échec : {ECHECS}")

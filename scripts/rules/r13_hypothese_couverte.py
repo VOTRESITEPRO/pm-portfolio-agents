@@ -7,6 +7,8 @@ ID = "R13"
 LIBELLE = "Hypothèse de la charte couverte par le registre des risques"
 REQUIERT = ["charte", "risques"]
 DEROGATION_ADMISE = True
+ORIGINE = {"type": "choix_architecture", "reference":
+    "Mécanique interne de traçabilité charte <-> risques, propre à ce système."}
 
 
 def verifier(pf):

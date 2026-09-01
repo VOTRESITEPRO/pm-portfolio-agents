@@ -6,6 +6,8 @@ ID = "R1"
 LIBELLE = "Périmètre de la charte == somme des lots de la WBS"
 REQUIERT = ["charte", "plan"]
 DEROGATION_ADMISE = True
+ORIGINE = {"type": "standard", "reference":
+    "Règle des 100% de la WBS : tout le périmètre de la charte est couvert par la WBS, rien de plus (Google PM Cert Cours 3 / PMBOK)."}
 
 
 def verifier(pf):

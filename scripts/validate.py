@@ -61,7 +61,8 @@ def condition_supplementaire_satisfaite(mod, pf) -> bool | None:
 
 
 def evaluer(mod, pf) -> ResultatRegle:
-    res = ResultatRegle(regle=mod.ID, libelle=mod.LIBELLE, etat="conforme")
+    res = ResultatRegle(regle=mod.ID, libelle=mod.LIBELLE, etat="conforme",
+                        origine=getattr(mod, "ORIGINE", {}))
     manquants = pf.agents_manquants(getattr(mod, "REQUIERT", []))
     cond = condition_supplementaire_satisfaite(mod, pf)
 
@@ -163,14 +164,20 @@ def rapport_markdown(racine, resultats, pf) -> str:
         "",
         "## Exécution des règles et portes",
         "",
-        "| Règle | Libellé | État | Détail |",
-        "|---|---|---|---|",
+        "Origine : **standard** (référentiel nommé, non négociable) · **source** (comble un "
+        "écart entre une spécification déjà écrite du projet et le code) · **choix_architecture** "
+        "(décision de conception de ce système, pas une règle universelle) · **convention** "
+        "(format technique).",
+        "",
+        "| Règle | Libellé | État | Origine | Détail |",
+        "|---|---|---|---|---|",
     ]
     sym = {"conforme": "conforme", "ecart": "**ÉCART**", "non_applicable": "non applicable",
            "derogation_accordee": "dérogation"}
     for r in resultats:
         detail = r.motif_non_applicable or (f"{len(r.ecarts)} écart(s)" if r.ecarts else "")
-        L.append(f"| {r.regle} | {r.libelle} | {sym[r.etat]} | {detail} |")
+        origine = r.origine.get("type", "—") if r.origine else "—"
+        L.append(f"| {r.regle} | {r.libelle} | {sym[r.etat]} | {origine} | {detail} |")
 
     exec_ = sum(1 for r in resultats if r.etat != "non_applicable")
     L += ["", f"**{exec_} règle(s) sur {len(resultats)} exécutée(s).** Une règle non applicable "

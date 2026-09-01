@@ -105,6 +105,7 @@ class ResultatRegle:
     ecarts: list[Ecart] = field(default_factory=list)
     derogations: list[dict] = field(default_factory=list)
     motif_non_applicable: str = ""
+    origine: dict = field(default_factory=dict)   # {"type": ..., "reference": ...} — voir ORIGINE de la règle/porte
 
 
 # --- Chargement -------------------------------------------------------------

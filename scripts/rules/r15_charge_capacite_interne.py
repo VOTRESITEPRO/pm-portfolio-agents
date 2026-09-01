@@ -17,6 +17,8 @@ ID = "R15"
 LIBELLE = "Charge cumulée confrontée à la capacité de l'équipe interne"
 REQUIERT = ["plan", "contexte"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "choix_architecture", "reference":
+    "N'existait dans aucune spec avant cette session : extension du schéma plan.yaml (champ charge) et règle décidées et ajoutées en session pour généraliser le patron R11 aux ressources."}
 
 
 def verifier(pf):

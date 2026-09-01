@@ -5,6 +5,8 @@ ID = "R5"
 LIBELLE = "Un seul Accountable par livrable dans le RACI"
 REQUIERT = ["parties-prenantes"]
 DEROGATION_ADMISE = False
+ORIGINE = {"type": "standard", "reference":
+    "Définition de la matrice RACI elle-même : un seul Accountable, au moins un Responsible (Google PM Cert Cours 2 / PMBOK)."}
 
 
 def verifier(pf):
