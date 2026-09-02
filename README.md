@@ -112,7 +112,13 @@ En phase de conception, une version de l'agent planificateur avait annoncé un c
 
 Sept décisions, listées et motivées dans la cartographie :
 
-choix de méthodologie · ordonnancement du backlog · validation des chiffres budgétaires · engagement de sprint · engagement vis-à-vis des parties prenantes · évaluation des personnes · cotation finale de l'impact des risques.
+1. Choix de méthodologie
+2. Ordonnancement du backlog
+3. Validation des chiffres budgétaires
+4. Engagement de sprint
+5. Engagement vis-à-vis des parties prenantes
+6. Évaluation des personnes
+7. Cotation finale de l'impact des risques
 
 Deux d'entre elles sont des règles du Scrum Guide, pas des préférences de conception.
 
