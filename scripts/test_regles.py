@@ -308,6 +308,34 @@ verifie("commanditaire et secteur renseignés", "G8",
                                        "secteur": "Industrie"}}),
         "conforme")
 
+print("G9 — texte de substitution résiduel")
+verifie("placeholder TODO détecté", "G9",
+        portfolio(risques={"registre": [{"id": "R-01", "libelle": "TODO: décrire le risque"}]}),
+        "ecart", "substitution")
+verifie("placeholder [INSERT] détecté", "G9",
+        portfolio(charte={"objectifs_smart": [{"id": "O1", "smart": {"m": "[INSERT] valeur cible"}}]}),
+        "ecart", "substitution")
+verifie("prose normale sans placeholder", "G9",
+        portfolio(risques={"registre": [{"id": "R-01", "libelle": "Retard fournisseur sur le lot 2"}]}),
+        "conforme")
+
+print("G10 — plausibilité lexicale de l'énoncé SMART (grandeur chiffrée + échéance)")
+verifie("énoncé sans grandeur chiffrée", "G10",
+        portfolio(charte={"objectifs_smart": [{"id": "O1",
+                                                "enonce": "Améliorer la satisfaction client d'ici Q3 2026."}]}),
+        "ecart", "grandeur chiffrée")
+verifie("énoncé sans échéance détectable", "G10",
+        portfolio(charte={"objectifs_smart": [{"id": "O1",
+                                                "enonce": "Réduire de 15 % le délai de traitement, quand ce sera prêt."}]}),
+        "ecart", "échéance détectable")
+verifie("énoncé avec grandeur chiffrée et échéance", "G10",
+        portfolio(charte={"objectifs_smart": [{"id": "O1",
+                                                "enonce": "Réduire de 15 % le délai de traitement d'ici Q3 2026."}]}),
+        "conforme")
+verifie("énoncé absent -> hors périmètre de cette porte", "G10",
+        portfolio(charte={"objectifs_smart": [{"id": "O1"}]}),
+        "conforme")
+
 print("D11 — scripts/tranche.py calcule la fermeture, jamais le raisonnement du skill")
 import subprocess
 RACINE_TEST = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

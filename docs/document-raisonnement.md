@@ -38,7 +38,7 @@ charte est automatisable. L'arbitrage de périmètre qu'elle contient ne l'est p
 ## 1.1 Ce que le système garantit, ce qu'il ne garantit pas
 
 **[BP]** — à formuler sans ambiguïté, parce que la profusion de règles et de portes (15
-règles, 8 portes, 59 tests) peut donner l'illusion inverse.
+règles, 10 portes, 93 tests) peut donner l'illusion inverse.
 
 Le système contrôle une **cohérence** : structurelle (tout champ requis présent), logique
 (un artefact aval retrouve bien ce que l'artefact amont a posé), arithmétique (un total
@@ -106,7 +106,7 @@ portée par le skill `pm-portfolio` — décision D11 assumée, pas un oubli (vo
                     hook PostToolUse / Stop  [CODE — automatique]
                                    ▼
                        scripts/validate.py  [CODE]
-                    15 règles + 8 portes, chacune avec son ORIGINE
+                    15 règles + 10 portes, chacune avec son ORIGINE
                                    │
                         RAPPORT-COHERENCE.md
                                    │
@@ -419,6 +419,73 @@ Aucun contrôle de code ne vérifie aujourd'hui qu'une valeur `provenance` corre
 réellement au document cité : c'est une discipline de prompt, pas encore une porte
 mécanique. Contrairement à D12/D13/D14, cette décision n'ajoute aucun contrôle vérifiable
 par du code — à noter comme limite explicite, pas comme un oubli.
+
+## D16 — Le texte de substitution résiduel est une porte mécanique (G9), pas une consigne de prompt
+
+**Décision.** Ajout de la porte `G9` (`scripts/gates/g9_texte_substitution.py`) : la
+détection d'un résidu de génération (`TODO`, `TBD`, `PLACEHOLDER`, `[INSERT]`...) dans la
+prose d'un artefact est un écart mineur (dérogation admise), sur tous les artefacts
+indifféremment.
+
+**Motif.** Analyse du 02/09/2026 de docforge-ai (Venkatesh188, benchmark GitHub) : ce dépôt
+fait passer chaque document généré par un filtre déterministe équivalent avant toute
+vérification de fond. Même famille que D12/D14 : un signal de forme se vérifie par du code,
+jamais par la seule discipline d'un prompt — et rien ne le détectait jusqu'ici sur ce
+portfolio, faute d'un run réel ayant produit ce défaut précis.
+
+**Portée volontairement limitée.** Sévérité `mineur`, comme G7 : un résidu de génération
+dégrade la qualité de forme, pas la validité d'une décision de gestion de projet.
+Dérogation admise pour un terme métier légitime qui coïnciderait avec un motif surveillé.
+
+## D17 — La plausibilité lexicale de l'énoncé SMART est une porte mécanique (G10), distincte de la présence des champs (G2)
+
+**Décision.** Ajout de la porte `G10` (`scripts/gates/g10_smart_contenu_plausible.py`) :
+l'énoncé (`enonce`) de chaque objectif SMART doit contenir une grandeur chiffrée détectable
+ET une échéance détectable, sous peine d'écart mineur (dérogation admise).
+
+**Motif.** Analyse du 02/09/2026 de ConversationProjectInitiator (useffj, benchmark
+GitHub) : ce dépôt applique une heuristique lexicale équivalente
+(`utils/validators.py::check_smart`) en complément, jamais en remplacement, de la
+validation qualitative par LLM. `G2` vérifie que les 5 champs `smart` (s/m/a/r/t) sont
+renseignés — pas que leur contenu est plausible. Un objectif dont `smart.m` vaut « sera
+mesuré au fil de l'eau » passe `G2` sans jamais être questionné.
+
+**Piège évité — cibler le bon champ.** Une première version ciblait `smart.m`/`smart.t`
+directement, par calque trop littéral de ConversationProjectInitiator. Testée contre
+`exemples/portail-b2b`, elle a produit un faux positif systématique : dans ce schéma,
+`smart.m` documente la **source/méthode de mesure** (ex : « source : outil de
+téléphonie »), pas la grandeur cible elle-même — celle-ci vit dans `enonce` et dans
+`cible.valeur` (déjà gouverné par `R9`). La porte cible donc `enonce`, seul champ qui
+combine mesure et échéance en une phrase lisible. Reproductible : relancer
+`validate.py exemples/portail-b2b` après avoir pointé `G10` sur `smart.m`/`smart.t`
+fait réapparaître le faux positif sur les trois objectifs de l'exemple.
+
+**Portée volontairement limitée.** Même principe que ConversationProjectInitiator : les
+critères Spécifique/Atteignable/Pertinent ne sont pas fiablement vérifiables par
+expression régulière sur un texte libre, et restent hors périmètre de cette porte. Un
+objectif-jalon binaire (mise en service à une date, sans grandeur chiffrée) est un cas
+légitime couvert par la dérogation, pas une exception à coder — `G10` le signale
+effectivement sur l'objectif O3 de `portail-b2b` (mise en service du portail), qui est bien
+un jalon binaire et non un défaut de l'exemple.
+
+## D18 — La formulation Cause-Événement-Impact d'un risque reste une consigne de prompt, sans porte mécanique
+
+**Décision.** `agents-src/pm-risques.md` exige désormais que `libelle` suive la structure
+Cause-Événement-Impact (« En raison de [cause], [événement] peut survenir, entraînant
+[impact]. »), cinquième exigence contrôlée aux côtés de l'ancrage, du propriétaire pourvu,
+des seuils marqués et de l'indépendance.
+
+**Motif.** Analyse du 02/09/2026 de ConversationProjectInitiator (useffj) : ce dépôt impose
+ce même format par prompt pour chaque risque généré — un standard de rédaction des risques
+qui améliore la traçabilité cause → conséquence sans coût d'implémentation.
+
+**Pourquoi aucune porte, contrairement à D16/D17 — la limite qui compte, même famille que
+D15.** Une structure Cause-Événement-Impact valide s'exprime en français de trop de façons
+différentes pour être fiablement détectée par une expression régulière, contrairement à un
+résidu de génération (`G9`, motifs fermés) ou une grandeur chiffrée (`G10`, motifs
+numériques bornés). Coder un contrôle friable dessus produirait plus de faux négatifs et de
+faux positifs qu'il n'apporterait de garantie réelle — à noter comme limite explicite, pas
+comme un oubli.
 
 ---
 

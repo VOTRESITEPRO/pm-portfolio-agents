@@ -39,7 +39,7 @@ registre:
     plan_de_secours: "..."
 ```
 
-# Quatre exigences contrôlées
+# Cinq exigences contrôlées
 
 **1. Ancrage.** Chaque risque trace vers un lot nommé du chemin critique, une lacune du
 registre, ou un point de vigilance remonté en amont. Pas de « résistance au changement » :
@@ -57,6 +57,14 @@ que proposé : si un objectif vise −40 %, le seuil signifiant est 40 %, pas un
 ne sont pas indépendants : le second porte `depend_de`. Les coter tous deux au maximum
 compte deux fois le même problème et fausse la priorisation — et, en aval, la réserve de
 contingence.
+
+**5. Formulation.** `libelle` suit la structure Cause-Événement-Impact : « En raison de
+[cause], [événement] peut survenir, entraînant [impact]. » Une précaution oratoire sans
+cause ni conséquence chiffrée ou observable n'est pas un risque analysé, c'est un intitulé.
+Convention de forme, non vérifiée par une porte mécanique — une structure Cause-Événement-
+Impact valide se formule de trop de façons différentes pour être fiablement détectée par
+une expression régulière (contrairement à G9, qui ne cherche qu'un résidu de génération, pas
+une structure de phrase).
 
 Un impact coté 4 ou 5 doit être adossé à une **conséquence documentée** dans le contexte ou
 la charte. Sans cet ancrage, la cotation est une opinion présentée comme une analyse.
