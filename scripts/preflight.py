@@ -135,7 +135,7 @@ try:
     regles = charger_regles()
     portes = charger_portes()
     test(f"{len(regles)} règles chargées (15 attendues)", len(regles) == 15)
-    test(f"{len(portes)} portes chargées (6 attendues)", len(portes) == 6)
+    test(f"{len(portes)} portes chargées (8 attendues)", len(portes) == 8)
 except Exception as exc:
     test("chargement des règles et portes", False, str(exc))
 

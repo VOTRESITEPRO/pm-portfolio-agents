@@ -26,7 +26,7 @@ que ça ne boucle pas indéfiniment.
 
 Aucune porte qualité ne dépend du jugement d'un modèle sur sa propre production. C'est la seule règle non négociable du projet, et elle a une conséquence sur le format : chaque artefact est produit en **YAML structuré**, puis rendu en Markdown lisible. Le Markdown est une sortie, jamais la source — un tableau Markdown n'est pas vérifiable mécaniquement.
 
-Les 15 règles de cohérence inter-artefacts et les 6 portes de sortie par artefact sont **entièrement du Python déterministe** — voir [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md) pour le détail. Une part reste hors de portée du calcul et confiée au jugement sémantique de l'agent vérificateur : c'est elle qui a rattrapé le défaut le plus grave rencontré en test (voir plus bas).
+Les 15 règles de cohérence inter-artefacts et les 8 portes de sortie par artefact sont **entièrement du Python déterministe** — voir [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md) pour le détail. Une part reste hors de portée du calcul et confiée au jugement sémantique de l'agent vérificateur : c'est elle qui a rattrapé le défaut le plus grave rencontré en test (voir plus bas).
 
 ## Ce que ça donne concrètement
 
@@ -65,7 +65,7 @@ Le dépôt contient autant la conception que le code, parce que la conception es
 | 1. Buy vs build | [`docs/benchmark-depots.md`](docs/benchmark-depots.md) | 4 dépôts inspectés sur leur contenu réel. Aucun ne produit d'artefact du référentiel PM : la réutilisation porte sur l'orchestration, pas sur la substance |
 | 2. Conception | [`docs/cartographie-agents-pm.yaml`](docs/cartographie-agents-pm.yaml) | 15 agents en 4 couches, portes qualité, hand-offs, points de reprise humaine |
 | 3. Test de conception | [`docs/tranche-verticale/`](docs/tranche-verticale/) | 7 agents joués à la main sur un cas neutre — **6 défauts de conception**, dont 5 introuvables en relisant le YAML |
-| 4. Implémentation | `agents/` `scripts/` `hooks/` | 7 agents, 15 règles + 6 portes de sortie, 51 tests de non-régression |
+| 4. Implémentation | `agents/` `scripts/` `hooks/` | 7 agents, 15 règles + 8 portes de sortie, 59 tests de non-régression |
 | 5. Run réel | [`docs/journal-essai-01.md`](docs/journal-essai-01.md) | Chaîne complète en conditions réelles — **14 comportements conformes, 11 défauts, 3 familles** |
 | 6. Limites | [`docs/ecarts-spec-implementation.md`](docs/ecarts-spec-implementation.md) | Ce que la spécification exige et que le code ne vérifie pas encore |
 | 7. Raisonnement | [`docs/document-raisonnement.md`](docs/document-raisonnement.md) | Décisions de conception, alternatives écartées, risques du système |
@@ -99,11 +99,23 @@ Puis :
 
     claude --plugin-dir /chemin/vers/pm-portfolio-agents
 
+## Livrables
+
+Le run produit `pm-portfolio/` : chaque artefact en `.yaml` (source, éditable) et son
+rendu `.md` (lecture humaine, régénéré depuis le YAML — ne jamais l'éditer directement),
+plus `RAPPORT-COHERENCE.md` (résultat du validateur, dérogations comprises).
+
+Ordre de lecture recommandé — celui de la production, qui est aussi l'ordre de
+dépendance : `contexte.md` (contraintes) → `methodologie.md` (approche retenue) →
+`charte.md` (objectifs et périmètre) → `parties-prenantes.md` (RACI) → `plan.md` (WBS,
+chemin critique) → `risques.md`, puis `RAPPORT-COHERENCE.md` en dernier pour la
+traçabilité des arbitrages et dérogations.
+
 ## Commandes
 
     python3 scripts/validate.py ./pm-portfolio   # portes qualité, code retour 2 si écart bloquant
     python3 scripts/render.py   ./pm-portfolio   # YAML -> Markdown lisible
-    python3 scripts/test_regles.py               # 51 tests de non-régression
+    python3 scripts/test_regles.py               # 59 tests de non-régression
     python3 scripts/build_agents.py              # agents-src/ + _COMMUN.md -> agents/
 
 ## État

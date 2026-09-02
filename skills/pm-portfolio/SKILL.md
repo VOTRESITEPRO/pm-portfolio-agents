@@ -57,6 +57,22 @@ pour cette tranche.
 
 Sans `tranche.yaml`, la tranche est deduite des artefacts presents.
 
+## Modifier une information déjà arbitrée
+
+Si l'utilisateur t'apprend qu'une information déjà posée dans un artefact **existant** a
+changé (une échéance repoussée, un commanditaire désormais connu, un budget révisé) —
+**ne te contente jamais d'éditer cet artefact seul.** Calcule d'abord ce que ça rend
+potentiellement obsolète en aval, par le même principe que la règle de tranche (D11) —
+symétrique, décision D13 :
+
+    python3 RACINE/scripts/impact.py --modifie contexte
+
+La sortie liste les artefacts en aval et leurs agents. Parmi eux, ne relance que ceux qui
+existent réellement dans `pm-portfolio/`. **Chaque agent relancé repasse par ses propres
+points de validation obligatoire** (méthodologie, estimations, cotations…) : une valeur
+déjà validée par l'utilisateur ne se réécrit jamais silencieusement, même si le calcul
+d'impact la déclare potentiellement obsolète — proposer, jamais imposer.
+
 ## Démarrage
 
 1. Créé `pm-portfolio/` à la racine du projet.

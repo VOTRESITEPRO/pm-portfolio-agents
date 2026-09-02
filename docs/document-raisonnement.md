@@ -38,7 +38,7 @@ charte est automatisable. L'arbitrage de périmètre qu'elle contient ne l'est p
 ## 1.1 Ce que le système garantit, ce qu'il ne garantit pas
 
 **[BP]** — à formuler sans ambiguïté, parce que la profusion de règles et de portes (15
-règles, 6 portes, 51 tests) peut donner l'illusion inverse.
+règles, 8 portes, 59 tests) peut donner l'illusion inverse.
 
 Le système contrôle une **cohérence** : structurelle (tout champ requis présent), logique
 (un artefact aval retrouve bien ce que l'artefact amont a posé), arithmétique (un total
@@ -106,7 +106,7 @@ portée par le skill `pm-portfolio` — décision D11 assumée, pas un oubli (vo
                     hook PostToolUse / Stop  [CODE — automatique]
                                    ▼
                        scripts/validate.py  [CODE]
-                    15 règles + 6 portes, chacune avec son ORIGINE
+                    15 règles + 8 portes, chacune avec son ORIGINE
                                    │
                         RAPPORT-COHERENCE.md
                                    │
@@ -338,6 +338,87 @@ agents — ne l'est plus.
 conditions réelles (verdict AVANCER, voir §5) ; le remplacer par un agent neuf non testé
 aurait été un risque non justifié par le gain. Seul le point de jugement identifié comme
 réellement délégué à tort a été corrigé.
+
+## D12 — L'orthographe accentuée est une porte mécanique (G7), pas une consigne de prompt
+
+**Décision.** Ajout de la porte `G7` (`scripts/gates/g7_orthographe_accents.py`) : sur un
+artefact dont la prose cumule au moins 150 lettres, l'absence totale de caractère accentué
+est un écart mineur (dérogation admise). Consigne miroir ajoutée dans
+`agents-src/_COMMUN.md` (« Orthographe ») pour tous les agents.
+
+**Motif — même famille que D6.** Au run palier 4 (01/09/2026, mêmes données que l'essai
+01), `pm-contexte-projet` et `pm-charte-objectifs` ont produit une prose entièrement sans
+accents ("Perimetre", "depassable", "concernes"), tandis que `pm-planificateur-wbs` et
+`pm-risques` écrivaient un français correct sur le même run. Aucune règle ni porte ne le
+détectait — un défaut de forme pur, jusqu'ici laissé à la seule discipline du prompt, alors
+que la présence d'accents dans un volume de texte donné est un signal aussi mécaniquement
+vérifiable que ceux déjà couverts par D6.
+
+**Portée volontairement limitée.** Sévérité `mineur`, pas `bloquant` : la perte d'accents
+dégrade la qualité de forme d'un livrable, pas la validité d'une décision de gestion de
+projet — elle ne doit pas bloquer un verdict AVANCER. Dérogation admise pour ne pas
+pénaliser un artefact légitimement non accentué (vocabulaire technique anglophone).
+
+## D13 — La fermeture aval d'une modification se calcule par du code, symétrique de D11
+
+**Décision.** Ajout de `scripts/impact.py` et `pmlib.fermeture_transitive_aval()` : donné
+un artefact déjà produit dont une information a changé, calcule mécaniquement tout ce qui
+en dépend en aval, sur le même graphe `DEPENDANCES` que `tranche.py`, parcouru dans l'autre
+sens. Le skill `pm-portfolio` l'invoque désormais (« Modifier une information déjà
+arbitrée », SKILL.md) avant de relancer quoi que ce soit.
+
+**Motif.** Discussion avec l'utilisateur (02/09/2026) sur le palier 4 : que se passe-t-il
+si une échéance connue après coup diffère de celle déjà posée ? Réponse honnête à
+l'époque — le mécanisme d'édition existe (un agent relancé réécrit son YAML), mais rien ne
+calcule ce qui, en aval, devient potentiellement obsolète. Éditer `contexte.yaml` seul
+laisserait `plan.yaml`/`risques.yaml` silencieusement périmés, sans qu'aucune règle ne s'en
+plaigne nécessairement (une échéance repoussée *augmente* une marge, ce qu'aucune règle ne
+sanctionne). Même famille que D11 : un calcul énumérable sur un graphe explicite ne doit
+jamais être laissé au raisonnement du skill.
+
+**Portée volontairement limitée — la limite qui compte.** `impact.py` ne fait que
+*détecter*. Il ne relance rien, ne réécrit rien. Chaque agent en aval, une fois relancé,
+repasse par ses propres points de validation obligatoire (méthodologie, estimations,
+cotations…) déjà existants dans la chaîne. Une automatisation qui réécrirait silencieusement
+une durée ou une cotation déjà validée par l'utilisateur violerait directement la liste des
+« sept décisions que la chaîne ne prend jamais » (SKILL.md) — ce n'est pas un oubli, c'est
+un choix délibéré : détecter par le code, reconfirmer par l'humain, jamais l'inverse.
+
+## D14 — Les champs utiles non bloquants se demandent en une passe groupée, tracée par une porte
+
+**Décision.** Ajout de la porte `G8` (`scripts/gates/g8_champs_utiles_renseignes.py`) :
+`projet.commanditaire` et `projet.secteur` vides sont un écart mineur (dérogation admise).
+`pm-contexte-projet` pose désormais, une fois les lacunes bloquantes résolues, une seule
+question groupée pour ces champs plutôt que de les laisser silencieusement vides.
+
+**Motif.** Seules 4 lacunes (échéance, budget, périmètre, critère de succès) sont
+qualifiées « bloquantes » et déclenchent une question — un choix délibéré pour ne pas
+sursolliciter l'humain (voir agents-src/pm-contexte-projet.md). Mais ce choix avait un
+effet de bord non voulu : un champ utile non bloquant laissé vide était indiscernable d'un
+champ explicitement décliné. G8 rend cette différence traçable sans rendre le champ
+bloquant.
+
+**Portée volontairement limitée.** Sévérité `mineur`. N'étend pas la liste des lacunes
+bloquantes — un commanditaire non nommé ne doit pas empêcher de produire une charte
+honnête ; il doit seulement être visible et, si décliné, tracé par dérogation plutôt que
+silencieusement absent.
+
+## D15 — Un document source fourni par l'utilisateur s'exploite, avec provenance tracée
+
+**Décision.** `pm-contexte-projet` lit désormais tout document que l'utilisateur mentionne
+ou fournit, avant de poser ses questions, et en extrait ce qui répond au schéma de
+`contexte.yaml`. Une valeur ainsi extraite porte `statut: source` **et** un champ
+`provenance` (document + section), convention ajoutée à `agents-src/_COMMUN.md`.
+
+**Motif.** Jusqu'ici, seule une description orale en entrée était prévue. Un utilisateur
+disposant déjà d'un cahier des charges ou d'un brief devait retaper l'essentiel à la main.
+
+**Ce qui reste au jugement du LLM, et sa limite honnête.** Lire un document ne supprime
+pas le risque d'erreur de lecture ou d'extraction — ça le déplace, ça ne l'élimine pas.
+Aucun contrôle de code ne vérifie aujourd'hui qu'une valeur `provenance` correspond
+réellement au document cité : c'est une discipline de prompt, pas encore une porte
+mécanique. Contrairement à D12/D13/D14, cette décision n'ajoute aucun contrôle vérifiable
+par du code — à noter comme limite explicite, pas comme un oubli.
 
 ---
 

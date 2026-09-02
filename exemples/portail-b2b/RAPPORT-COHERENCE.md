@@ -1,6 +1,6 @@
 # Rapport de cohérence inter-artefacts
 
-Généré le 01/09/2026 à 11:20 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
+Généré le 02/09/2026 à 09:08 par `validate.py` (contrôle déterministe, sans intervention d'un modèle de langage).
 
 **Artefacts présents** : charte, contexte, methodologie, parties-prenantes, plan, risques
 
@@ -39,8 +39,10 @@ Origine : **standard** (référentiel nommé, non négociable) · **source** (co
 | G4 | Au moins 5 critères motivés et 1 alternative écartée motivée | conforme | choix_architecture |  |
 | G5 | Aucune lacune bloquante au statut ouverte | conforme | choix_architecture |  |
 | G6 | Chaque lot portant une durée porte aussi une charge | **ÉCART** | source | 28 écart(s) |
+| G7 | La prose d'un artefact contient des caractères accentués (pas de prose 100 % ASCII) | conforme | choix_architecture |  |
+| G8 | projet.commanditaire et projet.secteur sont renseignés, ou leur absence est tracée | conforme | choix_architecture |  |
 
-**15 règle(s) sur 21 exécutée(s).** Une règle non applicable l'est par condition déclarée, jamais par absence constatée d'artefact.
+**17 règle(s) sur 23 exécutée(s).** Une règle non applicable l'est par condition déclarée, jamais par absence constatée d'artefact.
 
 ## Écarts bloquants
 

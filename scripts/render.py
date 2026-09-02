@@ -9,7 +9,9 @@ et c'est precisement ce qui rend les portes qualite possibles.
 """
 from __future__ import annotations
 
+import datetime
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -50,6 +52,21 @@ CHAMPS = {
     "duree":"Durée","capacite":"Capacité","perimetre":"Périmètre","delai":"Délai",
 }
 
+_RE_ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _fr_date(v):
+    """Date ISO (objet ou chaîne AAAA-MM-JJ) -> JJ/MM/AAAA lisible en français.
+
+    La source (YAML) reste en ISO 8601 — non ambigu, triable, format d'échange
+    standard. Seul le rendu Markdown, destiné à l'humain, s'affiche en JJ/MM/AAAA."""
+    if isinstance(v, (datetime.date, datetime.datetime)):
+        return v.strftime("%d/%m/%Y")
+    if isinstance(v, str) and _RE_ISO_DATE.match(v):
+        return datetime.date.fromisoformat(v).strftime("%d/%m/%Y")
+    return v
+
+
 def champ(k):
     """Nom de champ technique -> libelle lisible."""
     return CHAMPS.get(str(k), str(k).replace("_", " ").capitalize())
@@ -63,8 +80,9 @@ def lib(v):
 def val(champ, defaut="—"):
     """Rend un champ chiffre {valeur, unite, statut} de facon lisible et honnete."""
     if not isinstance(champ, dict) or "valeur" not in champ:
-        return str(champ) if champ is not None else defaut
-    v, u, s = champ.get("valeur"), champ.get("unite", ""), champ.get("statut")
+        v = _fr_date(champ)
+        return str(v) if v is not None else defaut
+    v, u, s = _fr_date(champ.get("valeur")), champ.get("unite", ""), champ.get("statut")
     if v is None and s == "a_sourcer":
         return "**[À SOURCER]**"
     txt = f"{v}{(' ' + u) if u else ''}"
@@ -101,7 +119,7 @@ def r_contexte(d):
         L += tableau(["Contrainte", "Valeur"], [[champ(k), val(v)] for k, v in d["contraintes"].items()])
     f = d.get("fenetre") or {}
     if f:
-        L += [f"**Fenêtre calendaire** : {f.get('debut')} → {f.get('fin')}", ""]
+        L += [f"**Fenêtre calendaire** : {_fr_date(f.get('debut'))} → {_fr_date(f.get('fin'))}", ""]
     lac = liste(d.get("lacunes"))
     if lac:
         L += ["## Registre des lacunes d'information", "",
@@ -215,7 +233,7 @@ def r_plan(d):
     if d.get("jalons"):
         L += ["## Jalons", ""]
         L += tableau(["#", "Jalon", "Cible", "Nature"],
-                     [[j.get("id"), j.get("libelle"), j.get("cible"),
+                     [[j.get("id"), j.get("libelle"), _fr_date(j.get("cible")),
                        f"**{j.get('nature')}**" if j.get("nature") == "contractuel" else lib(j.get("nature"))]
                       for j in liste(d["jalons"])])
     return L

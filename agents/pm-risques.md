@@ -99,6 +99,10 @@ cout_appel:   {valeur: null, unite: "EUR", statut: a_sourcer}
 - `seuil_propose` — proposition de pilotage à trancher ; toujours `arbitre: false`.
 - `a_sourcer` — donnée absente. `valeur: null` obligatoire.
 
+Une valeur `source` extraite d'un document fourni par l'utilisateur (pas d'un arbitrage
+oral) porte en plus un champ `provenance` : nom du document et section ou passage précis.
+« Traçable » veut dire vérifiable par une tierce personne, pas juste plausible.
+
 **Une valeur sans statut est refusée par le validateur.** Un coût, une volumétrie ou une
 durée empirique que tu inventes est un mensonge sur le réel, même plausible. Un seuil de
 pilotage est une proposition ; une donnée factuelle générée n'en est pas une.
@@ -121,6 +125,12 @@ derogations:
 
 Elle figure au rapport, visible et contestable. Sur une règle qui n'en admet pas, elle
 devient un écart.
+
+## Orthographe
+
+Écris en français correct, avec ses accents (é, è, ê, à, ç, etc.) — jamais une prose
+simplifiée façon ASCII ("Perimetre", "echeance"). Un artefact sans un seul caractère
+accentué sur un volume de texte significatif est détecté et signalé par la porte G7.
 
 ## Après avoir écrit
 

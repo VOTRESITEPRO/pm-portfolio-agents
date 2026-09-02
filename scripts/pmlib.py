@@ -212,6 +212,44 @@ def parcourir_valeurs(noeud, chemin="") -> list[tuple[str, dict]]:
     return trouves
 
 
+def fermeture_transitive_aval(artefacts) -> set[str]:
+    """Retourne les artefacts visés PLUS tout ce qui en dépend en aval (transitif).
+
+    Symétrique de fermeture_transitive (qui remonte l'arbre amont) : sert à répondre à
+    « un fait déjà posé dans ces artefacts vient de changer, qu'est-ce que ça rend
+    potentiellement obsolète en aval ? » — voir scripts/impact.py et D13 de
+    docs/document-raisonnement.md. Même graphe DEPENDANCES, parcouru dans l'autre sens."""
+    aval: dict[str, list[str]] = {}
+    for a, amonts in DEPENDANCES.items():
+        for u in amonts:
+            aval.setdefault(u, []).append(a)
+    vus, pile = set(), list(artefacts)
+    while pile:
+        a = pile.pop()
+        if a in vus:
+            continue
+        vus.add(a)
+        pile.extend(aval.get(a, []))
+    return vus
+
+
+def parcourir_chaines(noeud, chemin="") -> list[tuple[str, str]]:
+    """Retourne toutes les valeurs texte (feuilles str) du document, avec leur chemin.
+
+    Sert aux contrôles de forme portant sur la prose (ex : G7, présence d'accents) —
+    à distinguer de parcourir_valeurs, qui cible les champs chiffrés structurés."""
+    trouves = []
+    if isinstance(noeud, dict):
+        for cle, sous in noeud.items():
+            trouves += parcourir_chaines(sous, f"{chemin}.{cle}" if chemin else str(cle))
+    elif isinstance(noeud, list):
+        for i, sous in enumerate(noeud):
+            trouves += parcourir_chaines(sous, f"{chemin}[{i}]")
+    elif isinstance(noeud, str):
+        trouves.append((chemin or "<racine>", noeud))
+    return trouves
+
+
 def somme_bornes(items, cle="duree") -> tuple[float, float]:
     """Somme les bornes min/max d'une liste d'éléments portant {cle: {min, max}}."""
     mn = mx = 0.0

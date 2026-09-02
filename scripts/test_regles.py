@@ -288,6 +288,26 @@ verifie("lot sans durée (parent pur) -> hors périmètre de la porte", "G6",
         portfolio(plan={"lots": [{"id": "1", "type": "conduite"}]}),
         "conforme")
 
+print("G7 — prose accentuée")
+verifie("prose longue sans aucun accent", "G7",
+        portfolio(contexte={"description": 'Le perimetre du projet couvre la consultation et la recherche documentaire, ainsi que la migration du contenu existant vers la nouvelle plateforme intranet, hors gestion electronique de documents et application mobile native, avec un budget plafond ferme non depassable sur toute la duree.'}),
+        "ecart", "aucun caractère accentué")
+verifie("prose longue correctement accentuée", "G7",
+        portfolio(contexte={"description": 'Le périmètre du projet couvre la consultation et la recherche documentaire, ainsi que la migration du contenu existant vers la nouvelle plateforme intranet, hors gestion électronique de documents et application mobile native, avec un budget plafond ferme non dépassable sur toute la durée.'}),
+        "conforme")
+verifie("prose courte sans accent -> volume insuffisant, hors périmètre de la porte", "G7",
+        portfolio(contexte={"description": "Budget plafond ferme."}),
+        "conforme")
+
+print("G8 — champs utiles projet.commanditaire et projet.secteur")
+verifie("commanditaire et secteur vides", "G8",
+        portfolio(contexte={"projet": {"nom": "x", "commanditaire": "", "secteur": None}}),
+        "ecart", "commanditaire")
+verifie("commanditaire et secteur renseignés", "G8",
+        portfolio(contexte={"projet": {"nom": "x", "commanditaire": "Direction SI",
+                                       "secteur": "Industrie"}}),
+        "conforme")
+
 print("D11 — scripts/tranche.py calcule la fermeture, jamais le raisonnement du skill")
 import subprocess
 RACINE_TEST = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -312,6 +332,41 @@ ok2 = r2.returncode == 1 and "inconnu" in r2.stderr.lower()
 print(f"  [{'ok  ' if ok2 else 'ECHEC'}] --cible inexistant -> erreur explicite, code 1")
 if not ok2:
     ECHECS.append("tranche.py --cible inexistant")
+
+print("D13 — scripts/impact.py calcule la fermeture aval, jamais le raisonnement du skill")
+IMPACT_PY = os.path.join(RACINE_TEST, "scripts", "impact.py")
+
+r3 = subprocess.run([sys.executable, IMPACT_PY, "--modifie", "charte", "--json"],
+                    capture_output=True, text=True)
+try:
+    d3 = json.loads(r3.stdout)
+    attendu_aval = {"parties-prenantes", "plan", "risques", "budget", "communications",
+                    "qualite", "cloture", "backlog", "sprint"}
+    ok3 = set(d3["aval"]) == attendu_aval and "contexte" not in d3["aval"] and "charte" not in d3["aval"]
+except Exception:
+    ok3 = False
+print(f"  [{'ok  ' if ok3 else 'ECHEC'}] --modifie charte -> fermeture aval attendue, sans l'amont ni la cible")
+if not ok3:
+    ECHECS.append("impact.py --modifie charte")
+    print(f"         sortie : {r3.stdout!r} {r3.stderr!r}")
+
+r4 = subprocess.run([sys.executable, IMPACT_PY, "--modifie", "sprint", "--json"],
+                    capture_output=True, text=True)
+try:
+    d4 = json.loads(r4.stdout)
+    ok4 = d4["aval"] == []
+except Exception:
+    ok4 = False
+print(f"  [{'ok  ' if ok4 else 'ECHEC'}] --modifie sprint (feuille) -> aucun artefact en aval")
+if not ok4:
+    ECHECS.append("impact.py --modifie sprint")
+
+r5 = subprocess.run([sys.executable, IMPACT_PY, "--modifie", "inconnu"],
+                    capture_output=True, text=True)
+ok5 = r5.returncode == 1 and "inconnu" in r5.stderr.lower()
+print(f"  [{'ok  ' if ok5 else 'ECHEC'}] --modifie inconnu -> erreur explicite, code 1")
+if not ok5:
+    ECHECS.append("impact.py --modifie inconnu")
 
 print("Gouvernance — toute règle et toute porte déclare son origine")
 TYPES_ORIGINE_VALIDES = {"standard", "source", "choix_architecture", "convention"}
